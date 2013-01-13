@@ -334,7 +334,6 @@ class AdminController extends Zend_Controller_Action
         $this->view->active = self::TRAMITE;
         $this->_loadTinyMce();
         $form = new Application_Form_Tramite();
-        
         if ($request->isPost() && $form->isValid($request->getPost())) {
             $tramite = new Tramite();
             $tramite->title = $form->getValue('title');
@@ -344,15 +343,19 @@ class AdminController extends Zend_Controller_Action
             $tramite->creation_date = "{$year}-{$month}-{$day}";
             $tramite->active = $form->getValue('active');
             $tramite->save();
-            $request->setParam('type', 'tramite');
-            $request->setParam('id', $tramite->id);
-            $this->_forward('geolocalizar');
+            $this->_forwardToGeoloc('tramite', $tramite->id);
         }
-        
         $this->view->form = $form;
         $this->view->headScript()->appendFile("/js/modules/admin/cancelSubmitWithEnterKey.js");
         $this->view->headScript()->appendFile("/js/modules/admin/tinyMCEConfig.js");
         $this->view->headScript()->appendFile("/js/modules/admin/datepickerConfig.js");
+    }
+    
+    private function _forwardToGeoloc($type, $id)
+    {
+        $this->_request->setParam('type', $type);
+        $this->_request->setParam('id', $id);
+        $this->_forward('geolocalizar');
     }
     
     public function editarTramiteAction()
@@ -373,7 +376,7 @@ class AdminController extends Zend_Controller_Action
             $tramite->creation_date = "{$year}-{$month}-{$day}";
             $tramite->active = $form->getValue('active');
             $tramite->save();
-            $this->_redirect('/admin/listar-tramites');
+            $this->_forwardToGeoloc('tramite', $tramite->id);
         }
         $this->view->id = $id;
         $this->view->form = $form;
