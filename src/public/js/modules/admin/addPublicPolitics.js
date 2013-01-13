@@ -61,63 +61,15 @@ $(function() {
         }
     });
     
-    // Submit logic
-    var submitting = false;
-    $('#publicPoliticsFormTag').bind(
-        'submit.addPublicPolitics',
-        function(e) {
-            e.preventDefault();
-            if (submitting == false) {
-                submitting = true;
-            }
-        }
-    );
+//    // Submit logic
+//    var submitting = false;
+//    $('#publicPoliticsFormTag').bind(
+//        'submit.addPublicPolitics',
+//        function(e) {
+//            e.preventDefault();
+//            if (submitting == false) {
+//                submitting = true;
+//            }
+//        }
+//    );
 });
-var submitPublicPolitics = function() {
-    var publicPoliticId = $('#publicPoliticId').val() != undefined
-        ? $('#publicPoliticId').val()
-        : null
-    ;
-    
-    $.post(
-        "/admin/ajax/do/addOrEditPublicPolitics",
-        {
-            id: publicPoliticId,
-            category: $('#category').val(),
-            preferentialCategory: $('#preferentialCategory').val(),
-            title: $('#title').val(),
-            copy: $('#copy').val(),
-            body: $('#body').val(),
-            date: $('#date').val(),
-            youtube: $('#youtube').val(),
-            active: $('#active').attr('checked') == 'checked'? 1:0
-        },
-        // si tengo id y tengo imagenes, y tengo un nuevo length
-        // borro las imagenes que estan ahora, y subo estas nuevas
-        function (response) {
-            var uploader = $('#uploader').pluploadQueue();
-            
-            if (uploader.files.length > 0) {
-                // si estoy editando y tengo imagenes, borro todas las que ya tenia esta nota antes de agregar
-                // las nuevas
-                if (response.edit) {
-                    $.post(
-                        "/admin/ajax/do/removeImagesFromId",
-                        {id: response.politicaPublicaId},
-                        function(response2) {
-                            if (response2.deleted) {
-                                uploader.start();
-                            }
-                        },
-                        'json'
-                    )
-                } else {
-                    uploader.start();
-                }
-            } else {
-                window.location = '/admin/listar-politicas-publicas';
-            }
-        },
-        'json'
-    );
-}

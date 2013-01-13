@@ -18,6 +18,24 @@ class AdminController extends Zend_Controller_Action
     
     private $_bannerDir = null;
     
+    public function addPoliticasPublicasStepOneAction()
+    {
+        $this->_request->setParam('id', $this->_addOrEditPublicPolitics());
+        $this->_forward('add-politicas-publicas-step-two');
+    }
+    
+    public function addPoliticasPublicasStepTwoAction()
+    {
+        $id = $this->_request->getParam('id');
+        $this->view->active = self::POLITICA_PUBLICA;
+        $this->_loadPlupload()->_loadTinyMce()->_loadJavascriptTextLimit();
+        $this->view->politicaPublicaForm = new Application_Form_PoliticaPublicaStepTwo();
+        $this->view->footerScript()->appendFile("/js/modules/admin/cancelSubmitWithEnterKey.js");
+        $this->view->footerScript()->appendFile("/js/modules/admin/tinyMCEConfig.js");
+        $this->view->footerScript()->appendFile("/js/modules/admin/datepickerConfig.js");
+        $this->view->footerScript()->appendFile("/js/modules/admin/addPublicPolitics.js");
+    }
+    
     public function init()
     {
         $this->view->layout()->setLayout('admin');
@@ -57,7 +75,7 @@ class AdminController extends Zend_Controller_Action
         // se esta agregando un index.js desde el ini del form
         $this->view->active = self::POLITICA_PUBLICA;
         $this->_loadPlupload()->_loadTinyMce()->_loadJavascriptTextLimit();
-        $this->view->politicaPublicaForm = new Application_Form_PoliticaPublica();
+        $this->view->politicaPublicaForm = new Application_Form_PoliticaPublicaStepOne();
         $this->view->footerScript()->appendFile("/js/modules/admin/cancelSubmitWithEnterKey.js");
         $this->view->footerScript()->appendFile("/js/modules/admin/tinyMCEConfig.js");
         $this->view->footerScript()->appendFile("/js/modules/admin/datepickerConfig.js");
@@ -183,7 +201,7 @@ class AdminController extends Zend_Controller_Action
         $form = new Application_Form_PoliticaPublica();
         $form->populate($request->getPost());
         $politicaPublicaSession = new Zend_Session_Namespace('folderSession');
-        if ($request->getPost('id')  != 'null') {
+        if ($request->getPost('id') != 'null' && $request->getPost('id') != null) {
             $politicaPublicaSession->edit = true;
             $news = Doctrine_Core::getTable('News')->find($request->getPost('id'));
             // si estoy editando deberia eliminar primero la categoria a la cual corresponde y reasignar

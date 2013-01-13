@@ -13,7 +13,7 @@ class Application_Form_PoliticaPublica extends Zend_Form
     {
         $config = new Zend_Config_Ini(
             APPLICATION_PATH . '/configs/forms/politicaPublica.ini',
-            'publicPolitics'
+            'stepOne'
         );
         $this->setConfig($config->publicPolitics);
         $this->_populateSelectWithCategories();
