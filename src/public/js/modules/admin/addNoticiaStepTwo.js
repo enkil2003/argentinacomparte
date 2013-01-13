@@ -60,9 +60,18 @@ $(function() {
     });
     $('input[name="publicPoliticsSubmit"]').bind(
         'click',
-        function() {
+        function(e) {
             var uploader = $('#uploader').pluploadQueue();
-            uploader.start();
+            if (uploader.files.length > 0) {
+                uploader.start();
+            } else {
+                e.preventDefault();
+                $('#uploader-element').closest('.control-group').addClass('error');
+                if ($('#uploader-element').find('ul').length == 1) {
+                    $('#uploader-element').append('<ul style="margin-top: 10px" class="errors help-inline label label-important"><li>Debe indicar al menos 1 imagen</li></ul>');
+                }
+                $.scrollTo($($('.control-group .errors')[0]).parent(), 500, {offset: {top: -70}});
+            }
             return false;
         }
     );
