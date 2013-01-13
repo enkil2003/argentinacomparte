@@ -1,0 +1,48 @@
+<h1 class="outOfView">Argentina Comparte - Trámite: <?php echo $this->news['title'] ?> </h1>
+<?php $this->placeholder('news')->captureStart(); ?>
+    <?php
+        echo $this->multimediaBox(
+            array(
+            	'tramite' => TRUE,
+                'title' => $this->news['title'],
+                'copy' => $this->news['body'],
+                'date' => $this->news['creation_date'],
+            	
+            )
+        );
+    ?>
+<?php $this->placeholder('news')->captureEnd(); ?>
+<?php 
+/*
+ * 
+Array
+(
+    [id] => 257
+    [title] => aaa
+    [copy] => aaaa
+    [body] => 
+    [mintit] => 
+    [user] => 
+    [modified_by] => 
+    [creation_date] => 2012-07-20 00:00:00
+    [modification_date] => 
+    [preferential_category] => 1
+    [news_id] => 
+    [youtube] => 
+    [Images] => Array
+        (
+            [0] => Array
+                (
+                    [id] => 58
+                    [name] => 20120404211010.jpg
+                    [news_id] => 257
+                    [highlight] => 1
+                    [News] => 
+                )
+
+        )
+
+)
+
+ */
+?>

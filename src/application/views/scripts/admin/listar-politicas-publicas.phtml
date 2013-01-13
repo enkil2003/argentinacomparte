@@ -1,0 +1,58 @@
+<div class="page-header">
+  <h3>Políticas Públicas</h3>
+</div>
+<table id="formatotabla" class="display">
+  <thead>
+    <tr>
+      <th>&nbsp;</th>
+      <th>id</th>
+      <th>titulo</th>
+      <th>fecha</th>
+      <th>estado</th>
+      <th>categoria</th>
+      <th>&nbsp;</th>
+    </tr>
+  </thead>
+  <tbody>
+    <?php
+    if (count($this->politicas)) {
+        echo $this->partialLoop('admin/partials/listar-row-pp.phtml', $this->politicas);
+    }
+    ?>
+  </tbody>
+</table>
+<script type="text/javascript" charset="utf-8">
+$('.to_modal').click(function(e) {
+    e.preventDefault();
+    var href = $(e.target).attr('href');
+    if (href.indexOf('#') == 0) {
+        $(href).modal('open');
+    } else {
+        $.get(href, function(data) {
+            $('<div class="modal fade" >' + data + '</div>').modal();
+        });
+    }
+});
+$(function() {
+    $('.btn.google-latitude-holder').on({
+        click: function(e) {
+            e.preventDefault();
+            $.ajax({
+                url: "/admin/geolocalizar",
+                type: 'get',
+                data: {
+                    id: $(this).attr('data-id'),
+                    type: 'publicPolitic'
+                },
+                dataType: 'html',
+                success: function(data) {
+                    $.fancybox({
+                        content : data,
+                        autoCenter: true
+                 });
+                }
+            });
+        }
+    });
+});
+</script>

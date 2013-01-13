@@ -1,0 +1,13 @@
+<h2>Noticia</h2>
+<?php
+echo $this->partial(
+    'admin/partials/add-geo-loc.phtml',
+    array(
+        'type' => 'news',
+        'locations' => isset($this->locations)
+            ? $this->locations
+            : array()
+        )
+    );
+?>
+<?php echo $this->form; ?>

@@ -1,0 +1,14 @@
+<phpunit bootstrap="./bootstrap.php" colors="true">
+    
+    <testsuite name="ZendMax Library Test Suite">
+        <directory>../</directory>
+    </testsuite>
+    
+    <logging>
+        <log type="coverage-html" target="/tmp/report" charset="UTF-8"
+            yui="true" highlight="false"
+            lowUpperBound="35" highLowerBound="70"/>
+        <log type="coverage-xml" target="/tmp/coverage.xml"/>
+    </logging>
+    
+</phpunit>

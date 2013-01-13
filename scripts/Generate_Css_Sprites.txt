@@ -1,0 +1,16 @@
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; CSS/Sprites/Javascript ;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+Css and javascript will be minified with yuicompressor located in tools.
+Images are being trated as sprites, using fondue located in tools, also it is possible to make the sprites in
+http://spritegen.website-performance.org/
+NOTE: when you get the css, the rules are missing the url to the sprite itself so you have to add it yourself.
+
+When ever you add a new image file in public/images folder if you plan to make a sprite of it, you MUST copy 
+it to tools/images-for-sprite-generation
+
+put it a name and increment the prefix number
+
+you MUST also use the smushit yahoo's service once you get the image, it will take at least 20k from the image
+http://www.smushit.com/ysmush.it/

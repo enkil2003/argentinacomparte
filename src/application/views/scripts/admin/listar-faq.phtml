@@ -1,0 +1,19 @@
+<div class="page-header"><h3>Preguntas Frecuentes</h3></div>
+    <table id="formatotabla" class="display">
+        <thead>
+        <tr>
+             <th>Titulo</th>
+            <th>id</th>
+                <th>Política pública relacionada</th>
+                <th>fecha</th>
+                <th>estado</th>
+                <th>&nbsp;</th>
+
+            </tr>
+        </thead>
+        <tbody>
+
+<?php echo $this->partialLoop('admin/partials/listar-row-faq.phtml', $this->faq) ?>
+
+        </tbody>
+    </table>

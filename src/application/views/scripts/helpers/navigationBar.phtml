@@ -1,0 +1,12 @@
+<nav id="nav">
+<?php if (isset($this->data)):?>
+  <?php foreach($this->data as $link):?>
+  <a class="box-shadow <?php echo isset($link['extraClasses'])? $link['extraClasses'] : ''; ?>"
+     href="<?php echo $link['url']; ?>"
+     title="<?php echo $this->escape($this->translate($link['name'])); ?>"
+  >
+    <?php echo $this->escape($this->translate($link['name'])); ?>
+  </a>
+  <?php endforeach;?>
+<?php endif; ?>
+</nav>

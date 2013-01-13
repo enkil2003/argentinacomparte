@@ -1,0 +1,19 @@
+<tr>
+    <td><a class="btn btn-success" title="editar" href="/admin/editar-tramite/id/<?php echo $this->id ?>"><i class="icon-pencil icon-white"></i></a>
+    <a class="btn" target="_BLANK" title="ver" href="/ver-tramite/<?php echo $this->id .'/'. $this->title ?>"><i class="icon-eye-open"></i></a>
+    </td>
+        <td><?php echo $this->id ?>
+    </td>
+        <td><?php echo $this->title ?>
+    </td>
+        <td><?php echo $this->creation_date ?>
+    </td>
+        <td><?php echo ($this->active==1)? 'publicado':'borrador' ?>
+    </td>
+    <td><a class="btn btn-danger" title="eliminar" href="#" 
+            onclick="return MyDialogs.loadConfirmationModal('<?php echo $this->id ?>', '/admin/a-papelera-tramite/id/<?php echo $this->id ?>/volver/listar-tramites', 
+                'El siguiente trámite será eliminada', 
+                '<?php echo $this->title ?>','');"><i class="icon-trash icon-white"></i></a>
+    </td>
+
+</tr>

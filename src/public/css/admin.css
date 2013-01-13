@@ -1,0 +1,61 @@
+#adminToolBar .container {
+    width: 1000px;
+}
+textarea[name="copy"] {
+    height: 40px;
+    width: 922px;
+}
+.opacity {
+    -ms-filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=50);
+    filter: alpha(opacity=50);
+    -moz-opacity: 0.5;
+    -khtml-opacity: 0.5;
+    opacity: 0.5;
+}
+#map_canvas {
+    width: 300px;
+    height: 300px;
+}
+.google-latitude-holder {
+    padding: 0;
+    width: 33px;
+    height: 26px;
+    position: relative;
+    top: -4px;
+}
+.icon-google-latitude {
+    background-image: url(/img/geoloc25x25.png);
+    background-position: 2px -1px;
+    height: 14px;
+    width: 18px;
+    padding: 5px;
+}
+/* General */
+.admin {
+    margin-top: 75px;
+    margin-bottom: 25px;
+    background-color: #EEE;
+    border-radius: 5px;
+    padding: 25px;
+    box-shadow: 5px 5px 5px rgba(0, 0, 0, .5);
+}
+/* GEOLOC */
+#localizationControls #address {
+    margin-top: 8px;
+}
+#localizationControls label[for="bsas"] {
+    display: inline-block;
+    cursor: pointer;
+   -webkit-user-select: none;
+}
+/* Forms */
+.errors.help-inline.label.label-important {
+    color: #FFF;
+    list-style-type: none;
+}
+#body-element .errors.help-inline {
+    margin-top: 10px;
+}
+.control-group.error .mceIframeContainer.mceFirst.mceLast {
+    border: 1px solid #953B39;
+}

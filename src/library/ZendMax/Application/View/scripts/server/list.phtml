@@ -1,0 +1,30 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"; "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd>
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <title>Zend Framework Default Application</title>
+    </head>
+    <body>
+        <h3><?= $this->className ?></h3>
+        <? if ( ! empty( $this->methods ) ): ?>
+            <? foreach( $this->methods as $method ): ?>
+            <ol>
+                <li>
+                    <h4>
+                        <a href=<?=$this->url(array( "action"=>"edit" , "method"=>$method[ 'name' ], "itype"=>$method['itype'] ) ) ?>>
+                        <?= $method[ 'name' ] ?></a>
+                        &nbsp;Retval&nbsp;<?= $method[ 'type'] ?>
+                    </h4>
+                    <ul>
+                        <? foreach( $method['params'] as $param => $type ): ?>
+                        <li><?= $param ?> : <?= $type ?></li>
+                        <? endforeach ?>
+                    </ul>
+                </li>
+            </ol>
+            <? endforeach ?>
+        <? else: ?>
+            <h2>Empty Class</h2>
+        <? endif ?>
+    </body>
+</html>

@@ -1,0 +1,104 @@
+<?php $this->layout()->guestbookForm = $this->action('guestbook', 'form') ?>
+<?php echo $this->doctype() . PHP_EOL ?>
+<html lang="es" ><!-- debug="true" xmlns:fb="http://ogp.me/ns/fb#" xmlns:og="http://opengraphprotocol.org/schema/" -->
+<head>
+<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+<?php echo $this->headMeta() . PHP_EOL ?>
+<?php echo $this->headTitle() . PHP_EOL ?>
+<?php //echo $this->openGraph() ?>
+<?php echo $this->headStyle() . PHP_EOL ?>
+<?php echo $this->headLink() . PHP_EOL ?>
+<?php echo $this->headScript() . PHP_EOL ?>
+</head>
+<body class="<?php echo $this->bodyBackgroundClass; ?>">
+<?php echo $this->layout()->content; ?>
+<div id="fb-root"></div>
+<a class="linkContenidoPrincipal" href="#contenidoPrincipal">ir al contenido principal de la página</a>
+<script>
+window.fbAsyncInit = function() {
+    FB.init({
+        appId      : '363265557070088',
+        channelUrl : '//ac.local/channel.php',
+        status     : true,
+        cookie     : true,
+        xfbml      : true
+    });
+    // Additional initialization code here
+};
+// Load the SDK Asynchronously
+(function(d){
+    var js, id = 'facebook-jssdk', ref = d.getElementsByTagName('script')[0];
+    if (d.getElementById(id)) {return;}
+    js = d.createElement('script'); js.id = id; js.async = true;
+    js.src = "//connect.facebook.net/en_US/all.js";
+    ref.parentNode.insertBefore(js, ref);
+}(document));
+</script>
+<div id="content" class="container">
+  <!-- Columna izquierda -->
+  <?php 
+  echo $this->render('_leftColumn.phtml');
+  ?>
+  <!-- Fin columna izquierda -->
+  <!-- Columna central -->
+  <?php
+  echo $this->render('_centerColumn.phtml');
+  ?>
+  <!-- Fin columna central -->
+  <!-- Columna derecha -->
+  <?php
+  echo $this->render('_rightColumn.phtml');
+  ?>
+  <!-- Fin columna derecha -->
+  <div id="footerColumn">
+      <div class="box rndFooter box-shadow">
+          <a class="presi" target="_BLANK" href="http://presidencia.gob.ar/"></a>
+          <a class="jgm" target="_BLANK" href="http://www.jgm.gov.ar"></a>
+      </div>
+  </div>
+</div>
+<?php echo $this->footerScript() . PHP_EOL; ?>
+<?php echo $this->minifyFooterScript();?>
+<script type="text/javascript" src="/js/fancybox/jquery.fancybox.pack.js?v=2.1.0"></script>
+<?php echo $this->inlineScript(); ?>
+<?php echo $this->lateScript(); ?>
+<script type="text/javascript"> 
+$(function () {
+    var select1 = $('.chzn-select1').val();
+     $('#select-pp').on('change', '.chzn-select1', function() {
+        window.location =  'http://' + this.value ;
+     });
+     $('#select-tramite').on('change', '.chzn-select1', function() {
+        if (this.value == "blank") {
+            window.open  ('http://argentina.gob.ar','_blank') ;
+        } else {
+            window.location = 'http://' + this.value ;
+        }
+    });
+     $(".chzn-select1").chosen();
+});
+</script>
+<script src="/js/lib/twitter-1.13.custom.js" type="text/javascript"></script>
+<script type="text/javascript" >
+getTwitters('tweets', { 
+  id: 'argcomparte', 
+  count: 3, 
+  enableLinks: true, 
+  ignoreReplies: true, 
+  clearContents: true,
+  template: '<div class="surveyResults socialBoxes rnd4"><span class="spriteImage sprite-time"> </span> %time%</div><p>"%text%"</p><hr>'
+});
+</script>
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-34020411-1']);
+  _gaq.push(['_setDomainName', 'argentinacomparte.gob.ar']);
+  _gaq.push(['_trackPageview']);
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+</body>
+</html>

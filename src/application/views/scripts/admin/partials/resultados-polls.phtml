@@ -1,0 +1,28 @@
+<div class="well span2">
+  <button type="button" class="close" data-dismiss="alert">×</button>
+  <h3 class="lead"><?php echo $this->title; ?></h3>
+  <ul class="nav nav-tabs nav-stacked">
+  
+  <?php $gtotal =  $this->optiononevotes +  $this->optiontwovotes +  $this->optionthreevotes +  $this->optionfourvotes;
+  	if ($gtotal > 0){
+    
+    $content = '<li>'. $this->option1.' - ('.$this->optiononevotes.') ';
+    $content .= ($this->optiononevotes * 100) / $gtotal . '%</li></br>';
+    
+    $content .= '<li>'. $this->option2.' - ('.$this->optiontwovotes.') ';
+    $content .= ($this->optiontwovotes * 100) / $gtotal . '%</li></br>';
+    
+    $content .= '<li>'. $this->option3.' - ('.$this->optionthreevotes.') ';
+    $content .= ($this->optionthreevotes * 100) / $gtotal . '%</li></br>';
+    
+    $content .= '<li>'. $this->option4.' - ('.$this->optionfourvotes.') ';
+    $content .= ($this->optionfourvotes * 100) / $gtotal . '%</li></br>';
+    } 
+      else { $content = '<li>faltan votos</li>'; 
+      }
+
+    echo $content
+?>
+   
+     </ul>
+</div> 

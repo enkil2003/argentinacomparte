@@ -1,0 +1,12 @@
+<?php $this->placeholder('news')->captureStart(); ?>
+    <?php
+        echo $this->multimediaBox(
+            array(
+                'file' => '/img/notfound.jpg',
+                'type' => 'image',
+                'title' => 'No se encontro la página',
+                'copy' => 'Puede continuar navegando por el menu de categorías, los selectores del encabezado de la página o directamente a la portada de <a href="/">argentina comparte</a>',
+            )
+        );
+    ?>
+<?php $this->placeholder('news')->captureEnd(); ?>

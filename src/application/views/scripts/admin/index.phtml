@@ -1,0 +1,47 @@
+<div class="alert alert-info span2">
+  <button type="button" class="close" data-dismiss="alert">×</button>
+  <h3 class="lead alert-heading">¡Bienvenid@!</h3>
+</div>
+<div class="well  span2">
+  <button type="button" class="close" data-dismiss="alert">×</button>
+  <h3 class="lead">Crear</h3>
+  <ul class="nav nav-tabs nav-stacked">
+    <li><a href="/admin/agregar-politica-publica">Política Pública</a></li>
+    <li><a href="/admin/agregar-noticia">Noticia</a></li>
+    <li><a href="/admin/agregar-tramite">Trámite</a></li>
+    <li><a href="/admin/agregar-encuesta">Encuesta</a></li>
+    <li><a href="/admin/agregar-banner">Banner</a></li>
+    <li><a href="/admin/agregar-faq">Faq</a></li>
+  </ul>
+</div>
+<div class="well span2">
+  <button type="button" class="close" data-dismiss="alert">×</button>
+  <h3 class="lead">Listar</h3>
+  <ul class="nav nav-tabs nav-stacked">
+    <li><a href="/admin/listar-politicas-publicas">Políticas Públicas</a></li>
+    <li><a href="/admin/listar-noticias">Noticias</a></li>
+    <li><a href="/admin/listar-tramites">Trámites</a></li>
+    <li><a href="/admin/listar-encuestas">Encuestas</a></li>
+    <li><a href="/admin/listar-banners">Banners</a></li>
+    <li><a href="/admin/listar-faq">Faq</a></li>
+  </ul>
+</div>
+<div class="well span2">
+  <button type="button" class="close" data-dismiss="alert">×</button>
+  <h3 class="lead">Config.</h3>
+  <p><a href="/admin/predeterminar-portada">Destacar en Portada</a></p>
+</div>
+<div style="clear:both"></div><hr/>
+<h2 class="lead">Encuestas Publicadas</h2>
+    <?php if (isset($this->poll1[0])) echo $this->partial('admin/partials/resultados-polls.phtml', $this->poll1[0]) ?>
+    <?php if (isset($this->poll2[0])) echo $this->partial('admin/partials/resultados-polls.phtml', $this->poll2[0]) ?>
+    <?php if (isset($this->poll3[0])) echo $this->partial('admin/partials/resultados-polls.phtml', $this->poll3[0]) ?>
+    <?php if (isset($this->poll4[0])) echo $this->partial('admin/partials/resultados-polls.phtml', $this->poll4[0]) ?>
+    <?php if (isset($this->poll5[0])) echo $this->partial('admin/partials/resultados-polls.phtml', $this->poll5[0]) ?>
+    <?php if (isset($this->poll6[0])) echo $this->partial('admin/partials/resultados-polls.phtml', $this->poll6[0]) ?>
+<?php
+// echo $this->GoogleAnalytics();
+
+
+
+

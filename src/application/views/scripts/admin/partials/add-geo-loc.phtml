@@ -1,0 +1,53 @@
+Agregar Geolocalización:
+<div><img style="cursor: pointer" data-id="<?php echo $this->id; ?>" id="localizar" src="/img/google-latitude.jpg" /></div>
+<div id="geolocListContainer" style="
+<?php if (!isset($this->geolocs) || (isset($this->geolocs) && count($this->geolocs) === 0)): ?>
+display: none;
+<?php endif; ?>
+">
+  <h3>Geolocalizaciones:</h3>
+  <ul>
+<?php if (isset($this->geolocs) && count($this->geolocs) > 0): ?>
+  <?php foreach($this->geolocs as $geoloc): ?>
+    <li><?php echo $geoloc['address']; ?></li>
+  <?php endforeach; ?>
+<?php endif; ?>
+  </ul>
+</div>
+
+<script>
+var AC = AC || {};
+AC.Admin = AC.Admin || {};
+AC.Admin.GeoLoc = AC.Admin.GeoLoc || {};
+AC.Admin.GeoLoc.Callback = AC.Admin.GeoLoc.Callback || {};
+AC.Admin.GeoLoc.Callback.AddGeoLoc = AC.Admin.GeoLoc.Callback.AddGeoLoc || {};
+AC.Admin.GeoLoc.Callback.AddGeoLoc.success = function() {
+    $('#geolocListContainer').show().find('ul').append(
+        '<li>' +
+        $('#locationAddress span').text() +
+        '</li>'
+    );
+}
+$(function() {
+    $('#localizar').on({
+        click: function(e) {
+            e.preventDefault();
+            $.ajax({
+                url: "/admin/geolocalizar",
+                type: 'get',
+                data: {
+                    id: $(this).attr('data-id'),
+                    type: '<?php echo $this->type; ?>'
+                },
+                dataType: 'html',
+                success: function(data) {
+                    $.fancybox({
+                        content: data,
+                        autoCenter: true
+                    });
+                }
+            });
+        }
+    });
+});
+</script>

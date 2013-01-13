@@ -1,0 +1,132 @@
+<div id="centerColumn" class="column">
+  <div id="header" class="box2 box-shadow">
+    <div id="select-pp" >
+        <label for="politicaspublicas">selector de políticas públicas</label>
+        <select id="politicaspublicas" class="chzn-select1" tabindex="1">
+              <option class="dholder" value="" data-placeholder="true">Becas/Programas/Estímulos...</option>
+              <?php foreach(News::getPublicPolitics() as $pp):?>
+              <option value="<?php echo $_SERVER['SERVER_NAME']?>/ver-mas/id/<?php echo $pp['id']?>"><?php echo $pp['title']?></option>
+            <?php endforeach;?>
+        </select>
+    </div>
+    <div id="select-tramite" style="padding:51px 0 0 0">
+        <label for="tramites">selector de trámites</label>
+        <select id="tramites" class="chzn-select1" style="width:300px;" tabindex="1">
+          <option value="" data-placeholder="true">Trámites...</option>
+          <?php foreach(Tramite::getPublicTramites() as $tramite):?>
+          <option value="<?php echo $_SERVER['SERVER_NAME']?>/ver-tramite/<?php echo $tramite['id']?>/<?php echo $tramite['title']?>"><?php echo $tramite['title']?></option>
+          <?php endforeach;?>
+           <option value="blank">Ver más trámites...</option>
+        </select>
+    </div>
+  </div>
+  
+  <!-- caja superior central -->
+  <a id="contenidoPrincipal"></a>
+  <div id="ctrLtCol" class="column">
+    <?php echo $this->placeholder('news');?>
+    <?php echo $this->placeholder('publicPolitics');?>
+  </div>
+  <!-- fin caja superior central -->
+  <!-- caja inferior central -->
+  <div id="ctrRtCol" class="column">
+    <?php if ( $this->codyt != NULL && $this->codyt != ''):?>
+    <div class="box box-shadow row1black">
+      <?php echo $this->ribbonShort('Video'); ?>
+        <a title="ver video asociado a la noticia principal en ventana emergente" data-toggle="modal" href="#vid" ><img alt="imagen detalle del video asociado a la noticia principal" src="http://img.youtube.com/vi/<?php echo $this->codyt ?>/0.jpg"></a>
+        <div class="modal hide" style="background-color:black" id="vid">
+          <div style="margin:0 auto;width:530px">
+            <iframe title="video youtube de la noticia principal" class="youtube-player" width="530" height="400" src="http://www.youtube.com/embed/<?php echo $this->codyt ?>?wmode=transparent"></iframe>
+          </div>
+        </div>
+    </div>
+    <?php endif; ?>
+  
+  <!-- google maps -->
+  <?php if (isset($this->news['Geolocalization'][0])):?>
+    <?php echo $this->googleMaps($this->news['Geolocalization']); ?>
+  <?php endif; ?>
+  <!-- end google maps -->
+  
+    <?php if (isset ($this->faq)):?>
+    <div class="box box-shadow row1 faq">
+          <?php echo $this->ribbonShort('Preguntas Frecuentes'); ?>
+          
+    <article><p><?php echo $this->faq['copy'] ?></p>
+    <div class="more rnd4"><a data-toggle="modal" href="#faq" >Ver preguntas frecuentes</a></div>
+    <div style="clear:both"></div>
+    </article>
+      <div class="modal hide" id="faq">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">×</button>
+          <h3>Preguntas Frecuentas</h3>
+        </div>
+        <div class="modal-body">
+        <?php echo $this->faq['body'] ?>
+        </div>
+        <div class="modal-footer">
+          <a href="#" class="btn" data-dismiss="modal">Cerrar</a>
+        </div>
+      </div>
+    </div>
+    <?php endif; ?>
+    
+    
+    <?php if (isset($this->acordeon['News']) && count($this->acordeon['News'])): ?>
+    <div class="box box-shadow row1">
+      <?php echo $this->ribbonShort('Noticias'); ?>
+      <?php
+      $accordeonData = array();
+      foreach($this->acordeon['News'] as $news) {
+          $accordeonData[] = array(
+              'id' => $news['id'],
+              'minitit' => $news['mintit'],
+              'title' => $news['title'],
+              'image' => $news['Images'][0]['name'],
+              'content' => $news['copy'],
+          );
+      }
+      echo $this->accordion(
+          array(
+              'id' => 'idParaElAccordion', // <- este parametro es opcional
+              'articles' => $accordeonData
+          )
+      );
+      ?>
+    </div>
+    <?php endif; ?>
+    <?php
+if (isset($this->id) && $this->id > 0) {
+    $polls = Poll::getByCategory($this->id)->toArray();
+    if (is_array($polls)) {
+        $surveyData = array_shift($polls);
+        if(is_array($surveyData)) {
+            $surveyAdapter = array(
+                'title' => $surveyData['title'],
+                'url' => '/ajax/poll',
+                'surveyId' => $surveyData['id'],
+                'options' => array(
+                    array('option' => $surveyData['option1'], 'score' => $surveyData['optiononevotes']),
+                    array('option' => $surveyData['option2'], 'score' => $surveyData['optiontwovotes']),
+                    array('option' => $surveyData['option3'], 'score' => $surveyData['optionthreevotes']),
+                    array('option' => $surveyData['option4'], 'score' => $surveyData['optionfourvotes']),
+                )
+            );
+            echo $this->survey($surveyAdapter);
+        }
+    }
+} else {
+?>
+    <div class="box box-shadow row1">
+      <?php echo $this->ribbonShort('Consulta'); ?>
+      <div style="padding-left:9px">
+      <h2>En <span>Construcción Colectiva.</span> Escuchamos tu aporte</h2>
+      <?php echo $this->layout()->guestbookForm ?>
+      </div>
+    </div>
+<?php } ?>
+
+  </div>
+
+  <!-- fin caja inferior central -->
+</div>

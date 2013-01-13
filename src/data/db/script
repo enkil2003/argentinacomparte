@@ -1,0 +1,18 @@
+        $sqlfile = file_get_contents('../data/db/seba.sql');
+        $result = str_replace("\\'", '_', $sqlfile);
+        
+        $string = $result;
+        $pattern = '/\((\s*\d+\s*)\,(\s*\d+\s*)\,(\s*\'[^\']+\'\s*)\,(\s*(\d+|null)\s*)\)/';
+        $replacement = '($3,$4)';
+        $result =  preg_replace($pattern, $replacement, $string);
+        $result = str_replace("_", "\\'", $result);
+        file_put_contents('../data/db/country_state.sql', $result);
+        chmod('../data/db/country_state.sql', 0777);
+
+
+---------------------------
+
+        $sqlfile = file_get_contents('../data/db/country_state.sql');
+        $result = str_replace('),(', "),\n(", $sqlfile);
+        file_put_contents('../data/db/country_state.sql', $result);
+        chmod('../data/db/country_state.sql', 0777);

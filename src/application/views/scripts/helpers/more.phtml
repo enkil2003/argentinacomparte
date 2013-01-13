@@ -1,0 +1,7 @@
+<div class="more rnd4">
+  <a title="leer completo el artículo: <?php echo $this->escape($this->data['title']);?>"
+    href="<?php echo $this->data['url'];?><?php echo isset($this->data['slug']) ? '/' . $this->data['slug'] : '' ?>"
+  ><?php echo $this->translate('Leer más'); ?>
+    <span> sobre el artículo: <?php echo $this->data['title'];?></span>
+  </a>
+</div>

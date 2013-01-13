@@ -1,0 +1,9 @@
+<div class="interactiveBoxes">
+<?php foreach($this->data['helpers'] as $helper):?>
+  <?php if (isset($helper['params'])): ?>
+    <?php echo $this->getHelper($helper['helper'], $helper['params']); ?>
+  <?php else: ?>
+    <?php echo $this->getHelper($helper['helper']); ?>
+  <?php endif; ?>
+<?php endforeach; ?>
+</div>

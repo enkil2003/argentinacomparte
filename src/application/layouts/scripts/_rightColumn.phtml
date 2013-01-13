@@ -1,0 +1,103 @@
+<script type="text/javascript">
+$(function() {
+    $(".suscripcion").fancybox({
+        maxWidth: 300,
+        maxHeight: 300,
+        fitToView: false,
+        width: '70%',
+        height: '70%',
+        autoSize: false,
+        closeClick: false,
+        openEffect: 'none',
+        closeEffect: 'none'
+    });
+});
+</script>
+<div id="rightColumn" class="column columnRight">
+  <div class="rnd10" style="margin:15px 16px 0 12px;text-align:center;-webkit-box-shadow: 0 0 8px 1px #444;-moz-box-shadow: 0 0 8px 1px #444">
+    <a title="ventana emergente para suscripción al newsletter de Argentina Comparte" data-fancybox-type="iframe" class="suscripcion" href="/form/newsletter" >Suscribite al newsletter</a>
+    <div id="newsletter" class="modal hide"></div>
+  </div>
+  <div class="social-menu">
+    <a class="r-btn-facebook" target="_BLANK" href="http://www.facebook.com/ArgentinaComparte"></a>
+    <a class="r-btn-tweeter" target="_BLANK" href="https://twitter.com/argcomparte"></a>
+    <a class="r-btn-youtube" target="_BLANK" href="http://www.youtube.com/argentinacomparte/"></a>
+    <div style="clear:both"></div>
+  </div>
+  <?php
+  $data = $this->feed;
+  $datos = array();
+  $i = 0;
+  if (is_array($data["data"])) {
+    foreach ($data["data"] as $value) {
+      if (isset($value["message"])){
+        if ((trim($value["message"]) != "") && ( $value["type"] == "photo" || $value["type"] == "video" || $value["type"] == "link" )) {
+          $datos[$i] = $value;
+          $i++;
+          if ($i>2) {
+            break;
+          }
+        }
+      }
+    }
+  }
+  ?>
+  <div class="box box-shadow row1">
+    <?php echo $this->ribbonShort('Facebook');?>
+    <article style="overflow: hidden" class="socialArticle">
+      <?php foreach ($datos as $dato):?>
+      <div class="surveyResults socialBoxes rnd4"><span class="spriteImage sprite-time"> </span> <?php echo substr($dato['updated_time'],0,10); ?></div>
+        <div class="giveItAName" style="padding-top:4px">
+        <?php if (isset($dato['data']['surveyResults'])):?>
+          <?php echo $this->surveyResults(array('count' => $dato['data']['surveyResults'])); ?>
+        <?php endif; ?>
+        <?php if (isset($dato['image'])):?>
+          <img src="/img/<?php echo $dato['image']; ?>" />
+        <?php endif; ?>
+        <div class="rnd4"><img class="iconfb" alt="icono-facebook" src="http://profile.ak.fbcdn.net/hprofile-ak-snc4/158068_153165688142786_1180141911_q.jpg" ></div>
+        <div class="description">
+          <?php if ($dato['type']=="link"):?>
+          <p><?php echo substr($dato['message'],0,150); ?>... <a target="_BLANK" href="<?php echo $dato['link'] ?>">ir al sitio</a></p>
+          <?php endif; ?>
+          <?php if ($dato['type']=="photo"):?>
+          <p><?php echo substr($dato['message'],0,150); ?>... <a data-toggle="modal" href="<?php echo '#' .$dato['id'] ?>">ver imagen</a></p>
+          <img class="modal hide" id="<?php echo $dato['id'];?>" alt="<?php echo $this->escape(substr($dato['message'],0,50)); ?>" src="<?php echo substr($dato['picture'],0,-5) . 'n.jpg' ?>" >
+          <?php endif; ?>
+          <?php if ($dato['type']=="video"):
+          $url = $dato['source'];
+          ?>
+          <p><?php echo substr($dato['message'],0,150); ?>... <a data-toggle="modal" href="<?php echo '#' .$dato['id'] ?>">ver video</a></p>
+          <div class="modal hide" style="background-color:black" id="<?php echo $dato['id'];?>">
+            <div style="margin:0 auto;width:530px">
+             <iframe title="video youtube de la entrada de facebook" class="youtube-player" width="530" height="400" src="<?php echo $this->escape(substr($url, 0, -1))?>0&amp;wmode=transparent">
+                 Se está mostrando un video Youtube</iframe>
+            </div>
+          </div>
+          <?php endif; ?>
+        </div>
+        <div class="interactiveBoxes">
+          <?php if (isset($dato['data']['comments'])): ?>
+            <?php echo $this->comments(array('count' => $dato['data']['comments']));?>
+          <?php endif; ?>
+          <?php if (isset($dato['data']['stars'])): ?>
+            <?php echo $this->stars(array('stars' => $dato['data']['stars'], 'delete' => false));?>
+          <?php endif; ?>
+          <?php if (isset($dato['data']['elapsedTime'])): ?>
+            <?php echo $this->elapsedTime(array('time' => $dato['data']['elapsedTime'])); ?>
+          <?php endif; ?>
+        </div>
+      </div>
+      <hr />
+    <?php endforeach; ?>
+    </article>
+  </div>
+  <div class="box box-shadow row1" style="overflow:hidden">
+    <?php echo $this->ribbonShort('Twitter');?>
+    <article class="socialArticle tweetsfeed">
+      <div id="tweets" >
+        <p>Contenido cargándose</p>
+        <p><a title="Abrir ventana nueva con el twitter de Argentina Comparte" target="_BLANK" href="http://twitter.com/argcomparte">ir al twitter de ArgComparte</a></p>
+      </div>
+    </article>
+  </div>
+</div>

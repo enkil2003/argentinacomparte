@@ -1,0 +1,18 @@
+<?php
+echo $this->doctype ()?>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<?php echo $this->headMeta() . PHP_EOL ?>
+<?php echo $this->headTitle() . PHP_EOL ?>
+<?php echo $this->openGraph() ?>
+<?php echo $this->headStyle() . PHP_EOL ?>
+<?php echo $this->headLink() . PHP_EOL ?>
+<?php echo $this->headScript() . PHP_EOL ?>
+<script type="text/css">
+#newsletterFormTag label {color:white}
+</script>
+</head>
+<body>
+<?php echo $this->layout()->content; ?>
+</body>
+</html>

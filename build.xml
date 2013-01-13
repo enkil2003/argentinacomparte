@@ -1,0 +1,320 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="Brushfire v4" default="build" basedir=".">
+<!-- External Dependencies Properties -->
+    <property name="yuiPath" value="${project.basedir}/tools/yuicompressor-2.4.6/yuicompressor-2.4.6.jar" description="YUI compressor java file location" />
+    
+<!-- Build Properties -->
+    <property name="src" value="${project.basedir}/src" description="home for the src files" />
+    <property name="application" value="${src}/application" description="home for the src/application files" />
+    <property name="target" value="${project.basedir}/target" description="Builded version" />
+    <property name="reports" value="${project.basedir}/reports" description="Reports directory" />
+    
+<!-- Import variables files according the environment  -->
+    <if>
+        <equals arg1="${os.name}" arg2="Linux" />
+        <then>
+            <property file="${project.basedir}/build.linux.properties" />
+        </then>
+        <else>
+            <property file="${project.basedir}/build.windows.properties" />
+        </else>
+    </if>
+ 
+<!-- Virtual Host Properties -->
+    <property name="vhostFileName" value="brushfirephing" override="true" description="Virtualhost file name" />
+    <property name="vhostFileSuffix" value="local" override="true" description="Environment to work with" />
+    
+<!-- Filesets -->
+    <fileset dir="${src}" id="source.files">
+        <include name="**" />
+        <exclude name="**/*.less/**" />
+        <exclude name="tests/**" />
+        <exclude name="docs/**" />
+        <exclude name="**/.svn/**" />
+        <exclude name="**/less-1.2.1.min.js"/>
+    </fileset>
+    
+    <fileset dir="${src}/public/css" id="source.custom.css">
+        <include name="**/*.css/**" />
+        <exclude name="lib/**" />
+        <exclude name="**/.svn/**" />
+    </fileset>
+    
+    <fileset dir="${src}/public/css" id="source.custom.less">
+        <include name="**.less/**" />
+        <exclude name="lib/**" />
+        <exclude name="**/.svn/**" />
+    </fileset>
+    
+    <fileset dir="${target}/public/css" id="target.custom.css">
+        <include name="**/*.css/**" />
+        <exclude name="lib/**" />
+        <exclude name="**/.svn/**" />
+    </fileset>
+    
+    <fileset dir="${src}" id="source.files.php">
+        <include name="**/*.php/**" />
+        <exclude name="tests/**" />
+        <exclude name="docs/**" />
+        <exclude name="**/.svn/**" />
+    </fileset>
+    
+    <fileset dir="${src}" id="source.files.xml">
+        <include name="**/*.xml/**" />
+        <exclude name="tests/**" />
+        <exclude name="docs/**" />
+        <exclude name="**/.svn/**" />
+    </fileset>
+    
+    <fileset dir="${src}" id="source.files.js">
+        <include name="public/js/**.js" />
+        <exclude name="**/.svn/**"/>
+    </fileset>
+    
+<!-- Targets -->
+    <fileset dir="${application}" id="source.files.application">
+        <include name="**/*.*" />
+        <exclude name="**/*.phtml" />
+        <exclude name="**/.svn/**"/> 
+    </fileset>
+    
+    <target name="code-sniffer" description="Verifies coding standard">
+        <echo msg="--------------------------" />
+        <echo msg="| Executing Code Sniffer |" />
+        <echo msg="--------------------------" />
+        <mkdir dir="${reports}" />
+        <mkdir dir="${reports}/codesniffer" />
+        <delete dir="${reports}/codesniffer/errors.txt" verbose="false" failonerror="false" />
+        <phpcodesniffer standard="Zend" format="summary" showSniffs="true" showWarnings="true" haltonerror="true" haltonwarning="false">
+            <formatter type="default" usefile="false"/>
+            <formatter type="full" outfile="${reports}/codesniffer/errors.txt"/>
+            <fileset dir="${application}">
+                <include name="**/*.php"/>
+                <exclude name="models/Proxy/**" />
+            </fileset>
+        </phpcodesniffer>
+    </target>
+    
+    <target name="code-sniffer:library" description="Verifies coding standard">
+        <echo msg="--------------------------------------------------------" />
+        <echo msg="| Executing Code Sniffer into Brushfire custom library |" />
+        <echo msg="--------------------------------------------------------" />
+        <mkdir dir="${reports}" />
+        <mkdir dir="${reports}/codesniffer" />
+        <delete dir="${reports}/codesniffer/errors.txt" verbose="false" failonerror="false" />
+        <phpcodesniffer standard="Zend" format="summary" showSniffs="true" showWarnings="true" haltonerror="true" haltonwarning="true">
+            <formatter type="default" usefile="false"/>
+            <formatter type="full" outfile="${reports}/codesniffer/errors.txt"/>
+            <fileset dir="${src}/library">
+                <include name="**/*.php"/>
+            </fileset>
+        </phpcodesniffer>
+    </target>
+    
+    <target name="copy-source" description="Copy source files to target">
+        <echo msg="--------------------------------------------" />
+        <echo msg="| Copying source files to target directory |" />
+        <echo msg="--------------------------------------------" />
+        <delete dir="${target}" />
+        <mkdir dir="${target}" />
+        <copy todir="${target}" includeemptydirs="true" >
+          <fileset refid="source.files" />
+        </copy>
+    </target>
+    
+<!-- Minify -->
+<!-- These steps requires java sdk to be installed on the running environment -->
+<!-- run: "$ sudo apt-get install openjdk-6-jre", that should do the trick-->
+    
+    <target name="minify:js">
+        <echo>--------------------------------</echo>
+        <echo>| Minify javascript to release |</echo>
+        <echo>--------------------------------</echo>
+        
+        <minify targetDir="${target}/public/js" yuipath="${yuiPath}" failonerror="false">
+            <fileset dir="${target}/public/js">
+                <include name="**/*.js"/>
+                <include name="**/*.css"/>
+                <!-- exclude failing files if any -->
+                <!-- exclude name=phing css li"**/jquery.coda-slider-2.0.js" / -->
+                
+                <exclude name="**/JsAutoValidation.js" />
+                <!-- **/JsAutoValidation.js this file is ignored not because of a problem, because it is a
+                      symlink to another SOURCE project's file  -->
+                <exclude name="**/lang-vb.js" />
+            </fileset>
+        </minify>
+    </target>
+    
+    <target name="minify:css">
+        <echo>-------------------------</echo>
+        <echo>| Minify css to release |</echo>
+        <echo>-------------------------</echo>
+        
+        <minify targetDir="${target}/public/css" yuipath="${yuiPath}" failonerror="false">
+            <fileset dir="${target}/public/css">
+                <include name="**/*.css"/>
+            </fileset>
+        </minify>
+    </target>
+    
+    <target name="phpcpd">
+        <echo>-------------------------------------</echo>
+        <echo>| Executing PHP Copy/Paste Detector |</echo>
+        <echo>-------------------------------------</echo>
+        <mkdir dir="${reports}/phpcpd" />
+        <phpcpd>
+            <fileset refid="source.files.php" />
+            <formatter type="pmd" outfile="${reports}/phpcpd/pmd-cpd.xml"/>
+        </phpcpd>
+    </target>
+    
+    <target name="jsdoc">
+        <echo>---------------------------------------</echo>
+        <echo>| Generating Javascript documentation |</echo>
+        <echo>---------------------------------------</echo>
+        <exec command="java -jar jsrun.jar app/run.js ${src}/public/js/ -t=templates/jsdoc -d=${project.basedir}/apidoc/jsdoc -v" dir="${project.basedir}/tools/jsdoc-toolkit" />
+    </target>
+    
+    <target name="docblox">
+        <echo>--------------------------------</echo>
+        <echo>| Generating PHP documentation |</echo>
+        <echo>--------------------------------</echo>
+        <exec command="docblox -d ${project.basedir}/src -t apidoc/phpdoc" dir="${project.basedir}" />
+    </target>
+    
+    <target name="jslint">
+        <echo>-----------------------------</echo>
+        <echo>| Jslinting javascript code |</echo>
+        <echo>-----------------------------</echo>
+        <mkdir dir="${reports}/jslint" />
+        <jsllint executable="${jslint.execPath}" haltonfailure="true" showwarnings="false" tofile="${reports}/jslint/report.txt">
+            <fileset refid="source.files.js" />
+        </jsllint>
+    </target>
+    
+    <target name="phpmd">
+        <echo>-------------------------------</echo>
+        <echo>| Executing PHP Mess Detector |</echo>
+        <echo>-------------------------------</echo>
+        <mkdir dir="${reports}/phpmd" />
+        <phpmd>
+            <fileset refid="source.files.php" />
+            <formatter type="xml" outfile="${reports}/phpmd/report.xml"/>
+            <formatter type="html" outfile="${reports}/phpmd/report.html"/>
+            <formatter type="text" outfile="${reports}/phpmd/report.txt"/>
+        </phpmd>
+    </target>
+    
+    <target name="pdepend">
+        <echo>---------------------</echo>
+        <echo>| Executing Pdepend |</echo>
+        <echo>---------------------</echo>
+        <mkdir dir="${reports}/pdepend" />
+        <phpdepend haltonerror="true">
+            <fileset refid="source.files.php" />
+            <logger type="jdepend-xml" outfile="${reports}/pdepend/jdepend.xml"/>
+            <logger type="overview-pyramid" outfile="${reports}/pdepend/piramid.html"/>
+            <logger type="phpunit-xml" outfile="${reports}/pdepend/phpunit.xml"/>
+            <logger type="summary-xml" outfile="${reports}/pdepend/sumary.xml"/>
+            <analyzer type="coderank-mode" value="method"/>
+        </phpdepend>
+        <!-- we are not using this file, neither asking for it! -->
+        <delete file="${project.basedir}/piramid_map.shtml" />
+    </target>
+    
+    <target name="csslint">
+        <echo>---------------------</echo>
+        <echo>| Executing CssLint |</echo>
+        <echo>---------------------</echo>
+        <cssLint failonerror="true" rhinoPath="tools/rhino1_7R3/js.jar" cssLintPath="tools/CssLint/csslint-rhino.js">
+            <fileset refid="source.custom.css" />
+        </cssLint>
+    </target>
+    
+    <target name="lessc" description="Compile LESS to CSS">
+        <echo>--------------------------</echo>
+        <echo>| Executing LessCompiler |</echo>
+        <echo>--------------------------</echo>
+        <!--
+        <lessc targetdir="${target}/public/css">
+          <fileset refid="source.custom.less" />
+        </lessc>-->
+        <if>
+            <equals arg1="${os.name}" arg2="Linux" />
+            <then>
+                <exec command="lessc main.less > ${target}/public/css/main.css" dir="${src}/public/css/" />
+            </then>
+            <else>
+                <exec command="lessc ../../src/public/css/main.less ../../target/public/css/main.css" dir="${project.basedir}/tools/winLess" />
+            </else>
+        </if>       
+    </target>
+    
+    <target name="phplint">
+        <echo>---------------------</echo>
+        <echo>| Executing PHPLint |</echo>
+        <echo>---------------------</echo>
+        <phplint haltonfailure="true">
+            <fileset refid="source.files.php" />
+        </phplint>
+    </target>
+    
+    <!-- and scheme MUST be created for using xmllint
+    <target name="xmllint">
+        
+        <xmllint schema="schema.xsd">
+            <fileset refid="source.files.xml" />
+        </xmllint>
+    </target>
+     -->
+    
+    <target name="minify" depends="minify:js, minify:css">
+        <echo>--------------------------</echo>
+        <echo>| Finishing minify tasks |</echo>
+        <echo>--------------------------</echo>
+    </target>
+    
+    <target name="svn:update">
+        <echo>-------------------------------</echo>
+        <echo>| Updating local repositories |</echo>
+        <echo>-------------------------------</echo>
+        <svnupdate todir="."/>
+    </target>
+    
+    <target name="build" depends="code-sniffer, phplint, phpcpd, phpmd, pdepend, jslint, copy-source, lessc"></target>
+    <target name="build:document" depends="code-sniffer, phplint, phpcpd, phpmd, pdepend, jslint, docblox, jsdoc, copy-source, lessc"></target>
+    <target name="build:quick" depends="copy-source, lessc">
+        <echo>-----------------------------------------------------------------------</echo>
+        <echo>| WARNING: QUICK BUILD IS INTEMPTED TO BE USED FOR LOCAL CHANGES ONLY |</echo>
+        <echo>| IT IS NOT SAFE TO COMMIT AFTER THIS BUILD                           |</echo>
+        <echo>-----------------------------------------------------------------------</echo>
+    </target>
+    
+    <target name="cc" description="Applies the google's closure complier">
+        <echo>Google Closure Compiler:</echo>
+        <echo>------------------------</echo>
+        <echo></echo>
+        <echo>Modo de uso:</echo>
+        <echo>phing cc -Dsource=/src/public/js/...../source.file.js -Dtarget=/src/public/js/..../cc_target.file.min.js</echo>
+        <exec passthru="true" command="java -jar ./tools/closure-compiler/compiler.jar --js=${source} --js_output_file=${target}" />
+    </target>
+<!-- Create virtual host - @TODO -->
+    
+<!-- Modify host file - @TODO -->
+    
+<!-- Deploy -->
+    <target name="deploy">
+        <echo msg="---------------------------" />
+        <echo msg="Deploying ${vhostFileSuffix} environment" />
+        <echo msg="---------------------------" />
+        <echo msg="---> executing '$ sudo a2ensite /etc/apache2/sites-available/${vhostFileName}.${vhostFileSuffix}'" />
+        <exec command="sudo a2ensite ${vhostFileName}.${vhostFileSuffix}" dir="/etc/apache2/sites-available" />
+        
+        <echo msg="------------------" />
+        <echo msg="Restarting apache2" />
+        <echo msg="------------------" />
+        <echo msg="---> executing '$ sudo /etc/init.d/apache2 restart'" />
+        <exec command="sudo /etc/init.d/apache2 restart" dir="." />
+    </target>
+</project>

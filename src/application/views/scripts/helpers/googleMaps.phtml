@@ -1,0 +1,9 @@
+<div class="box box-shadow row1">
+  <?php echo $this->ribbonShort('Ubicación'); ?>
+  <div style="padding: 5px;">
+    <img src="http://maps.google.com/maps/api/staticmap?center=<?php echo $this->data['center']?>&<?php
+      echo $this->data['markers']
+      ?>&zoom=10&size=240x250&maptype=roadmap&sensor=false"
+    />
+  </div>
+</div>

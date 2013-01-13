@@ -1,0 +1,64 @@
+<div class="politicsSlider">
+  <div class="window">
+    <div class="publicPoliticsFrame">
+      <div class="frameContainer">
+        <?php foreach($this->data as $pp):?>
+            <?php
+            echo $this->multimediaBox(
+                array(
+                    'file' => '/uploads/tmp/' . $pp['id'] . '/' . $pp['Images'][0]['name'],
+                    'type' => 'image',
+                    'boxTitle' => 'Política Pública',
+                    'title' => $pp['title'],
+                    'extraClasses' => 'blue',
+                    'copy' => $pp['copy'],
+                    'date' => $pp['modification_date'] === null
+                        ? $pp['creation_date']
+                        :  $pp['modification_date'],
+                    'url' => '/ver-mas/id/' . $pp['id']
+                )
+            );
+            ?>
+        <?php endforeach;?>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+$(function() {
+    var slide = null;
+    function accordeon(){
+        $this = $('.frameContainer');
+        var slide = true;
+        $('.publicPoliticsFrame').mouseover(function() {
+        slide = false;
+    });
+    $('.publicPoliticsFrame').mouseout(function() {
+        slide = true;
+    });
+    var count = $this.children().length ;
+    var sliding = 0;
+    if (count > 1) {
+        setInterval(
+            function() {
+                var leftPosition = parseInt($this.css('left'));
+                if (slide == true) {
+                    if (leftPosition <= 0 && sliding < count-1) {
+                        sliding++
+                        if (sliding % 10 == 0) {
+                            $this.animate({left: leftPosition-380});
+                        } else {
+                            $this.animate({left: leftPosition-383});
+                        }
+                    } else {
+                        $this.animate({left: 0});
+                        sliding = 0;
+                    }
+                }
+            },
+            5000
+        );
+    }}
+});
+</script>

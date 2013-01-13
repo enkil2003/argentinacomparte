@@ -1,0 +1,8 @@
+<div class="stars socialBoxes rnd4">
+<?php for($i = 0; $i < 5; $i++): ?>
+  <span class="spriteImage sprite-<?php echo $i < $this->data['stars'] ? 'star':'shadowStar' ?>"></span>
+<?php endfor; ?>
+<?php if ($this->data['delete']): ?>
+  <span class="spriteImage sprite-elipse"></span>
+<?php endif; ?>
+</div>

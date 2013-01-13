@@ -1,0 +1,20 @@
+<div class="page-header"><h3>Banners</h3></div>
+    <table id="formatotabla" class="display">
+        <thead>
+            <tr>
+                <th>&nbsp;</th>
+                <th>id</th>
+                <th>titulo</th>
+                <th>posición</th>
+                <th>estado</th>
+                <th>&nbsp;</th>
+                
+            </tr>
+        </thead>
+        <tbody>
+        
+        <?php //Zend_Debug::dump($this->noticias) //
+echo $this->partialLoop('admin/partials/listar-row-banner.phtml', $this->banners) ?>
+        
+        </tbody>
+    </table>

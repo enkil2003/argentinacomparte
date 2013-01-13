@@ -1,0 +1,72 @@
+<div id="leftColumn" class="column">
+  <div class="logo <?php echo isset($this->categoryClass)? $this->categoryClass:''; ?> box-shadow">
+      <div class="logo-beta"></div>
+  </div>
+  <?php
+  echo $this->navigationBar(
+      array(
+          array(
+              'name' => 'Inicio',
+              'url' => '/',
+              'extraClasses' => 'varios',
+              //'tooltip' => 'xxx'
+          ),
+          array(
+              'name' => 'Mi trabajo',
+              'url' => '/mi-trabajo',
+              'extraClasses' => 'work',
+              //'tooltip' => 'xxx'
+          ),
+          array(
+              'name' => 'Mi educación',
+              'url' => '/mi-educacion',
+              'extraClasses' => 'education',
+              //'tooltip' => 'xxx'
+          ),
+          array(
+              'name' => 'Mi bienestar',
+              'url' => '/mi-bienestar',
+              'extraClasses' => 'feelingGood',
+              //'tooltip' => 'xxx'
+          ),
+          array(
+              'name' => 'Mi creatividad',
+              'url' => '/mi-creatividad',
+              'extraClasses' => 'creative',
+              //'tooltip' => 'xxx'
+          ),
+          array(
+              'name' => 'Mi compromiso',
+              'url' => '/mi-compromiso',
+              'extraClasses' => 'commitment',
+              //'tooltip' => 'xxx'
+          ),
+          array(
+              'name' => 'Mis derechos',
+              'url' => '/mis-derechos',
+              'extraClasses' => 'rights',
+              //'tooltip' => 'xxx'
+          )
+      )
+  );
+  ?>
+  <?php
+  $bannerData = array();
+      if (is_array($this->banners)) {
+      foreach($this->banners as $banner) {
+          $bannerData[] = array(
+              'id' => $banner['id'],
+              'image' => $banner['image'],
+              'title' => $banner['title'],
+               'href' => $banner['href']
+          );
+      }
+      echo $this->banners(
+          array(
+              'id' => 'idParaBanners', // <- este parametro es opcional
+              'banners' => $bannerData
+          )
+      );
+  }
+  ?>
+</div>

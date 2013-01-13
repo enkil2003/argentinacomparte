@@ -1,0 +1,37 @@
+<?php 
+if (!isset($this->acordeon['News']['0'])) {
+    return;
+}
+?>
+<h1 class="outOfView">Argentina Comparte - Noticia: <?php echo $this->acordeon['News']['0']['title'];
+?> </h1>
+<?php $this->placeholder('news')->captureStart(); ?>
+    <?php
+    if (isset($this->acordeon['News']) && count($this->acordeon['News'])) {
+        $nota = array_shift($this->acordeon['News']);
+        echo $this->multimediaBox(
+            array(
+                'file' => '/uploads/tmp/' . $nota['id'] . '/' . $nota['Images'][0]['name'],
+                'type' => 'image',
+                'title' => $nota['title'],
+                'copy' => $nota['copy'],
+                'date' => $nota['creation_date'],
+                'url' => '/ver-mas/id/' . $nota['id']
+            )
+        );
+    }
+    ?>
+<?php $this->placeholder('news')->captureEnd(); ?>
+
+<?php $this->placeholder('publicPolitics')->captureStart(); ?>
+<?php 
+// esto es medio raro fue una solucion rapida, para simplificar la interfaz de publicPoliticsSlider
+// ya que espera recibir un array con PP y si entraba por una categoria en lugar de entrar un array
+// de momento entra una sola categoria, es por eso que la meto dentro de un array
+?>
+<?php if (isset($this->publicPolitics['publicPolitics'])):?>
+  <?php echo $this->publicPoliticsSlider($this->publicPolitics['publicPolitics']); ?>
+<?php else: ?>
+  <?php echo $this->publicPoliticsSlider(array($this->publicPolitics)); ?>
+<?php endif; ?>
+<?php $this->placeholder('publicPolitics')->captureEnd(); ?>

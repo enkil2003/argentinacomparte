@@ -1,0 +1,54 @@
+<div id="<?php echo $id = isset($this->data['id'])? $this->data['id']:uniqid('id');?>"
+    class="accordion">
+<?php foreach($this->data['articles'] as $item):?>
+  <?php echo $this->ribbonLarge($item['minitit']); ?>
+  <div style="max-height: 500px; overflow: auto;">
+    <?php if (isset($item['image'])):?>
+    <?php 
+    if (file_exists(APPLICATION_PATH . '/../public/uploads/tmp/' . $item['id'] . '/' . $item['image'])) {
+        $imageSize = getimagesize(APPLICATION_PATH . '/../public/uploads/tmp/' . $item['id'] . '/' . $item['image']);
+        $width = $imageSize[0];
+        $height = $imageSize[1];
+    }
+    ?>
+    <img alt="<?php echo  $this->escape($item['title']) ?>" src="/uploads/tmp/<?php echo $item['id'] . '/' . $item['image']; ?>" />
+    <?php endif;?>
+    
+    <article>
+      <div class="scrolleable" data-plugins='<?php
+      echo json_encode(
+          array(
+              'plugin' => array(
+                  'name' => 'slimScroll',
+                  'params' => array(
+                      'position' => 'right',
+                      'height' => '100px',
+                      'railVisible' => true,
+                      'alwaysVisible' => true
+                )
+              )
+          )
+      );?>'>
+       <h3><?php echo $item['title']; ?></h3>
+       <p><?php echo $item['content']; ?></p>
+      </div>
+      <?php
+      echo $this->more(
+          array(
+              'url' => "/ver-mas/id/{$item['id']}",
+              'title' => $item['title'],
+              'slug' => $item['title']
+          )
+      );
+      ?>
+    </article>
+    
+  </div>
+<?php endforeach;?>
+<div style="clear:both"></div>
+</div>
+<?php $this->inlineScript()->captureStart(); ?>
+$(function(){
+    $('#<?php echo $id; ?>').accordion({clearStyle: true, autoHeight: false});
+});
+<?php $this->inlineScript()->captureEnd(); ?>

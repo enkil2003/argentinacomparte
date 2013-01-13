@@ -1,0 +1,54 @@
+<?php foreach( $this->classInfo['methods'] as $method ): ?>
+------
+'''<?= $this->classInfo['module'] ?>.<?=$this->classInfo['class']?>.<?=$method['name']?>'''
+<?=$method['shortDesc']?>
+
+
+<?=$method['longDesc']?>
+
+
+[[BR]]
+
+» '''Argumentos'''
+
+<?php
+$queryParams = array();
+if ( is_array($method['params']) && count($method['params']) > 0 ) {
+    foreach( $method['params'] as $k => $param )
+    {
+		$varName = str_replace('$', '', $param['name'] );
+		echo ' $' . $varName . ' (' . $param['type'] . ') :: ' . $param['desc'] . "\n\n";
+        $queryParams[] = $varName . '=<' . $param['type'] . '>';
+    }
+} else {
+    $tpl .= "No lleva argumentos.";
+}
+$query = implode('&', $queryParams);
+if ( count( $queryParams ) > 0 )
+    $query = '&' . $query;
+
+?>
+
+[[BR]]
+
+» '''Ejemplo de llamada'''
+
+{{{
+http://<host>/<?= $this->classInfo['module'] ?>/<?=$this->classInfo['class']?>/rest?method=<?=$method['name']?><?=$query?>
+
+}}}
+
+
+
+[[BR]]
+
+» '''Respuesta'''
+
+   Devuelve un <?=$method['returnType']?> o una excepción en caso de error.
+
+   <?= $method['returnDesc'] ?>
+
+
+
+
+<?php endforeach; ?>

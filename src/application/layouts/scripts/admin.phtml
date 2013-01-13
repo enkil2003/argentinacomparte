@@ -1,0 +1,121 @@
+<?php echo $this->doctype() . PHP_EOL ?>
+<html>
+<head>
+<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+<?php echo $this->headMeta() . PHP_EOL ?>
+<?php echo $this->headTitle() . PHP_EOL ?>
+<?php echo $this->openGraph() ?>
+<?php echo $this->headStyle() . PHP_EOL ?>
+<?php echo $this->headLink() . PHP_EOL ?>
+<?php echo $this->headScript() . PHP_EOL ?>
+<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=<?php echo $this->googleMapApiKey;?>&sensor=false"></script>
+<script type="text/javascript" language="javascript" src="/js/lib/bootstrap/bootstrap-alert.js"></script>
+<script type="text/javascript" language="javascript" src="/js/lib/bootstrap/bootstrap-button.js"></script>
+</head>
+
+<body>
+<div id="adminToolBar" class="navbar navbar-fixed-top">
+  <div class="navbar-inner">
+    <div class="container">
+      <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </a>
+      <a class="brand" href="/admin">Escritorio</a>
+      <div class="nav-collapse">
+        <ul class="nav">
+          <li class="dropdown <?php echo $this->active === AdminController::POLITICA_PUBLICA? 'active':'';?>">
+            <a class="dropdown-toggle" href="#">Política Pública<b class="caret"></b></a>
+            <ul class="dropdown-menu">
+              <li><a href="/admin/agregar-politica-publica"><i class="icon-file"></i> Crear</a></li>
+              <li><a href="/admin/listar-politicas-publicas"><i class="icon-pencil"></i> Listar</a></li>
+            <!--  <li><a href="/admin/editar-politica-publica"><i class="icon-pencil"></i> Editar</a></li>  
+              <li><a href="/admin/eliminar-politica-publica">Eliminar</a></li>  -->
+            </ul>
+          </li>
+          <li class="dropdown <?php echo $this->active === AdminController::NOTICIA? 'active':'';?>">
+            <a class="dropdown-toggle" href="#">Noticia<b class="caret"></b></a>
+            <ul class="dropdown-menu">
+              <li><a href="/admin/agregar-noticia"><i class="icon-file"></i> Crear</a></li>
+              <li><a href="/admin/listar-noticias"><i class="icon-pencil"></i> Listar</a></li>
+            <!--  <li><a href="/admin/editar-noticia"><i class="icon-pencil"></i> Editar</a></li>
+              <li><a href="/admin/eliminar-noticia">Eliminar</a></li> --> 
+            </ul>
+          </li>
+          <!-- <li class="dropdown <?php echo $this->active === AdminController::TEMA? 'active':'';?>">
+            <a class="dropdown-toggle" href="#">Tema<b class="caret"></b></a>
+            <ul class="dropdown-menu">
+              <li><a href="#"><i class="icon-file"></i> Crear</a></li>
+              <li><a href="#"><i class="icon-pencil"></i> Editar</a></li>
+              <li><a href="#">Eliminar</a></li>
+            </ul>
+          </li>
+           -->
+          <li class="dropdown <?php echo $this->active === AdminController::TRAMITE? 'active':'';?>">
+            <a class="dropdown-toggle" href="#">Trámite<b class="caret"></b></a>
+            <ul class="dropdown-menu">
+              <li><a href="/admin/agregar-tramite"><i class="icon-file"></i> Crear</a></li>
+              <li><a href="/admin/listar-tramites"><i class="icon-pencil"></i> Listar</a></li>
+             <!--  <li><a href="/admin/eliminar-tramite">Eliminar</a></li> -->
+            </ul>
+          </li>
+          <li class="dropdown <?php echo $this->active === AdminController::ENCUESTAS? 'active':'';?>">
+            <a class="dropdown-toggle" href="#">Encuestas<b class="caret"></b></a>
+            <ul class="dropdown-menu">
+              <li><a href="/admin/agregar-encuesta"><i class="icon-file"></i> Crear</a></li>
+              <li><a href="/admin/listar-encuestas"><i class="icon-pencil"></i> Listar</a></li>
+             <!--  <li><a href="/admin/eliminar-tramite">Eliminar</a></li> -->
+            </ul>
+          </li>
+          <li class="dropdown <?php echo $this->active === AdminController::FAQ? 'active':'';?>">
+            <a class="dropdown-toggle" href="#">FAQ<b class="caret"></b></a>
+            <ul class="dropdown-menu">
+              <li><a href="/admin/agregar-faq"><i class="icon-file"></i> Crear</a></li>
+              <li><a href="/admin/listar-faq"><i class="icon-pencil"></i> Listar</a></li>
+            </ul>
+          </li>
+          <li class="dropdown <?php echo $this->active === AdminController::BANNER? 'active':'';?>">
+            <a class="dropdown-toggle" href="#">Banner<b class="caret"></b></a>
+            <ul class="dropdown-menu">
+              <li><a href="/admin/agregar-banner"><i class="icon-file"></i> Crear</a></li>
+              <li><a href="/admin/listar-banners"><i class="icon-pencil"></i> Listar</a></li>
+            </ul>
+          </li>
+          <li class="dropdown <?php echo $this->active === AdminController::PREDETERMINADO? 'active':'';?>">
+            <a class="dropdown-toggle" href="#">Predeterminar<b class="caret"></b></a>
+            <ul class="dropdown-menu">
+              <li><a href="/admin/predeterminar-portada"><i class="icon-ok"></i> Portada</a></li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+      <a href="/" target="_blank" class="btn">ir al sitio</a>
+    </div>
+  </div>
+</div>
+<div id="content" class="container admin">
+<div id="messageBox" class="alert" style="display: none">
+  <button type="button" class="close" data-dismiss="alert">&times;</button>
+  <h4></h4>
+  <p></p>
+</div>
+<?php echo $this->layout()->content; ?>
+</div>
+<?php echo $this->footerScript() . PHP_EOL; ?>
+<?php echo $this->minifyFooterScript();?>
+<?php echo $this->inlineScript(); ?>
+<?php echo $this->lateScript(); ?>
+<script type="text/javascript">
+function limitText(limitField, limitCount, limitNum) {
+    if (limitField.value.length > limitNum) {
+        limitField.value = limitField.value.substring(0, limitNum);
+    } else {
+        limitCount.value = limitNum - limitField.value.length;
+    }
+}
+</script>
+<link href="/js/fancybox/jquery.fancybox.css?v=2.1.0" rel="stylesheet" />
+<script type="text/javascript" src="/js/fancybox/jquery.fancybox.pack.js?v=2.1.0"></script>
+</body>
+</html>

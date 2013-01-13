@@ -1,0 +1,7 @@
+<h2>Banner</h2>
+<?php if(isset($this->banner)):?>
+<div>
+  <img src="<?php echo $this->baseUrl(); ?>/uploads/banners/<?php echo $this->banner?>" />
+</div>
+<?php endif; ?>
+<?php echo $this->form; ?>

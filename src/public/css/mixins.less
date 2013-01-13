@@ -1,0 +1,114 @@
+.ribbon(@width: 100px) {
+    // TODO: me resulta raro que haya 0px y no 0, ¿lo habre puesto por algo o es copy/paste? tendria que revisar en los
+    // diferentes browsers y ver que pasa si le saco el px.
+    border-radius: 0px 10px 10px 0px;
+    -moz-border-radius: 0px 10px 10px 0px;
+    -webkit-border-radius: 0px 10px 10px 0px;
+    background-color: @mediumDarkBlue;
+    min-width: @width;
+    color: #FFF;
+    display: inline-block;
+    padding: 5px 15px 6px 0;
+    line-height: 10px;
+    margin: 5px 0;
+}
+.rounded-corners (@radius: 5px) {
+    border-radius: @radius;
+    -moz-border-radius: @radius;
+    -webkit-border-radius:@radius;
+}
+
+.rounded-corners (top, @radius: 5px) {
+    border-radius: @radius @radius 0 0;
+    -moz-border-radius-topleft: @radius;
+    -webkit-border-top-left-radius:@radius;
+    -moz-border-radius-topright: @radius;
+    -webkit-border-top-left-radius:@radius;
+}
+
+.rounded-corners (bottom, @radius: 5px) {
+    border-radius: 0 0 @radius @radius;
+    -moz-border-radius-bottomleft: @radius;
+    -moz-border-radius-bottomright: @radius;
+    -webkit-border-bottom-left-radius:@radius;
+    -webkit-border-bottom-right-radius:@radius;
+}
+
+.rounded-corners (left, @radius: 5px) {
+    border-radius: @radius 0 0 @radius;
+    -moz-border-radius-bottomleft: @radius;
+    -moz-border-radius-topleft: @radius;
+    -webkit-border-bottom-left-radius:@radius;
+    -webkit-border-top-left-radius:@radius;
+}
+
+.rounded-corners (right, @radius: 5px) {
+    border-radius: 0 @radius @radius 0;
+    -moz-border-radius-bottomright: @radius;
+    -moz-border-radius-topright: @radius;
+    -webkit-border-bottom-right-radius:@radius;
+    -webkit-border-top-right-radius:@radius;
+}
+
+.gradient-two-steps(@colorStart, @colorEnd) {
+    background: @colorStart;
+    /* IE9 SVG, needs conditional override of 'filter' to 'none' */
+    background: -moz-linear-gradient(top, @colorStart 0%, @colorEnd 100%);
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,@colorStart), color-stop(100%,@colorEnd));
+    background: -webkit-linear-gradient(top, @colorStart 0%, @colorEnd 100%);
+    background: -o-linear-gradient(top, @colorStart 0%,@colorEnd 100%);
+    background: -ms-linear-gradient(top, @colorStart 0%,@colorEnd 100%);
+    background: linear-gradient(top, @colorStart 0%,@colorEnd 100%);
+    -pie-background: linear-gradient(@colorStart 0%,@colorEnd 100%); /*PIE*/
+}
+
+.center-block() {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.size(@height: 5px, @width: 5px) {
+    width: @width;
+    height: @height;
+}
+
+.box-shadow (@left, @top, @blur, @color, inset) {
+    -webkit-box-shadow: @left @top @blur @color inset;
+    -moz-box-shadow: @left @top @blur @color inset;
+    box-shadow: @left @top @blur @color inset;
+}
+
+.box-shadow (@left, @top, @blur, @color) {
+    -webkit-box-shadow: @left @top @blur @color;
+    -moz-box-shadow: @left @top @blur @color;
+    box-shadow: @left @top @blur @color;
+}
+/**
+ *
+ * Hace la esquina superior izquierda recta
+ * Usado para hacer las cajas redondeadas con la esquina recta.
+ */
+.recTL() {
+    border-radius-top-left: 0;
+    -moz-border-radius-topleft: 0;
+    -webkit-border-top-left-radius:0;
+}
+.recLB() {
+    border-radius-bottom-left: 0;
+    -moz-border-radius-bottomleft: 0;
+    -webkit-border-bottom-left-radius:0;
+}
+.recTR() {
+    border-radius-top-right: 0;
+    -moz-border-radius-topright: 0;
+    -webkit-border-top-right-radius:0;
+}
+.recT() {
+    .recTL;
+    .recTR;
+}
+.rotate3() {
+    -webkit-transform: rotate(-270deg); 
+    -moz-transform: rotate(-270deg); 
+}

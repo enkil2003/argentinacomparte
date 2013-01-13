@@ -1,0 +1,22 @@
+<tr>
+    
+    <td>
+    <a class="btn btn-success" title="editar" href="/admin/editar-faq/id/<?php echo $this->id ?>"><i class="icon-pencil icon-white"></i></a> 
+    <a class="btn" target="_BLANK" title="ver" href="/ver-mas/id/<?php echo $this->News['id'] ?>"><i class="icon-eye-open"></i></a> | <?php echo $this->title ?>
+    
+    </td>
+        <td><?php echo $this->id ?>
+    </td>
+        <td><?php echo $this->News['title'] ?>
+    </td>
+        <td><?php echo $this->creation_date ?>
+    </td>
+        <td><?php echo ($this->active==1)? 'publicado':'borrador' ?>
+    </td>
+    <td><a class="btn btn-danger" title="eliminar" href="#" 
+            onclick="return MyDialogs.loadConfirmationModal('<?php echo $this->id ?>', '/admin/a-papelera-faq/id/<?php echo $this->id ?>/volver/listar-faq', 
+                'El siguiente FAQ será eliminada', 
+                '<?php echo $this->title ?>','');"><i class="icon-trash icon-white"></i></a>
+    </td>
+
+</tr>

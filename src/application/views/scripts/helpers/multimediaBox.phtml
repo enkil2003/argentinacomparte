@@ -1,0 +1,32 @@
+<section class="multimediaBox rnd10 box-shadow" style="width: 380px; display: inline-block">
+  <?php if (isset($this->data['boxTitle'])):?>
+  <div style="position: relative">
+    <h5 class="ribbonShort box <?php echo $this->data['categoryBackgroundClass']; ?>" style="position: absolute; top: 0px;">
+      <?php echo $this->escape($this->data['boxTitle']); ?>
+    </h5>
+  </div>
+  <?php endif; ?>
+  <div class="row1">
+  <?php if (isset($this->data['file'])):?>
+    <?php if ($this->data['type'] === 'image'):?>
+    <img alt="<?php echo $this->escape($this->data['title']); ?>" src="<?php echo $this->baseUrl(); ?><?php echo $this->data['file']; ?>" width="380" height="222" />
+    <?php endif; ?>
+  <?php endif; ?>
+  </div>
+  <article class="rnd10 multimediaArticle <?php echo isset($this->data['extraClasses'])? $this->data['extraClasses']:'';?>">
+    
+    <h2 <?php if (isset($this->data['tramite'])) : echo"style='padding-top:10px'" ; endif ?> ><?php echo $this->escape($this->data['title']); ?></h2>
+    <p><?php echo $this->data['copy']; ?></p>
+    <div class="interactiveBoxes">
+      <?php // echo $this->comments(array('count' => 5)); ?>
+      <?php // echo $this->stars(array('stars' => 4, 'delete' => false)); ?>
+      <?php // echo $this->elapsedTime(array('time' => $this->data['date'])); ?>
+      <?php // echo $this->envelop(); ?>
+      <?php // echo $this->plus(); ?>
+    <?php if (isset($this->data['url'])):?>
+      <?php echo $this->more(array('url' => $this->data['url'], 'title' => $this->data['title'], 'slug' => $this->data['title'])); ?>
+    <?php endif; ?>
+    </div>
+    <br style="brclear"/>
+  </article>
+</section>

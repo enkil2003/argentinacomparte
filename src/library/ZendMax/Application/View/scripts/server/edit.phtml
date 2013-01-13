@@ -1,0 +1,26 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"; "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <title>Zend Framework Default Application</title>
+</head>
+<body>
+
+    <div class="container">
+        <div class="content"> 
+            <h3><?= $this->className ?></h3>
+            <h4><?= $this->method[ 'name' ] ?>&nbsp;Retval&nbsp;<?= $this->method[ 'type'] ?>
+            </h4>
+            <p>
+                <?php echo $this->form; ?>
+            </p>
+            <? if ( isset( $this->retval ) ): ?>
+                <h2><p>LAST CALL : <?= $this->retval ?></p>
+                    <br>
+                    <p><?= isset($this->extra)?$this->extra:""; ?></p>
+                </h2>
+            <? endif ?>
+        </div>
+    </div>
+</body>
+</html>

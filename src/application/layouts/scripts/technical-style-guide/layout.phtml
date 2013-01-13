@@ -1,0 +1,24 @@
+<?php echo $this->doctype() . PHP_EOL ?>
+<html lang="en">
+<head>
+<?php echo $this->headMeta() . PHP_EOL ?>
+<?php echo $this->headTitle() . PHP_EOL ?>
+<?php echo $this->openGraph() ?>
+<?php echo $this->headStyle() . PHP_EOL ?>
+<?php echo $this->headLink() . PHP_EOL ?>
+<!-- Canonical -->
+<link rel="canonical" href="<?php echo $this->siteName; ?>" />
+<?php echo $this->headScript() . PHP_EOL ?>
+</head>
+
+<body onload="prettyPrint()">
+<?php echo $this->render('technical-style-guide/_header.phtml'); ?>
+
+<div id="content" class="container"> 
+  <?php echo $this->layout()->content; ?>
+</div>
+
+<?php echo $this->footerScript() . PHP_EOL; ?>
+<?php echo $this->inlineScript(); ?>
+</body>
+</html>

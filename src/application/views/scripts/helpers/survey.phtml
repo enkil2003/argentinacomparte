@@ -1,0 +1,64 @@
+<div id="<?php echo $this->data['uniqId']; ?>" data-id="<?php echo $this->data['surveyId']?>" data-url="<?php echo $this->data['url']?>" class="survey box box-shadow row1" style="overflow:hidden; padding: 10px;">
+  <h2><?php echo $this->escape($this->data['title']);?></h2>
+  <?php
+  $total = 0;
+  $i = 0;
+  $optionsValues = array();
+  foreach ($this->data['options'] as $option) {
+      $optionsValues[] =$option['score'];
+  }
+  $max = max($optionsValues);
+  foreach ($this->data['options'] as $option):
+    $i++;
+    if(empty($option['option'])) {
+        continue;
+    }
+    ?>
+    <div <?php if (!$this->data['alreadyVoted']):?>class="pointerCursor"<?php endif;?> data-event="click"><?php echo $option['option']; ?>
+      <div data-option="option<?php echo $i;?>" class="progress" data-option="<?php echo $i?>" data-votes="<?php echo $option['score']?>">
+      <?php $total += $option['score']; ?>
+      <?php if ($this->data['alreadyVoted']):?>
+        <div class="bar" style="width: <?php echo $option['score'] > 0 ? round($option['score'] * 100 / $max) : 0; ?>%;"></div>
+      <?php else: ?>
+        <div class="bar" style="width: 0%;"></div>
+      <?php endif; ?>
+    </div>
+  </div>
+  <?php endforeach; ?>
+  <?php echo $this->surveyResults(array('count' => $total));?>
+</div>
+<?php if (!$this->data['alreadyVoted']): ?>
+<?php $this->inlineScript()->captureStart(); ?>
+$(function() {
+    var surveyBlock = $('#<?php echo $this->data['uniqId']; ?>');
+    var surveyBar = surveyBlock.find('[data-event="click"]');
+    surveyBar.on({
+        'click.vote': function() {
+            surveyBar.unbind('click.vote');
+            surveyBlock.find('.pointerCursor').removeClass('pointerCursor');
+            $.post(
+                surveyBar.parent().attr('data-url'),
+                {id: surveyBlock.attr('data-id'), option: $(this).find('[data-option]').attr('data-option')},
+                function(response) {
+                    // si es success u alreadyVoted
+                    if (response.options != 'undefined') {
+                        var total = response.options.option1
+                               + response.options.option2
+                               + response.options.option3
+                               + response.options.option4;
+                        var max = Math.max.apply(Math, [response.options.option1,response.options.option2,response.options.option3,response.options.option4]);
+                    }
+                    // cambiar porcentaje de las barras
+                    surveyBlock.find('[data-option="option1"] .bar').animate({width: (response.options.option1 * 100 / max) + '%'});
+                    surveyBlock.find('[data-option="option2"] .bar').animate({width: (response.options.option2 * 100 / max) + '%'});
+                    surveyBlock.find('[data-option="option3"] .bar').animate({width: (response.options.option3 * 100 / max) + '%'});
+                    surveyBlock.find('[data-option="option4"] .bar').animate({width: (response.options.option4 * 100 / max) + '%'});
+                    surveyBlock.find('.surveyResults.socialBoxes.rnd4 span.value').text(total);
+                },
+                'json'
+            )
+        }
+    });
+});
+<?php $this->inlineScript()->captureEnd(); ?>
+<?php endif; ?>

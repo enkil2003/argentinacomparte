@@ -1,0 +1,123 @@
+<script>
+var AC = AC || {};
+AC.Admin = AC.Admin || {};
+AC.Admin.GeoLoc = AC.Admin.GeoLoc || {};
+AC.Admin.GeoLoc.Callback = AC.Admin.GeoLoc.Callback || {};
+AC.Admin.GeoLoc.Callback.AddGeoLoc = AC.Admin.GeoLoc.Callback.AddGeoLoc || {};
+$(function() {
+    var localizationButtonElement = $('#geoloc');
+    
+    var _disableLocalizationButton = function() {
+        localizationButtonElement
+            .attr('disabled', 'disabled')
+            .text(localizationButtonElement.attr('data-loading-text'));
+    }
+    var _enableLocalizationButton = function() {
+        localizationButtonElement.removeAttr('disabled').text(localizationButtonElement.attr('data-text'));
+    }
+    
+    var _init = function() {
+        var geocoder;
+        var map;
+        localizationButtonElement.bind(
+            'click.geoloc',
+            function() {
+                _disableLocalizationButton();
+                geocoder = new google.maps.Geocoder();
+                var address = $("#address").val();
+                if ($('[name="bsas"]').attr('checked') == 'checked') {
+                    address += ", Buenos Aires, Argentina";
+                }
+                geocoder.geocode(
+                    {'address': address},
+                    function(results, status) {
+                        _enableLocalizationButton();
+                        if (status == google.maps.GeocoderStatus.OK) {
+                            var lat = results[0].geometry.location.Ya;
+                            var lang = results[0].geometry.location.Za;
+                            var latlng = new google.maps.LatLng(lat, lang);
+                            var myOptions = {
+                                zoom: 15,
+                                center: latlng,
+                                mapTypeId: google.maps.MapTypeId.ROADMAP
+                            };
+                            map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
+                            map.setCenter(results[0].geometry.location);
+                            var marker = new google.maps.Marker({
+                                map: map,
+                                position: results[0].geometry.location
+                            });
+                            $('.confirmar').show().bind(
+                                'click.confirmar',
+                                function() {
+                                    var form = $('#geoLocForm');
+                                    $('[name="lat"]', form).val(lat);
+                                    $('[name="lang"]', form).val(lang);
+                                    $('#map_canvas').slideUp(function() {
+                                        $('#locationAddress span').text($('#address').val());
+                                        form.slideDown();
+                                    });
+                                    $(this).hide();
+                                    $('#localizationControls').slideUp();
+                                }
+                            );
+                        } else {
+                            alert("Geocode was not successful for the following reason: " + status);
+                        }
+                    }
+                );
+            }
+        );
+        $('#geoLocForm').on({
+            submit: function(e) {
+                e.preventDefault();
+                $.ajax({
+                    url: '/admin/add-geo-loc',
+                    type: 'post',
+                    dataType: 'json',
+                    data: {
+                        type: $('#geoLocForm input[name="type"]').val(),
+                        id: $('#geoLocForm input[name="id"]').val(),
+                        lat: $('#geoLocForm input[name="lat"]').val(),
+                        lang: $('#geoLocForm input[name="lang"]').val(),
+                        description: $('#geoLocForm textarea[name="description"]').val(),
+                        address: $("#address").val()
+                    },
+                    success: function(response) {
+                        $.fancybox.close();
+                        $('#messageBox').addClass('alert-success').slideDown().find('h4').text('Geolocalización').parent().find('p').text("Locación agregada con éxito");
+                        $(".alert").alert();
+                        if ('function' === typeof AC.Admin.GeoLoc.Callback.AddGeoLoc.success) {
+                            AC.Admin.GeoLoc.Callback.AddGeoLoc.success();
+                        }
+                    }
+                });
+            }
+        });
+    }
+    
+    _init();
+    
+});
+</script>
+  <div id="localizationControls">
+    <input id="address" type="text" placeholder="Ingrese una dirección">
+    <button id="geoloc" type="button" class="btn btn-primary" data-text="Geolocalizar" data-loading-text="Buscando...">Geolocalizar</button>
+    <div>
+      <input id="bsas" name="bsas" type="checkbox" value="Buenos Aires, Argentina" checked="checked" />
+      <label for="bsas">Buscar en Buenos Aires</label>
+    </div>
+  </div>
+ <div id="map_canvas"></div>
+  <div>
+    <input type="button" value="Confirmar" class="confirmar" style="display: none" />
+  </div>
+  <form action="/admin/add-geo-loc" id="geoLocForm" method="post" style="display: none">
+      <p id="locationAddress"><b>Ubicación:</b> <span></span></p>
+      <input type="hidden" name="type" value="<?php echo $this->escape($this->type); ?>"/>
+      <input type="hidden" name="id" value="<?php echo (int)$this->id;?>"/>
+      <input type="hidden" name="lat" />
+      <input type="hidden" name="lang" />
+      descripción <textarea name="description"></textarea><br />
+      <input type="submit" name="submitLocalization" value="enviar" />
+  </form>

@@ -1,0 +1,13 @@
+<div id="<?php echo $id = isset($this->data['id'])? $this->data['id']:uniqid('id');?>"
+    class="banners">
+<?php foreach($this->data['banners'] as $item):?>
+
+
+  <div class="box box-shadow row1" style="background: url('/uploads/banners/<?php echo $item['image']?>') no-repeat">
+    <a class="siguebanner" title="<?php echo $item['title']?>" target="_BLANK" href="<?php echo $item['href']?>"></a>
+  </div>
+
+<?php endforeach;?>
+<div style="clear:both"></div>
+</div>
+

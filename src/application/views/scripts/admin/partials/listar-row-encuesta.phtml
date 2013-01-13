@@ -1,0 +1,28 @@
+<tr>
+  <td>
+    <a class="btn btn-success" title="editar" href="/admin/editar-encuesta/id/<?php echo $this->id ?>"><i class="icon-pencil icon-white"></i></a> 
+<a class="btn" title="ver resultados" href="#" data-toggle="modal"
+        onclick="return ResultsPoll.loadConfirmationModal('<?php echo $this->id ?>', '<?php echo $this->option1 ?>', '<?php echo $this->option2 ?>', '<?php echo $this->option3 ?>', '<?php echo $this->option4 ?>',
+             '<?php echo $this->optiononevotes ?>', '<?php echo $this->optiontwovotes ?>', '<?php echo $this->optionthreevotes ?>', '<?php echo $this->optionfourvotes ?>')" >
+        <i class="icon-eye-open"></i></a>
+          </td>
+  <td><?php echo $this->id ?></td>
+  <td><?php echo $this->title ?></td>
+  <td><?php echo $this->creation_date ?></td>
+  <td><?php echo $this->category ?></td>
+  <td><?php echo ($this->active==1)? 'publicado':'borrador' ?></td>
+</tr>
+
+
+<!-- 
+ * @property string $option1
+ * @property string $option2
+ * @property string $option3
+ * @property string $option4
+ * @property timestamp $creation_date
+ * @property integer $active
+ * @property integer $optiononevotes
+ * @property integer $optiontwovotes
+ * @property integer $optionthreevotes
+ * @property integer $optionfourvotes
+  -->

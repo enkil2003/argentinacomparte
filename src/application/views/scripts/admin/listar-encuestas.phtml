@@ -1,0 +1,16 @@
+<div class="page-header"><h3>Encuestas</h3></div>
+<table id="formatotabla" class="display">
+  <thead>
+    <tr>
+      <th>&nbsp;</th>
+      <th>id</th>
+      <th>titulo</th>
+      <th>fecha</th>
+      <th>Categoría</th>
+      <th>estado</th>
+    </tr>
+  </thead>
+  <tbody>
+    <?php echo $this->partialLoop('admin/partials/listar-row-encuesta.phtml', $this->encuestas) ?>
+  </tbody>
+</table>
