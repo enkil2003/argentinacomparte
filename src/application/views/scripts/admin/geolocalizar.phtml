@@ -70,36 +70,16 @@ $(function() {
         );
         $('#geoLocForm').on({
             submit: function(e) {
-                e.preventDefault();
-                $.ajax({
-                    url: '/admin/add-geo-loc',
-                    type: 'post',
-                    dataType: 'json',
-                    data: {
-                        type: $('#geoLocForm input[name="type"]').val(),
-                        id: $('#geoLocForm input[name="id"]').val(),
-                        lat: $('#geoLocForm input[name="lat"]').val(),
-                        lang: $('#geoLocForm input[name="lang"]').val(),
-                        description: $('#geoLocForm textarea[name="description"]').val(),
-                        address: $("#address").val()
-                    },
-                    success: function(response) {
-                        $.fancybox.close();
-                        $('#messageBox').addClass('alert-success').slideDown().find('h4').text('Geolocalización').parent().find('p').text("Locación agregada con éxito");
-                        $(".alert").alert();
-                        if ('function' === typeof AC.Admin.GeoLoc.Callback.AddGeoLoc.success) {
-                            AC.Admin.GeoLoc.Callback.AddGeoLoc.success();
-                        }
-                    }
-                });
+                $('#geoLocForm input[name="address"]').val($("#address").val());
             }
         });
-    }
+    };
     
     _init();
     
 });
 </script>
+<h2>Geolocalizar</h2>
   <div id="localizationControls">
     <input id="address" type="text" placeholder="Ingrese una dirección">
     <button id="geoloc" type="button" class="btn btn-primary" data-text="Geolocalizar" data-loading-text="Buscando...">Geolocalizar</button>
@@ -110,14 +90,15 @@ $(function() {
   </div>
  <div id="map_canvas"></div>
   <div>
-    <input type="button" value="Confirmar" class="confirmar" style="display: none" />
+    <input type="button" value="Confirmar" class="confirmar btn btn-primary" style="display: none" />
   </div>
   <form action="/admin/add-geo-loc" id="geoLocForm" method="post" style="display: none">
       <p id="locationAddress"><b>Ubicación:</b> <span></span></p>
       <input type="hidden" name="type" value="<?php echo $this->escape($this->type); ?>"/>
       <input type="hidden" name="id" value="<?php echo (int)$this->id;?>"/>
+      <input type="hidden" name="address" />
       <input type="hidden" name="lat" />
       <input type="hidden" name="lang" />
       descripción <textarea name="description"></textarea><br />
-      <input type="submit" name="submitLocalization" value="enviar" />
+      <input type="submit" name="submitLocalization" class="btn btn-primary" value="Finalizar" />
   </form>
