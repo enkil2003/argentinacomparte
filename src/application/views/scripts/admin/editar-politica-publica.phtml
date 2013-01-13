@@ -1,13 +1,2 @@
 <h2>Política Pública</h2>
-<?php
-echo $this->partial(
-    'admin/partials/add-geo-loc.phtml',
-    array(
-        'type' => 'publicPolitic',
-        'geolocs' => isset($this->locations)
-            ? $this->locations
-            : array()
-        )
-    );
-?>
 <?php echo $this->form; ?>
