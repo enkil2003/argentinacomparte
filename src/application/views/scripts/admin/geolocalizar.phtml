@@ -73,6 +73,11 @@ $(function() {
                 $('#geoLocForm input[name="address"]').val($("#address").val());
             }
         });
+        $('#finalizar').on({
+            click: function() {
+                window.location = '/admin';
+            }
+        });
     };
     
     _init();
@@ -102,3 +107,4 @@ $(function() {
       descripción <textarea name="description"></textarea><br />
       <input type="submit" name="submitLocalization" class="btn btn-primary" value="Finalizar" />
   </form>
+  <button id="finalizar" type="button" class="btn btn-primary">Finalizar sin geolocalizar</button>
