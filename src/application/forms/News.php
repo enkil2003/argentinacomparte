@@ -10,7 +10,7 @@ class Application_Form_News extends Zend_Form
     {
         $config = new Zend_Config_Ini(
             APPLICATION_PATH . '/configs/forms/news.ini',
-            'news'
+            'stepOne'
         );
         $this->setConfig($config->news);
         $this->_populateSelectWithPublicPolitics();

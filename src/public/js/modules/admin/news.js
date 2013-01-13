@@ -34,61 +34,61 @@ $(function() {
         $('#uploader_browse').hide();
     }
     // Submit logic
-    var submitting = false;
-    $('#newsFormTag').on({
-        submit: function(e) {
-            e.preventDefault();
-            if (ZendMax.Form.validate($('#newsFormTag'))) {
-                if (submitting == false) {
-                    submitting = true;
-                    submitForm();
-                }
-            }
-        }
-    });
-    
-    function submitForm() {
-        var newsId = $('#newsId').val() != undefined
-            ? $('#newsId').val()
-            : null;
-        
-        $.post(
-            "/admin/ajax/do/addOrEditNews",
-            {
-                id: newsId,
-                pp: $('#pp').val(),
-                title: $('#title').val(),
-                copy: $('#copy').val(),
-                body: $('#body').val(),
-                date: $('#date').val(),
-                youtube: $('#youtube').val(),
-                mintit: $('#mintit').val(),
-                active: $('#active').attr('checked') == 'checked'? 1:0
-            },
-            function (response) {
-                var uploader = $('#uploader').pluploadQueue();
-                
-                if (uploader.files.length > 0) {
-                    
-                    if (response.edit) {
-                        $.post(
-                            "/admin/ajax/do/removeImagesFromId",
-                            {id: newsId},
-                            function(response2) {
-                                if (response2.deleted) {
-                                    uploader.start();
-                                }
-                            },
-                            'json'
-                        )
-                    } else {
-                        uploader.start();
-                    }
-                } else {
-                    window.location = '/admin/listar-noticias';
-                }
-            },
-            'json'
-        );
-    }
+//    var submitting = false;
+//    $('#newsFormTag').on({
+//        submit: function(e) {
+//            e.preventDefault();
+//            if (ZendMax.Form.validate($('#newsFormTag'))) {
+//                if (submitting == false) {
+//                    submitting = true;
+//                    submitForm();
+//                }
+//            }
+//        }
+//    });
+//    
+//    function submitForm() {
+//        var newsId = $('#newsId').val() != undefined
+//            ? $('#newsId').val()
+//            : null;
+//        
+//        $.post(
+//            "/admin/ajax/do/addOrEditNews",
+//            {
+//                id: newsId,
+//                pp: $('#pp').val(),
+//                title: $('#title').val(),
+//                copy: $('#copy').val(),
+//                body: $('#body').val(),
+//                date: $('#date').val(),
+//                youtube: $('#youtube').val(),
+//                mintit: $('#mintit').val(),
+//                active: $('#active').attr('checked') == 'checked'? 1:0
+//            },
+//            function (response) {
+//                var uploader = $('#uploader').pluploadQueue();
+//                
+//                if (uploader.files.length > 0) {
+//                    
+//                    if (response.edit) {
+//                        $.post(
+//                            "/admin/ajax/do/removeImagesFromId",
+//                            {id: newsId},
+//                            function(response2) {
+//                                if (response2.deleted) {
+//                                    uploader.start();
+//                                }
+//                            },
+//                            'json'
+//                        )
+//                    } else {
+//                        uploader.start();
+//                    }
+//                } else {
+//                    window.location = '/admin/listar-noticias';
+//                }
+//            },
+//            'json'
+//        );
+//    }
 });
