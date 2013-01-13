@@ -20,8 +20,17 @@ class AdminController extends Zend_Controller_Action
     
     public function addPoliticasPublicasStepOneAction()
     {
-        $this->_request->setParam('id', $this->_addOrEditPublicPolitics());
-        $this->_forward('add-politicas-publicas-step-two');
+        $post = $this->_request->getPost();
+        $form = new Application_Form_PoliticaPublica();
+        $form->isValid($post);
+        $errors = $form->getMessages();
+        unset($errors['category'], $errors['preferentialCategory']);
+        if (count($errors) == 0) {
+            $this->_request->setParam('id', $this->_addOrEditPublicPolitics());
+            $this->_forward('add-politicas-publicas-step-two');
+        } else {
+            $this->_redirect('/admin/agregar-politica-publica');
+        }
     }
     
     public function addPoliticasPublicasStepTwoAction()
@@ -74,7 +83,6 @@ class AdminController extends Zend_Controller_Action
         $this->view->headLink()->setStylesheet('/css/lib/bootstrap/bootstrap.css');
         $this->view->headLink()->appendStylesheet('/css/smoothness/jquery-ui-1.8.15.custom.css');
         $this->view->headLink()->appendStylesheet('/css/admin.css');
-
         $this->view->headScript()->appendFile('/js/lib/bootstrap/bootstrap-dropdown.js');
         $this->view->headScript()->appendFile('/js/modules/admin/default.js');
         $this->view->headScript()->appendFile('/js/jquery/plugin/jquery.plugin.scrollTo.min.js');
