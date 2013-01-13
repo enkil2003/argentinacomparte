@@ -31,7 +31,7 @@ class AdminController extends Zend_Controller_Action
         $this->_loadPlupload();
         $this->view->politicaPublicaForm = new Application_Form_PoliticaPublicaStepTwo();
         $this->view->footerScript()->appendFile("/js/modules/admin/cancelSubmitWithEnterKey.js");
-        $this->view->footerScript()->appendFile("/js/modules/admin/step2.js");
+        $this->view->footerScript()->appendFile("/js/modules/admin/addPoliticasPublicasStepTwo.js");
     }
     
     public function uploadPoliticasPublicasImagesAction()
@@ -45,7 +45,6 @@ class AdminController extends Zend_Controller_Action
        $folder = $this->_request->getParam('folder');
         $this->_uploadImage($folder);
     }
-    
     
     public function addNoticiaStepOneAction()
     {
