@@ -1,5 +1,5 @@
 <?php
-class Application_Form_News extends Zend_Form
+class Application_Form_News extends Application_Form_AdminAbstract
 {
     /**
      * Creates the contact form.
@@ -14,14 +14,8 @@ class Application_Form_News extends Zend_Form
         );
         $this->setConfig($config->news);
         $this->_populateSelectWithPublicPolitics();
-        $this->_setClasses();
-        
         $select2 = $this->getElement('copy');
         $select2->addDecorator('contador');
-        
-//        $select = $this->getElement('preferentialCategory');
-//        $select->addMultiOption(0, 'Sin categoría');
-       $this->_configureJsDecorator();
     }
     
     public function setNewsId($id)
@@ -92,28 +86,13 @@ class Application_Form_News extends Zend_Form
         $publicPoliticsRecords = News::getAllPublicPolitics();
         $publicPoliticsElement = $this->getElement('pp');
         foreach($publicPoliticsRecords as $publicPolitic) {
-        	if ($publicPolitic['active'] == 0){
-        		$publicPolitic['title'] .= " - (borrador)";
-        	}
+            if ($publicPolitic['active'] == 0){
+                $publicPolitic['title'] .= " - (borrador)";
+            }
             $publicPoliticsElement->addMultiOption(
                 $publicPolitic['id'],
                 $publicPolitic['title']
             );
-        }
-    }
-    
-    /**
-     * Prepares base clases to use with twitter's bootstrap css
-     * @return void
-     */
-    private function _setClasses()
-    {
-        foreach($this->getElements() as $element) {
-            $decorator = $element->getDecorator('HtmlTag');
-            if (!method_exists($decorator, 'setOption')) {
-                continue;
-            }
-            $decorator->setOption('class', 'control-group');
         }
     }
     
@@ -133,42 +112,5 @@ class Application_Form_News extends Zend_Form
         if (NULL !== $checked && in_array($checked, $this->_loadedCategories)) {
             $select->setValue($checked);
         }
-    }
-    
-    /**
-     * Configures the JsAutoValidation decorator for custom behavior
-     * return void;
-     */
-    private function _configureJsDecorator()
-    {
-        $jsvalidation = $this->getDecorator('JsAutoValidation');
-        
-        $jsvalidation->setOption(
-            'validatorOptions', array(
-                'onAfterInvalidElement' => new Zend_Json_Expr(
-                    <<<onAfterInvalidElement
-function(element) {
-    element.parent().removeClass('success').addClass('error');
-    var errorContainer = element.parent().find('ul');
-    errorContainer.addClass('help-inline label label-important');
-}
-onAfterInvalidElement
-                ),
-                'onAfterValidElement' => new Zend_Json_Expr(
-                    <<<onAfterInvalidElement
-function(element) {
-    element.parent().removeClass('error').addClass('success');
-}
-onAfterInvalidElement
-                ),
-                'onValidationFails' => new Zend_Json_Expr(
-                    <<<onValidationFails
-function(form, settings) {
-    $.scrollTo($($('.control-group .errors')[0]).parent(), 500, {offset: {top: -70}});
-}
-onValidationFails
-                )
-            )
-        );
     }
 }

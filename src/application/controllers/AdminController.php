@@ -344,7 +344,9 @@ class AdminController extends Zend_Controller_Action
             $tramite->creation_date = "{$year}-{$month}-{$day}";
             $tramite->active = $form->getValue('active');
             $tramite->save();
-            $form->reset();
+            $request->setParam('type', 'tramite');
+            $request->setParam('id', $tramite->id);
+            $this->_forward('geolocalizar');
         }
         
         $this->view->form = $form;

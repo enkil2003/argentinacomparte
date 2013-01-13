@@ -1,5 +1,5 @@
 <?php
-class Application_Form_Poll extends Zend_Form
+class Application_Form_Poll extends Application_Form_AdminAbstract
 {
     /**
      * Creates the contact form.

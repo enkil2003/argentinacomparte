@@ -1,5 +1,5 @@
 <?php
-class Application_Form_PoliticaPublicaStepOne extends Zend_Form
+class Application_Form_PoliticaPublicaStepOne extends Application_Form_AdminAbstract
 {
     private $_loadedCategories = NULL;
     private $_loadedPublicPolitic = NULL;
@@ -17,10 +17,7 @@ class Application_Form_PoliticaPublicaStepOne extends Zend_Form
         );
         $this->setConfig($config->publicPolitics);
         $this->_populateSelectWithCategories();
-        $this->_setClasses();
         $select = $this->getElement('preferentialCategory');
-        $this->_configureJsDecorator();
-        
         $select2 = $this->getElement('copy');
         $select2->addDecorator('contador',array());
     }
@@ -38,21 +35,6 @@ class Application_Form_PoliticaPublicaStepOne extends Zend_Form
         );
     }
     
-    /**
-     * Preparesssss base clases to use with twitter's bootstrap css
-     * @return void
-     */
-    private function _setClasses()
-    {
-        foreach($this->getElements() as $element) {
-            $decorator = $element->getDecorator('HtmlTag');
-            if (!method_exists($decorator, 'setOption')) {
-                continue;
-            }
-            $decorator->setOption('class', 'control-group');
-        }
-    }
-    
     private function _populateSelectWithCategories($checked = NULL)
     {
         $select = $this->getElement('category');
@@ -67,43 +49,6 @@ class Application_Form_PoliticaPublicaStepOne extends Zend_Form
         if (NULL !== $checked && in_array($checked, $this->_loadedCategories)) {
             $select->setValue($checked);
         }
-    }
-    
-    /**
-     * Configures the JsAutoValidation decorator for custom behavior
-     * return void;
-     */
-    private function _configureJsDecorator()
-    {
-        $jsvalidation = $this->getDecorator('JsAutoValidation');
-        
-        $jsvalidation->setOption(
-            'validatorOptions', array(
-                'onAfterInvalidElement' => new Zend_Json_Expr(
-                    <<<onAfterInvalidElement
-function(element) {
-    element.parent().removeClass('success').addClass('error');
-    var errorContainer = element.parent().find('ul');
-    errorContainer.addClass('help-inline label label-important');
-}
-onAfterInvalidElement
-                ),
-                'onAfterValidElement' => new Zend_Json_Expr(
-                    <<<onAfterInvalidElement
-function(element) {
-    element.parent().removeClass('error').addClass('success');
-}
-onAfterInvalidElement
-                ),
-                'onValidationFails' => new Zend_Json_Expr(
-                    <<<onValidationFails
-function() {
-    $.scrollTo($($('.control-group .errors')[0]).parent(), 500, {offset: {top: -70}});
-}
-onValidationFails
-                ),
-            )
-        );
     }
     
     /**

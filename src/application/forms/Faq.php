@@ -1,5 +1,5 @@
 <?php
-class Application_Form_Faq extends Zend_Form
+class Application_Form_Faq extends Application_Form_AdminAbstract
 {
     /**
      * Creates the contact form.
@@ -58,50 +58,5 @@ class Application_Form_Faq extends Zend_Form
         $this->getElement('date')->setValue($date);
         $this->getElement('active')->setValue($this->_loadedFaq['active']);
         $this->getElement('pp')->setValue($this->_loadedFaq['news_id']);
-    }
-    
-    /**
-     * Prepares base clases to use with twitter's bootstrap css
-     * @return void
-     */
-    private function _setClasses()
-    {
-        foreach($this->getElements() as $element) {
-            $decorator = $element->getDecorator('HtmlTag');
-            if (!method_exists($decorator, 'setOption')) {
-                continue;
-            }
-            $decorator->setOption('class', 'control-group');
-        }
-    }
-    
-    
-    
-    /**
-     * Configures the JsAutoValidation decorator for custom behavior
-     * return void;
-     */
-    private function _configureJsDecorator()
-    {
-        $jsvalidation = $this->getDecorator('JsAutoValidation');
-        
-        $jsvalidation->setOption(
-            'validatorOptions', array(
-                'onAfterInvalidElement' => new Zend_Json_Expr(
-                    <<<onAfterInvalidElement
-function(element) {
-    element.parent().removeClass('success').addClass('error');
-}
-onAfterInvalidElement
-                ),
-                'onAfterValidElement' => new Zend_Json_Expr(
-                    <<<onAfterInvalidElement
-function(element) {
-    element.parent().removeClass('error').addClass('success');
-}
-onAfterInvalidElement
-                )
-            )
-        );
     }
 }
