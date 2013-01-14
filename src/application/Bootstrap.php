@@ -152,6 +152,15 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
                     'id' => null
               )
             ),
+            'politicasPublicasStepTwo' => new Zend_Controller_Router_Route(
+                'admin/politicas-publicas-step-two/:id',
+                array(
+                    'controller' => 'admin',
+                    'action' => 'politicas-publicas-step-two',
+                    'id' => null
+              )
+            ),
+             
         );
         $router->addRoutes($routes);
         return $router;
