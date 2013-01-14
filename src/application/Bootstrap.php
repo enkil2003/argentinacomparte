@@ -142,6 +142,16 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
                     'id' => self::ROUTE_MIS_DERECHOS_ID
                 )
             ),
+            // Admin
+            // admin/politicas-publicas-step-one/id/269
+            'politicasPublicasStepOne' => new Zend_Controller_Router_Route(
+                'admin/politicas-publicas-step-one/:id',
+                array(
+                    'controller' => 'admin',
+                    'action' => 'politicas-publicas-step-one',
+                    'id' => null
+              )
+            ),
         );
         $router->addRoutes($routes);
         return $router;
