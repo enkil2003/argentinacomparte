@@ -50,7 +50,7 @@ $(function() {
                     {},
                     function (response) {
                         if (response.binded === true) {
-                            window.location = '/admin/geolocalizar/type/publicPolitic/id/' + Pluploader.folder;
+                           // window.location = '/admin/geolocalizar/type/publicPolitic/id/' + Pluploader.folder;
                         }
                     },
                     'json'
@@ -58,10 +58,32 @@ $(function() {
             }
         }
     });
+    var _deleteImages = function(images) {
+        for(var i in images) {
+            var image = images[i];
+            var name = $(image).val();
+            var id = $(image).attr('data-news-id');
+            $.post(
+                '/admin/delete-image',
+                {
+                    id: id,
+                    name: name
+                },
+                function(response) {
+                    if (response.result === true) {
+                        console.dir(response.result);
+                    }
+                }
+            );
+        }
+    }
     $('input[name="publicPoliticsSubmit"]').bind(
         'click',
         function(e) {
             var uploader = $('#uploader').pluploadQueue();
+            if ($('.imagesToDelete [type="hidden"]').length > 0) {
+                _deleteImages($('[data-imagestodelete="imagesToDelete"]'));
+            }
             if (uploader.files.length > 0) {
                 uploader.start();
             } else {
@@ -79,4 +101,18 @@ $(function() {
     // there is no native method to do this below
     // ******************************************
     $('.plupload_button.plupload_start').remove();
+    
+    $('.imagesToDelete a').on({
+        click: function() {
+            var id = $(this).attr('data-news-id');
+            var name = $(this).attr('data-name');
+            if ($('.imagesToDelete').find('input[value="' + name + '"]').length == 0) {
+                $('.imagesToDelete').append('<input data-news-id="' + id + '" data-imagesToDelete="imagesToDelete" type="hidden" value="' + name + '" />');
+                $(this).parent().find('img').css('opacity', '.5');
+            } else {
+                $('.imagesToDelete').find('input[value="' + name + '"]').remove();
+                $(this).parent().find('img').css('opacity', '1');
+            }
+        }
+    });
 });

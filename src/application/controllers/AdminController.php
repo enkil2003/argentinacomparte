@@ -18,27 +18,60 @@ class AdminController extends Zend_Controller_Action
     
     private $_bannerDir = null;
     
-    public function addPoliticasPublicasStepOneAction()
+    public function politicasPublicasStepOneAction()
     {
-        $post = $this->_request->getPost();
-        $form = new Application_Form_PoliticaPublica();
-        $form->isValid($post);
-        $errors = $form->getMessages();
-        unset($errors['category'], $errors['preferentialCategory']);
-        if (count($errors) == 0) {
-            $this->_request->setParam('id', $this->_addOrEditPublicPolitics());
-            $this->_forward('add-politicas-publicas-step-two');
-        } else {
-            $this->_redirect('/admin/agregar-politica-publica');
+        $form = new Application_Form_PoliticaPublicaStepOne();
+        // modificar
+        if (!$this->_request->isPost() && null !== $this->_request->getParam('id', null)) {
+            $data = $this->_preparePopulate($this->_request->getParam('id'));
+            $form->populate($data);
         }
+        // agregar
+        if ($this->_request->isPost()) {
+            $form->isValid($this->_request->getPost());
+            $errors = $form->getMessages();
+            unset($errors['category'], $errors['preferentialCategory']);
+            if (count($errors) == 0) {
+                $id = $this->_addOrEditPublicPolitics($form);
+                $this->_redirect('/admin/politicas-publicas-step-two/id/' . $id);
+            }
+        }
+        $this->_loadTinyMce()->_loadJavascriptTextLimit();
+        $this->view->politicaPublicaForm = $form;
+        $this->view->active = self::POLITICA_PUBLICA;
+        $this->view->footerScript()->appendFile("/js/modules/admin/cancelSubmitWithEnterKey.js");
+        $this->view->footerScript()->appendFile("/js/modules/admin/tinyMCEConfig.js");
+        $this->view->footerScript()->appendFile("/js/modules/admin/datepickerConfig.js");
+        $this->view->footerScript()->appendFile("/js/modules/admin/addPublicPolitics.js");
     }
     
-    public function addPoliticasPublicasStepTwoAction()
+    public function deleteImageAction()
+    {
+        $id = $this->_request->getPost('id');
+        $imageName = $this->_request->getPost('name');
+        $q = new Doctrine_Query();
+        $q->delete('Images i')
+            ->where('i.news_id = ' . $id)
+            ->andWhere('i.name = ?', $imageName);
+        $q->execute();
+        header('content-type: application/json');
+        if (unlink(APPLICATION_PATH . "/../public/uploads/tmp/{$id}/{$imageName}")) {
+            echo Zend_Json::encode(array('result' => APPLICATION_PATH . "/../public/uploads/tmp/{$id}/{$imageName}"));
+        } else {
+            echo Zend_Json::encode(array('result' => true));
+        }
+        die;
+    }
+    
+    public function politicasPublicasStepTwoAction()
     {
         $this->view->folder = $this->_request->getParam('id');
         $this->view->active = self::POLITICA_PUBLICA;
         $this->_loadPlupload();
-        $this->view->politicaPublicaForm = new Application_Form_PoliticaPublicaStepTwo();
+        $form = new Application_Form_PoliticaPublicaStepTwo();
+        $publicPolitic = $this->_preparePopulate($this->_request->getParam('id'));
+        $this->view->images = $publicPolitic['Images'];
+        $this->view->politicaPublicaForm = $form;
         $this->view->footerScript()->appendFile("/js/modules/admin/cancelSubmitWithEnterKey.js");
         $this->view->footerScript()->appendFile("/js/modules/admin/addPoliticasPublicasStepTwo.js");
     }
@@ -116,6 +149,26 @@ class AdminController extends Zend_Controller_Action
         $this->view->footerScript()->appendFile("/js/modules/admin/addPublicPolitics.js");
     }
     
+    private function _preparePopulate($id)
+    {
+        $publicPoliticsModel = new News();
+        $publicPolitic = $publicPoliticsModel->findById($id, false);
+        $categories = array();
+        if (isset($publicPolitic['NewsHasCategory']) && count($publicPolitic['NewsHasCategory'])) {
+            foreach($publicPolitic['NewsHasCategory'] as $category) {
+                $categories[] = $category['category_id'];
+            }
+        }
+        list($year, $month, $day) = explode('-', $publicPolitic['creation_date']);
+        $date = "{$day}/{$month}/{$year}";
+        unset($publicPolitic['creation_date']);
+        $publicPolitic['date'] = $date;
+        $publicPolitic['category'] = $categories;
+        $publicPolitic['preferentialCategory'] = $publicPolitic['preferential_category'];
+        unset($publicPolitic['preferential_category']);
+        return $publicPolitic;
+    }
+    
     public function editarPoliticaPublicaAction()
     {
         $this->view->active = self::POLITICA_PUBLICA;
@@ -123,14 +176,12 @@ class AdminController extends Zend_Controller_Action
         if (NULL !== ($id = $request->getParam('id', null))) {
             $form = new Application_Form_PoliticaPublica();
             $form->getElement('publicPoliticsSubmit')->setLabel('Modificar');
-            $form->setPublicPoliticsId($id);
+            $data = $this->_preparePopulate($id);
+            $form->populate($data);
+//             $form->setPublicPoliticsId($id);
             $this->_loadPlupload()->_loadTinyMce()->_loadJavascriptTextLimit();
-            $publicPoliticsModel = new News();
-            $publicPolitic = $publicPoliticsModel->findById($id, false);
-            $form->populateWithPublicPoliticId($publicPolitic);
             $this->view->form = $form->render();
         }
-        $this->view->geolocs = $publicPolitic['Geolocalization'];
         $this->view->id = $id;
         $this->view->headScript()->appendFile("/js/modules/admin/cancelSubmitWithEnterKey.js");
         $this->view->headScript()->appendFile("/js/modules/admin/tinyMCEConfig.js");
@@ -229,11 +280,9 @@ class AdminController extends Zend_Controller_Action
         $this->view->form = $form;
     }
     
-    private function _addOrEditPublicPolitics()
+    private function _addOrEditPublicPolitics($form)
     {
         $request = $this->getRequest();
-        $form = new Application_Form_PoliticaPublica();
-        $form->populate($request->getPost());
         $politicaPublicaSession = new Zend_Session_Namespace('folderSession');
         if ($request->getPost('id') != 'null' && $request->getPost('id') != null) {
             $politicaPublicaSession->edit = true;

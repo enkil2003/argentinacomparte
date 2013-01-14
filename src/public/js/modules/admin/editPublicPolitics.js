@@ -127,8 +127,8 @@ $(function() {
     });
     
     function submitForm() {
-        var publicPoliticId = $('#publicPoliticId').val() != undefined
-            ? $('#publicPoliticId').val()
+        var publicPoliticId = $('#id').val() != undefined
+            ? $('#id').val()
             : null;
         
         $.post(

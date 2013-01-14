@@ -18,19 +18,6 @@ class Application_Form_PoliticaPublicaStepTwo extends Application_Form_AdminAbst
         $this->setConfig($config->publicPolitics);
     }
     
-    public function setPublicPoliticsId($id) {
-        $this->addElement(
-            'hidden',
-            'publicPoliticId',
-            array(
-                'value' => $id,
-                'decorators' => array(
-                    'viewHelper'
-                )
-            )
-        );
-    }
-    
     private function _populateSelectWithCategories($checked = NULL)
     {
         $select = $this->getElement('category');
@@ -45,50 +32,5 @@ class Application_Form_PoliticaPublicaStepTwo extends Application_Form_AdminAbst
         if (NULL !== $checked && in_array($checked, $this->_loadedCategories)) {
             $select->setValue($checked);
         }
-    }
-    
-    /**
-     * Loads a public politic into the form for edition
-     * @param int $id
-     * @return void
-     */
-    public function populateWithPublicPoliticId($publicPolitic)
-    {
-        $this->_loadedPublicPolitic = $publicPolitic;
-        
-        $categories = array();
-        if (isset($this->_loadedPublicPolitic['NewsHasCategory']) && count($this->_loadedPublicPolitic['NewsHasCategory'])) {
-            foreach($this->_loadedPublicPolitic['NewsHasCategory'] as $category) {
-                $categories[] = $category['category_id'];
-            }
-        }
-        list($year, $month, $day) = explode('-', $this->_loadedPublicPolitic['creation_date']);
-        $date = "{$day}/{$month}/{$year}";
-        $this->getElement('title')->setValue($this->_loadedPublicPolitic['title']);
-        $this->getElement('copy')->setValue($this->_loadedPublicPolitic['copy']);
-        $this->getElement('title')->setValue($this->_loadedPublicPolitic['title']);
-        $this->getElement('body')->setValue($this->_loadedPublicPolitic['body']);
-        $this->getElement('youtube')->setValue($this->_loadedPublicPolitic['youtube']);
-        $this->getElement('date')->setValue($date);
-        $this->getElement('category')->setValue($categories);
-        $this->getElement('preferentialCategory')->setValue($this->_loadedPublicPolitic['preferential_category']);
-        $this->getElement('active')->setValue($this->_loadedPublicPolitic['active']);
-        
-        $modifyPluploadDecorator = new My_Form_Decorator_ModifyPlupload();
-        $modifyPluploadDecorator->setFolder($this->_loadedPublicPolitic['id']);
-        $modifyPluploadDecorator->setImages($this->_getLoadedImages());
-        $this->getElement('uploader')->addDecorator($modifyPluploadDecorator);
-    }
-    
-    private function _getLoadedImages()
-    {
-        if (!isset($this->_loadedPublicPolitic['Images']) || !is_array($this->_loadedPublicPolitic['Images'])) {
-            return array();
-        }
-        $images = array();
-        foreach($this->_loadedPublicPolitic['Images'] as $image) {
-            $images[] = $image['name'];
-        }
-        return $images;
     }
 }

@@ -22,19 +22,6 @@ class Application_Form_PoliticaPublicaStepOne extends Application_Form_AdminAbst
         $select2->addDecorator('contador',array());
     }
     
-    public function setPublicPoliticsId($id) {
-        $this->addElement(
-            'hidden',
-            'publicPoliticId',
-            array(
-                'value' => $id,
-                'decorators' => array(
-                    'viewHelper'
-                )
-            )
-        );
-    }
-    
     private function _populateSelectWithCategories($checked = NULL)
     {
         $select = $this->getElement('category');

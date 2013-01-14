@@ -29,19 +29,6 @@ SCRIPT;
         $select2->addDecorator('contador',array());
     }
     
-    public function setPublicPoliticsId($id) {
-        $this->addElement(
-            'hidden',
-            'publicPoliticId',
-            array(
-                'value' => $id,
-                'decorators' => array(
-                    'viewHelper'
-                )
-            )
-        );
-    }
-    
     private function _populateSelectWithCategories($checked = NULL)
     {
         $select = $this->getElement('category');
@@ -85,10 +72,10 @@ SCRIPT;
         $this->getElement('preferentialCategory')->setValue($this->_loadedPublicPolitic['preferential_category']);
         $this->getElement('active')->setValue($this->_loadedPublicPolitic['active']);
         
-        $modifyPluploadDecorator = new My_Form_Decorator_ModifyPlupload();
-        $modifyPluploadDecorator->setFolder($this->_loadedPublicPolitic['id']);
-        $modifyPluploadDecorator->setImages($this->_getLoadedImages());
-        $this->getElement('uploader')->addDecorator($modifyPluploadDecorator);
+//         $modifyPluploadDecorator = new My_Form_Decorator_ModifyPlupload();
+//         $modifyPluploadDecorator->setFolder($this->_loadedPublicPolitic['id']);
+//         $modifyPluploadDecorator->setImages($this->_getLoadedImages());
+//         $this->getElement('uploader')->addDecorator($modifyPluploadDecorator);
     }
     
     private function _getLoadedImages()
