@@ -1,0 +1,23 @@
+<h2>Agregar imagenes a noticia</h2>
+<?php if (isset($this->images)): ?>
+  <div class="imagesToDelete">
+  <?php
+  foreach($this->images as $image):
+  ?><div style="position: relative; display: inline-block;">
+    <img style="width: 200px; height: auto" src="/uploads/tmp/<?php echo $this->folder; ?>/<?php echo $image['name']; ?>" />
+    <a style="cursor: pointer; position: absolute; top: 10px; left: 160px;" class="btn btn-danger" title="eliminar" href="javascript:;" data-news-id="<?php echo $this->folder; ?>" data-name="<?php echo $image['name']; ?>" >
+      <i class="icon-trash icon-white"></i>
+    </a>
+    </div>
+  <?php
+  endforeach;
+  ?>
+  </div>
+<?php endif;?>
+<?php
+echo $this->form;
+?>
+<script>
+var Pluploader = Pluploader || {};
+Pluploader.folder = <?php echo $this->folder; ?>;
+</script>
