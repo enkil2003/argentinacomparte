@@ -160,10 +160,8 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
                     'id' => null
               )
             ),
-             
         );
         $router->addRoutes($routes);
         return $router;
     }
 }
-
