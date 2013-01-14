@@ -78,13 +78,38 @@ $(function() {
                 window.location = '/admin';
             }
         });
+        $('a[data-id]').on({
+            click: function(e) {
+                var element = $(this);
+                $.post(
+                    '/admin/delete-geoloc',
+                    {id: $(this).attr('data-id')},
+                    function (response) {
+                        element.parent().fadeOut()
+                    },
+                    'json'
+                );
+            }
+        });
     };
     
     _init();
     
-});
+});id="finalizar"
 </script>
 <h2>Geolocalizar</h2>
+  <ul>
+  <?php
+  foreach($this->geolocations as $location):
+  ?>
+    <li>
+      <?php echo $location['address'];?>
+      <a data-id="<?php echo $location['id']; ?>" class="btn btn-danger" title="eliminar" href="#"><i class="icon-trash icon-white"></i></a>
+    </li>
+  <?php
+  endforeach;
+  ?>
+  </ul>
   <div id="localizationControls">
     <input id="address" type="text" placeholder="Ingrese una dirección">
     <button id="geoloc" type="button" class="btn btn-primary" data-text="Geolocalizar" data-loading-text="Buscando...">Geolocalizar</button>

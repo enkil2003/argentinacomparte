@@ -929,11 +929,32 @@ class AdminController extends Zend_Controller_Action
         $this->view->form = $form;
     }
     
+    public function deleteGeolocAction()
+    {
+        $q = new Doctrine_Query();
+        $q->delete('Geolocalization g')
+            ->where('g.id = '.$this->_request->getPost('id'));
+        $q->execute();
+        echo Zend_Json::encode(array('result' => true));
+        die;
+    }
+    
     public function geolocalizarAction()
     {
         if ($this->_request->isXmlHttpRequest()) {
             $this->view->layout()->disableLayout();
         }
+        switch($this->_request->getParam('type')) {
+            case 'publicPolitic':
+            case 'news':
+                $publicPoliticsModel = new News();
+                $news = $publicPoliticsModel->findById($this->_request->getParam('id'), false);
+                $this->view->geolocations = $news['Geolocalization'];
+                break;
+            case 'tramite':
+                
+                break;
+       }
         $this->view->id = (int)$this->_request->getParam('id');
         $this->view->type = $this->_request->getParam('type');
         $this->view->headMeta();
