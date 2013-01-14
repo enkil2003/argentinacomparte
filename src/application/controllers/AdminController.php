@@ -18,6 +18,50 @@ class AdminController extends Zend_Controller_Action
     
     private $_bannerDir = null;
     
+    public function noticiaStepOneAction()
+    {
+        $form = new Application_Form_News();
+        // modificar
+        if (!$this->_request->isPost() && null !== $this->_request->getParam('id', null)) {
+            $data = $this->_preparePopulate($this->_request->getParam('id'));
+            $form->populate($data);
+        }
+        // agregar
+        if ($this->_request->isPost()) {
+            $form->isValid($this->_request->getPost());
+            $errors = $form->getMessages();
+            unset($errors['category'], $errors['preferentialCategory']);
+            if (count($errors) == 0) {
+                $id = $this->_addOrEditNews($form);
+                $this->_redirect('/admin/noticia-step-two/id/' . $id);
+            }
+        }
+//         $this->_request->setParam('id', $this->_addOrEditNews());
+//         $this->_forward('add-noticias-step-two');
+        
+        // se esta agregando un news.js desde el ini del form
+        $this->view->form = $form;
+        $this->view->active = self::NOTICIA;
+        $this->_loadPlupload()->_loadTinyMce()->_loadJavascriptTextLimit();
+        $this->view->headScript()->appendFile("/js/modules/admin/cancelSubmitWithEnterKey.js");
+        $this->view->headScript()->appendFile("/js/modules/admin/tinyMCEConfig.js");
+        $this->view->headScript()->appendFile("/js/modules/admin/datepickerConfig.js");
+        $this->view->lateScript()->appendFile('/js/modules/admin/news.js');
+    }
+    
+    public function noticiaStepTwoAction()
+    {
+        $this->view->folder = $this->_request->getParam('id');
+        $this->view->active = self::NOTICIA;
+        $this->_loadPlupload();
+        $form = new Application_Form_NoticiaStepTwo();
+        $publicPolitic = $this->_preparePopulate($this->_request->getParam('id'));
+        $this->view->images = $publicPolitic['Images'];
+        $this->view->form = $form;
+        $this->view->footerScript()->appendFile("/js/modules/admin/cancelSubmitWithEnterKey.js");
+        $this->view->footerScript()->appendFile("/js/modules/admin/addPoliticasPublicasStepTwo.js");
+    }
+    
     public function politicasPublicasStepOneAction()
     {
         $form = new Application_Form_PoliticaPublicaStepOne();
@@ -86,12 +130,6 @@ class AdminController extends Zend_Controller_Action
     {
        $folder = $this->_request->getParam('folder');
         $this->_uploadImage($folder);
-    }
-    
-    public function addNoticiaStepOneAction()
-    {
-        $this->_request->setParam('id', $this->_addOrEditNews());
-        $this->_forward('add-noticias-step-two');
     }
     
     public function addNoticiasStepTwoAction()
