@@ -83,13 +83,7 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
                 array(
                     'controller' => 'category',
                     'action' => 'show-detail',
-                )
-            ),
-            'verMasSinSlug' => new Zend_Controller_Router_Route(
-                'ver-mas/id/:id',
-                array(
-                    'controller' => 'category',
-                    'action' => 'show-detail',
+                    'slug' => null
                 )
             ),
             'verTramite' => new Zend_Controller_Router_Route(
