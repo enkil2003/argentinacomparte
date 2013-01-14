@@ -50,7 +50,7 @@ $(function() {
                     {},
                     function (response) {
                         if (response.binded === true) {
-                           // window.location = '/admin/geolocalizar/type/publicPolitic/id/' + Pluploader.folder;
+                            window.location = '/admin/geolocalizar/type/publicPolitic/id/' + Pluploader.folder;
                         }
                     },
                     'json'
@@ -81,13 +81,13 @@ $(function() {
         'click',
         function(e) {
             var uploader = $('#uploader').pluploadQueue();
-            if ($('.imagesToDelete [type="hidden"]').length > 0) {
-                _deleteImages($('[data-imagestodelete="imagesToDelete"]'));
-            }
+            e.preventDefault();
             if (uploader.files.length > 0) {
+                if ($('.imagesToDelete [type="hidden"]').length > 0) {
+                    _deleteImages($('[data-imagestodelete="imagesToDelete"]'));
+                }
                 uploader.start();
             } else {
-                e.preventDefault();
                 $('#uploader-element').closest('.control-group').addClass('error');
                 if ($('#uploader-element').find('ul').length == 1) {
                     $('#uploader-element').append('<ul style="margin-top: 10px" class="errors help-inline label label-important"><li>Debe indicar al menos 1 imagen</li></ul>');
