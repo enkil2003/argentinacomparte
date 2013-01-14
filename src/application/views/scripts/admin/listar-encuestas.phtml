@@ -1,4 +1,4 @@
-<div class="page-header"><h3>Encuestas</h3></div>
+<h2>Encuestas</h2>
 <table id="formatotabla" class="display">
   <thead>
     <tr>
@@ -11,6 +11,8 @@
     </tr>
   </thead>
   <tbody>
+  <?php if (count($this->encuestas)):?>
     <?php echo $this->partialLoop('admin/partials/listar-row-encuesta.phtml', $this->encuestas) ?>
+  <?php endif; ?>
   </tbody>
 </table>
