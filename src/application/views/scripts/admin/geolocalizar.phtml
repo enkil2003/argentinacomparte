@@ -99,6 +99,7 @@ $(function() {
 </script>
 <h2>Geolocalizar</h2>
   <ul>
+<?php if (isset($this->geolocation) && count($this->geolocation)):?>
   <?php
   foreach($this->geolocations as $location):
   ?>
@@ -109,6 +110,7 @@ $(function() {
   <?php
   endforeach;
   ?>
+<?php endif; ?>
   </ul>
   <div id="localizationControls">
     <input id="address" type="text" placeholder="Ingrese una dirección">
@@ -132,4 +134,4 @@ $(function() {
       descripción <textarea name="description"></textarea><br />
       <input type="submit" name="submitLocalization" class="btn btn-primary" value="Finalizar" />
   </form>
-  <button id="finalizar" type="button" class="btn btn-primary">Finalizar sin geolocalizar</button>
+  <button id="finalizar" type="button" class="btn btn-danger">Finalizar sin geolocalizar</button>
