@@ -3,8 +3,9 @@ $(function() {
     var redirectToGeolocate = function() {
         $('#publicPoliticsSubmit').attr('disabled', 'disabled');
         $('#geoloc').attr('disabled', 'disabled');
-        window.location = '/admin/geolocalizar/type/' + Pluploader.action + '/id/' + Pluploader.folder;
-    }
+        // politicas-publicas-step-three
+        window.location = '/admin/' + Pluploader.action + '/' + Pluploader.folder;
+    };
     
     //traduccion para el plupload
     plupload.addI18n({
@@ -76,7 +77,7 @@ $(function() {
                 }
             );
         });
-    }
+    };
     
     var raiseError = function() {
         $('#uploader-element').closest('.control-group').addClass('error');
@@ -84,7 +85,8 @@ $(function() {
             $('#uploader-element').append('<ul style="margin-top: 10px" class="errors help-inline label label-important"><li>Debe indicar al menos 1 imagen</li></ul>');
         }
         $.scrollTo($($('.control-group .errors')[0]).parent(), 500, {offset: {top: -70}});
-    }
+    };
+    
     $('input[name="publicPoliticsSubmit"]').bind(
         'click',
         function(e) {
