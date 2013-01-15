@@ -7,6 +7,11 @@ defined('APPLICATION_PATH')
 defined('APPLICATION_ENV')
     || define('APPLICATION_ENV', (getenv('APPLICATION_ENV') ? getenv('APPLICATION_ENV') : 'production'));
 
+defined('PUBLIC_PATH')
+    || define('PUBLIC_PATH', (getenv('PUBLIC_PATH')
+    ? getenv('PUBLIC_PATH')
+    : realpath(APPLICATION_PATH . '/../public')));
+    
 defined('APPLICATION_TMP_DIR')
     || define('APPLICATION_TMP_DIR', (getenv('APPLICATION_TMP_DIR')
     ? getenv('APPLICATION_TMP_DIR')

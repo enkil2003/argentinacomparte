@@ -98,6 +98,7 @@ class AdminController extends Zend_Controller_Action
             ->where('i.news_id = ' . $id)
             ->andWhere('i.name = ?', $imageName);
         $q->execute();
+        unlink(PUBLIC_PATH . '/uploads/images/' . $imageName);
         header('content-type: application/json');
         if (unlink(APPLICATION_PATH . "/../public/uploads/tmp/{$id}/{$imageName}")) {
             echo Zend_Json::encode(array('result' => APPLICATION_PATH . "/../public/uploads/tmp/{$id}/{$imageName}"));
@@ -114,6 +115,9 @@ class AdminController extends Zend_Controller_Action
         $this->_loadPlupload();
         $form = new Application_Form_PoliticaPublicaStepTwo();
         $publicPolitic = $this->_preparePopulate($this->_request->getParam('id'));
+        if (count($publicPolitic['Images'])) {
+            $form->setModify();
+        }
         $this->view->images = $publicPolitic['Images'];
         $this->view->politicaPublicaForm = $form;
         $this->view->footerScript()->appendFile("/js/modules/admin/cancelSubmitWithEnterKey.js");
@@ -764,13 +768,13 @@ class AdminController extends Zend_Controller_Action
     }
     
     /**
-     * Achica una 'esto es folder'imagen dada, la pisa al guardarla.
+     * Shrinks an image to a given size and moves it to a location if given.
      * 
-     * @param string $imagePath - ruta a la imagen
+     * @param string $imagePath
      * @param string|null $destination if null same imagePath is used to save the image
      * @param int image width
      * @param int height image height
-     * @param int $quality = 75 - calidad a guardar la imagen 
+     * @param int $quality optional 75 is the default value 
      * @return void
      */
     private function _shrinkImage($imagePath, $destination = null, $width = 380, $height = 222, $quality = 85)
@@ -786,12 +790,13 @@ class AdminController extends Zend_Controller_Action
     }
     
     /**
-     * Busca la ultima noticia insertada, toma el id de la noticia de la session y asocia las imagenes
+     * Busca las imagenes en la carpeta temporal indicada por id, para mover las imagenes a su destino y tamaño final.
      * @throws Exception Cuando no puede abrir la carpeta donde se encuentran las imagenes
-     * 
+     * @param int $dirname is the id that acts as folder and news id
+     * @param string $destination where to move the binded images from tmp location to final.
      * @return boolean
      */
-    private function _bindImagesAfterInsert($dirname)
+    private function _bindImagesAfterInsert($dirname, $destination = null)
     {
         $dirHandler = opendir(APPLICATION_TMP_DIR . '/' . $dirname);
         if (!is_resource($dirHandler)) {
@@ -800,7 +805,9 @@ class AdminController extends Zend_Controller_Action
         $highlight = true;
         while (FALSE !== ($file = readdir($dirHandler))) {
             if (!is_dir($file)) {
-                $this->_shrinkImage(APPLICATION_TMP_DIR . '/' . $dirname . '/' . $file);
+                $destination = PUBLIC_PATH . '/uploads/images/' . $file;
+                $this->_shrinkImage(APPLICATION_TMP_DIR . '/' . $dirname . '/' . $file, $destination);
+                unlink(APPLICATION_TMP_DIR . '/' . $dirname . '/' . $file);
                 $image = new Images();
                 $image->name = $file;
                 $image->news_id = $dirname;
@@ -810,6 +817,7 @@ class AdminController extends Zend_Controller_Action
             }
         }
         closedir($dirHandler);
+        rmdir(APPLICATION_TMP_DIR . '/' . $dirname);
         return true;
     }
     

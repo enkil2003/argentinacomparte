@@ -1,5 +1,11 @@
 var Pluploader = Pluploader || {};
 $(function() {
+    var redirectToGeolocate = function() {
+        $('#publicPoliticsSubmit').attr('disabled', 'disabled');
+        $('#geoloc').attr('disabled', 'disabled');
+        window.location = '/admin/geolocalizar/type/' + Pluploader.action + '/id/' + Pluploader.folder;
+    }
+    
     //traduccion para el plupload
     plupload.addI18n({
         'Select files' : 'Elija archivos:',
@@ -50,7 +56,7 @@ $(function() {
                     {},
                     function (response) {
                         if (response.binded === true) {
-                            window.location = '/admin/geolocalizar/type/publicPolitic/id/' + Pluploader.folder;
+                            redirectToGeolocate();
                         }
                     },
                     'json'
@@ -59,23 +65,25 @@ $(function() {
         }
     });
     var _deleteImages = function(images) {
-        for(var i in images) {
-            var image = images[i];
-            var name = $(image).val();
-            var id = $(image).attr('data-news-id');
+        $('[data-imagestodelete="imagesToDelete"]').each(function() {
+            var name = $(this).val();
+            var id = $(this).attr('data-news-id');
             $.post(
                 '/admin/delete-image',
                 {
                     id: id,
                     name: name
-                },
-                function(response) {
-                    if (response.result === true) {
-                        console.dir(response.result);
-                    }
                 }
             );
+        });
+    }
+    
+    var raiseError = function() {
+        $('#uploader-element').closest('.control-group').addClass('error');
+        if ($('#uploader-element').find('ul').length == 1) {
+            $('#uploader-element').append('<ul style="margin-top: 10px" class="errors help-inline label label-important"><li>Debe indicar al menos 1 imagen</li></ul>');
         }
+        $.scrollTo($($('.control-group .errors')[0]).parent(), 500, {offset: {top: -70}});
     }
     $('input[name="publicPoliticsSubmit"]').bind(
         'click',
@@ -85,21 +93,24 @@ $(function() {
                 totalImages = $('.imagesToDelete img').length
             ;
             e.preventDefault();
+            // handle delete
             if (imagesToDelete > 0) {
-                if (uploader.files.length > 0 || imagesToDelete < totalImages) {
-//                    _deleteImages($('[data-imagestodelete="imagesToDelete"]'));
-                } else {
-//                    alert('no puedo eliminar todo');
+                var canRedirect = false;
+                if (uploader.files.length > 0 || totalImages > imagesToDelete ) {
+                    canRedirect = true;
+                    _deleteImages($('[data-imagestodelete="imagesToDelete"]'));
+                }
+                if (uploader.files.length == 0 && canRedirect) {
+                    redirectToGeolocate();
                 }
             }
+            // handle upload
             if (uploader.files.length > 0) {
                 uploader.start();
             } else {
-                $('#uploader-element').closest('.control-group').addClass('error');
-                if ($('#uploader-element').find('ul').length == 1) {
-                    $('#uploader-element').append('<ul style="margin-top: 10px" class="errors help-inline label label-important"><li>Debe indicar al menos 1 imagen</li></ul>');
+                if ($('.imagesToDelete [type="hidden"]').length == totalImages) {
+                    raiseError();
                 }
-                $.scrollTo($($('.control-group .errors')[0]).parent(), 500, {offset: {top: -70}});
             }
             return false;
         }
@@ -122,4 +133,10 @@ $(function() {
             }
         }
     });
+    $('#geoloc').on(
+        'click',
+        function() {
+        	redirectToGeolocate();
+        }
+    );
 });
