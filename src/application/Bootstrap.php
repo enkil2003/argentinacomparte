@@ -143,7 +143,6 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
                 )
             ),
             // Admin
-            // admin/politicas-publicas-step-one/id/269
             'politicasPublicasStepOne' => new Zend_Controller_Router_Route(
                 'admin/politicas-publicas-step-one/:id',
                 array(
