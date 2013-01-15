@@ -160,6 +160,14 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
                     'id' => null
               )
             ),
+            'politicasPublicasStepThree' => new Zend_Controller_Router_Route(
+                'admin/politicas-publicas-step-three/:id',
+                array(
+                    'controller' => 'admin',
+                    'action' => 'geolocalizar',
+                    'type' => 'publicPolitic'
+                )
+            ),
         );
         $router->addRoutes($routes);
         return $router;

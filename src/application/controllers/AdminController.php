@@ -77,7 +77,7 @@ class AdminController extends Zend_Controller_Action
             unset($errors['category'], $errors['preferentialCategory']);
             if (count($errors) == 0) {
                 $id = $this->_addOrEditPublicPolitics($form);
-                $this->_redirect('/admin/politicas-publicas-step-two/id/' . $id);
+                $this->_redirect('/admin/politicas-publicas-step-two/' . $id);
             }
         }
         $this->_loadTinyMce()->_loadJavascriptTextLimit();

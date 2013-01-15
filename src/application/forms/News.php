@@ -84,6 +84,9 @@ class Application_Form_News extends Application_Form_AdminAbstract
     private function _populateSelectWithPublicPolitics()
     {
         $publicPoliticsRecords = News::getAllPublicPolitics();
+        if (count($publicPoliticsRecords) == 0) {
+            return;
+        }
         $publicPoliticsElement = $this->getElement('pp');
         foreach($publicPoliticsRecords as $publicPolitic) {
             if ($publicPolitic['active'] == 0){
