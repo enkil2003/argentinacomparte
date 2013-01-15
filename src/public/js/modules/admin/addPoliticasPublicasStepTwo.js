@@ -80,12 +80,19 @@ $(function() {
     $('input[name="publicPoliticsSubmit"]').bind(
         'click',
         function(e) {
-            var uploader = $('#uploader').pluploadQueue();
+            var uploader = $('#uploader').pluploadQueue(),
+                imagesToDelete = $('.imagesToDelete [type="hidden"]').length,
+                totalImages = $('.imagesToDelete img').length
+            ;
             e.preventDefault();
-            if (uploader.files.length > 0) {
-                if ($('.imagesToDelete [type="hidden"]').length > 0) {
-                    _deleteImages($('[data-imagestodelete="imagesToDelete"]'));
+            if (imagesToDelete > 0) {
+                if (uploader.files.length > 0 || imagesToDelete < totalImages) {
+//                    _deleteImages($('[data-imagestodelete="imagesToDelete"]'));
+                } else {
+//                    alert('no puedo eliminar todo');
                 }
+            }
+            if (uploader.files.length > 0) {
                 uploader.start();
             } else {
                 $('#uploader-element').closest('.control-group').addClass('error');
