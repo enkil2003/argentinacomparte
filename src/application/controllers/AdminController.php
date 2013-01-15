@@ -119,7 +119,7 @@ class AdminController extends Zend_Controller_Action
             $form->setModify();
         }
         $this->view->images = $publicPolitic['Images'];
-        $this->view->politicaPublicaForm = $form;
+        $this->view->form = $form;
         $this->view->footerScript()->appendFile("/js/modules/admin/cancelSubmitWithEnterKey.js");
         $this->view->footerScript()->appendFile("/js/modules/admin/addPoliticasPublicasStepTwo.js");
     }
