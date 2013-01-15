@@ -18,7 +18,6 @@ class Application_Form_PoliticaPublicaStepTwo extends Application_Form_AdminAbst
         $this->setConfig($config->publicPolitics);
     }
     
-    
     public function setModify()
     {
         $this->getElement('publicPoliticsSubmit')->setLabel('Modificar galería');
