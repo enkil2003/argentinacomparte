@@ -27,6 +27,7 @@ class News extends BaseNews
                 n.modification_date,
                 n.preferential_category,
                 n.news_id,
+                n.mintit,
                 n.youtube,
                 n.body,
                 n.active,

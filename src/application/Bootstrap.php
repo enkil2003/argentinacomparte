@@ -167,6 +167,14 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
                     'type' => 'publicPolitic'
                 )
             ),
+            'noticiaStepOne' => new Zend_Controller_Router_Route(
+                'admin/noticia-step-one/:id',
+                array(
+                    'controller' => 'admin',
+                    'action' => 'noticia-step-one',
+                    'id' => null
+                )
+            ),
         );
         $router->addRoutes($routes);
         return $router;
