@@ -9,9 +9,16 @@ if (!isset($this->acordeon['News']['0'])) {
     <?php
     if (isset($this->acordeon['News']) && count($this->acordeon['News'])) {
         $nota = array_shift($this->acordeon['News']);
+        /* Esto esta porque se cambio la ubicacion donde se guardaban las fotos
+         * y asi mantenemos retrocompatibilidad
+         */
+        $file = file_exists(PUBLIC_PATH . '/uploads/images/' . $nota['Images'][0]['name'])
+            ? '/uploads/images/' . $nota['Images'][0]['name']
+            : '/uploads/tmp/' . $nota['id'] . '/' . $nota['Images'][0]['name']
+        ;
         echo $this->multimediaBox(
             array(
-                'file' => '/uploads/tmp/' . $nota['id'] . '/' . $nota['Images'][0]['name'],
+                'file' => $file,
                 'type' => 'image',
                 'title' => $nota['title'],
                 'copy' => $nota['copy'],

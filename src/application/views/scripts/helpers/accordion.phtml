@@ -5,13 +5,17 @@
   <div style="max-height: 500px; overflow: auto;">
     <?php if (isset($item['image'])):?>
     <?php 
-    if (file_exists(APPLICATION_PATH . '/../public/uploads/tmp/' . $item['id'] . '/' . $item['image'])) {
-        $imageSize = getimagesize(APPLICATION_PATH . '/../public/uploads/tmp/' . $item['id'] . '/' . $item['image']);
+    $file = file_exists(PUBLIC_PATH . '/uploads/images/' . $item['image'])
+        ? '/uploads/images/' . $item['image']
+        : '/uploads/tmp/' . $item['id'] . '/' . $item['image']
+    ;
+    if (file_exists($file)) {
+        $imageSize = getimagesize(PUBLIC_PATH . $file);
         $width = $imageSize[0];
         $height = $imageSize[1];
     }
     ?>
-    <img alt="<?php echo  $this->escape($item['title']) ?>" src="/uploads/tmp/<?php echo $item['id'] . '/' . $item['image']; ?>" />
+    <img alt="<?php echo  $this->escape($item['title']) ?>" src="<?php echo $file ?>" />
     <?php endif;?>
     
     <article>

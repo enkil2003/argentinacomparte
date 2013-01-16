@@ -3,9 +3,13 @@
     <?php
  //   if (isset($this->acordeon['News']) && count($this->acordeon['News'])) {
         $nota = $this->destacar;
+        $file = file_exists(PUBLIC_PATH . '/uploads/images/' . $nota['Images'][0]['name'])
+            ? '/uploads/images/' . $nota['Images'][0]['name']
+            : '/uploads/tmp/' . $nota['id'] . '/' . $nota['Images'][0]['name']
+        ;
         echo $this->multimediaBox(
             array(
-                'file' => '/uploads/tmp/' . $nota['id'] . '/' . $nota['Images'][0]['name'],
+                'file' => $file,
                 'type' => 'image',
                 'title' => $nota['title'],
                 'copy' => $nota['copy'],

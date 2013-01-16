@@ -4,9 +4,13 @@
       <div class="frameContainer">
         <?php foreach($this->data as $pp):?>
             <?php
+            $file = file_exists(PUBLIC_PATH . '/uploads/images/' . $pp['Images'][0]['name'])
+                ? '/uploads/images/' . $pp['Images'][0]['name']
+                : '/uploads/tmp/' . $pp['id'] . '/' . $pp['Images'][0]['name']
+            ;
             echo $this->multimediaBox(
                 array(
-                    'file' => '/uploads/tmp/' . $pp['id'] . '/' . $pp['Images'][0]['name'],
+                    'file' => $file,
                     'type' => 'image',
                     'boxTitle' => 'Política Pública',
                     'title' => $pp['title'],
