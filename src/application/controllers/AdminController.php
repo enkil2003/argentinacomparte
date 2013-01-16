@@ -377,6 +377,7 @@ class AdminController extends Zend_Controller_Action
     }
     
     public function listarEncuestasAction() {
+        $this->view->headScript()->appendFile("/js/highcharts/js/highcharts.js");
         $this->view->headScript()->appendFile("/js/data_tables/js/jquery.dataTables.custom.poll.js");
         $this->view->headScript()->appendFile('/js/modules/admin/poll-results.js');
         
