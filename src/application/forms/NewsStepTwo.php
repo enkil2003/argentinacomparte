@@ -1,5 +1,5 @@
 <?php
-class Application_Form_PoliticaPublicaStepTwo extends Application_Form_AdminAbstract
+class Application_Form_NewsStepTwo extends Application_Form_AdminAbstract
 {
     private $_loadedCategories = NULL;
     private $_loadedPublicPolitic = NULL;

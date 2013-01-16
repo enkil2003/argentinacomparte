@@ -20,7 +20,7 @@ class AdminController extends Zend_Controller_Action
     
     public function noticiaStepOneAction()
     {
-        $form = new Application_Form_News();
+        $form = new Application_Form_NewsStepOne();
         // modificar
         if (!$this->_request->isPost() && null !== $this->_request->getParam('id', null)) {
             $data = $this->_preparePopulate($this->_request->getParam('id'));
@@ -54,7 +54,7 @@ class AdminController extends Zend_Controller_Action
         $this->view->folder = $this->_request->getParam('id');
         $this->view->active = self::NOTICIA;
         $this->_loadPlupload();
-        $form = new Application_Form_NoticiaStepTwo();
+        $form = new Application_Form_NewsStepTwo();
         $publicPolitic = $this->_preparePopulate($this->_request->getParam('id'));
         $this->view->images = $publicPolitic['Images'];
         $this->view->form = $form;

@@ -9,3 +9,4 @@ src/data/logs/application.log
 src/public/dummy.php
 .buildpath
 src/library/Zend
+src/public/uploads/images/*
