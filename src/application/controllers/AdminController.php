@@ -466,42 +466,13 @@ class AdminController extends Zend_Controller_Action
         $this->_forward('geolocalizar');
     }
     
-    public function editarTramiteAction()
-    {
-        $request = $this->getRequest();
-        $id = $request->getParam('id');
-        $this->view->active = self::TRAMITE;
-        $this->_loadTinyMce();
-        $form = new Application_Form_Tramite();
-        $form->setTramiteId($id);
-        $form->populateWithTramiteId($id);
-        $tramite = Doctrine_Core::getTable('Tramite')->find($id);
-        if ($request->isPost() && $form->isValid($request->getPost())) {
-            $tramite->title = $form->getValue('title');
-            $tramite->body = $form->getValue('body');
-            $tramite->youtube = $form->getValue('youtube');
-            list($day, $month, $year) = explode('/', $form->date->getValue());
-            $tramite->creation_date = "{$year}-{$month}-{$day}";
-            $tramite->active = $form->getValue('active');
-            $tramite->save();
-            $this->_forwardToGeoloc('tramite', $tramite->id);
-        }
-        $this->view->id = $id;
-        $this->view->form = $form;
-        $this->view->headScript()->appendFile("/js/modules/admin/cancelSubmitWithEnterKey.js");
-        $this->view->headScript()->appendFile("/js/modules/admin/tinyMCEConfig.js");
-        $this->view->headScript()->appendFile("/js/modules/admin/datepickerConfig.js");
-    }
-    
     public function listarTramitesAction()
     {
         $this->view->headScript()->appendFile("/js/data_tables/js/jquery.dataTables.custom.js");
-
         $request = $this->getRequest();
         $this->view->active = self::TRAMITE;
         $this->_loadDataTables();
         $tramites = new Tramite();
-        
         $this->view->tramites = $tramites->listarTramites();
     }
     
