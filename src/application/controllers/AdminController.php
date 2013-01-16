@@ -212,18 +212,6 @@ class AdminController extends Zend_Controller_Action
         $this->view->poll6 = Poll::getByCategory('6');
     }
     
-    public function agregarPoliticaPublicaAction()
-    {
-        // se esta agregando un index.js desde el ini del form
-        $this->view->active = self::POLITICA_PUBLICA;
-        $this->_loadPlupload()->_loadTinyMce()->_loadJavascriptTextLimit();
-        $this->view->politicaPublicaForm = new Application_Form_PoliticaPublicaStepOne();
-        $this->view->footerScript()->appendFile("/js/modules/admin/cancelSubmitWithEnterKey.js");
-        $this->view->footerScript()->appendFile("/js/modules/admin/tinyMCEConfig.js");
-        $this->view->footerScript()->appendFile("/js/modules/admin/datepickerConfig.js");
-        $this->view->footerScript()->appendFile("/js/modules/admin/addPublicPolitics.js");
-    }
-    
     private function _preparePopulate($id)
     {
         $publicPoliticsModel = new News();
@@ -242,27 +230,6 @@ class AdminController extends Zend_Controller_Action
         $publicPolitic['preferentialCategory'] = $publicPolitic['preferential_category'];
         unset($publicPolitic['preferential_category']);
         return $publicPolitic;
-    }
-    
-    public function editarPoliticaPublicaAction()
-    {
-        $this->view->active = self::POLITICA_PUBLICA;
-        $request = $this->getRequest();
-        if (NULL !== ($id = $request->getParam('id', null))) {
-            $form = new Application_Form_PoliticaPublica();
-            $form->getElement('publicPoliticsSubmit')->setLabel('Modificar');
-            $data = $this->_preparePopulate($id);
-            $form->populate($data);
-//             $form->setPublicPoliticsId($id);
-            $this->_loadPlupload()->_loadTinyMce()->_loadJavascriptTextLimit();
-            $this->view->form = $form->render();
-        }
-        $this->view->id = $id;
-        $this->view->headScript()->appendFile("/js/modules/admin/cancelSubmitWithEnterKey.js");
-        $this->view->headScript()->appendFile("/js/modules/admin/tinyMCEConfig.js");
-        $this->view->headScript()->appendFile("/js/modules/admin/datepickerConfig.js");
-        $this->view->headScript()->appendFile('/js/modules/admin/selectPublicPolitics.js');
-        $this->view->headScript()->appendFile('/js/modules/admin/addPublicPolitics.js');
     }
     
     public function eliminarPoliticaPublicaAction(){
@@ -285,38 +252,6 @@ class AdminController extends Zend_Controller_Action
         }
         $this->_helper->redirector->gotoSimple($request->getParam('volver'),'admin' );
         //$this->getHelper('viewRenderer')->setNoRender();
-    }
-    
-    public function agregarNoticiaAction()
-    {
-        // se esta agregando un news.js desde el ini del form
-        $this->view->active = self::NOTICIA;
-        $this->_loadPlupload()->_loadTinyMce()->_loadJavascriptTextLimit();
-        $this->view->form = new Application_Form_News();
-        $this->view->headScript()->appendFile("/js/modules/admin/cancelSubmitWithEnterKey.js");
-        $this->view->headScript()->appendFile("/js/modules/admin/tinyMCEConfig.js");
-        $this->view->headScript()->appendFile("/js/modules/admin/datepickerConfig.js");
-        $this->view->lateScript()->appendFile('/js/modules/admin/news.js');
-    }
-    
-    public function editarNoticiaAction()
-    {
-        $this->view->active = self::NOTICIA;
-        $request = $this->getRequest();
-        if (NULL !== ($id = $request->getParam('id', null))) {
-            $form = new Application_Form_News();
-            $form->getElement('newsSubmit')->setLabel('Modificar');
-            $form->setNewsId($id);
-            $this->_loadPlupload()->_loadTinyMce()->_loadJavascriptTextLimit();
-            $form->populateWithNewsId($id);
-            $this->view->form = $form->render();
-        }
-        $this->view->id = $id;
-        $this->view->headScript()->appendFile("/js/modules/admin/cancelSubmitWithEnterKey.js");
-        $this->view->headScript()->appendFile("/js/modules/admin/tinyMCEConfig.js");
-        $this->view->headScript()->appendFile("/js/modules/admin/datepickerConfig.js");
-        $this->view->headScript()->appendFile('/js/modules/admin/selectPublicPolitics.js');
-        $this->view->headScript()->appendFile('/js/modules/admin/news.js');
     }
     
     public function editarFaqAction()
@@ -346,13 +281,6 @@ class AdminController extends Zend_Controller_Action
         $this->view->headScript()->appendFile("/js/modules/admin/cancelSubmitWithEnterKey.js");
         $this->view->headScript()->appendFile("/js/modules/admin/tinyMCEConfig.js");
         $this->view->headScript()->appendFile("/js/modules/admin/datepickerConfig.js");
-    }
-    
-    public function testAction()
-    {
-        $form = new Application_Form_Test();
-        $this->_loadPlupload()->_loadTinyMce()->_loadJavascriptTextLimit();
-        $this->view->form = $form;
     }
     
     private function _addOrEditPublicPolitics($form)
