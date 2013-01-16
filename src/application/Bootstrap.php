@@ -191,6 +191,22 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
                     'type' => 'news'
                 )
             ),
+            'tramiteStepOne' => new Zend_Controller_Router_Route(
+                'admin/tramite-step-one/:id',
+                array(
+                    'controller' => 'admin',
+                    'action' => 'tramite-step-one',
+                    'id' => null
+              )
+            ),
+            'tramiteStepTwo' => new Zend_Controller_Router_Route(
+                'admin/tramite-step-two/:id',
+                array(
+                    'controller' => 'admin',
+                    'action' => 'geolocalizar',
+                    'type' => 'tramite'
+                )
+            ),
         );
         $router->addRoutes($routes);
         return $router;

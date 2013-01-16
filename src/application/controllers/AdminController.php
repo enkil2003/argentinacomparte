@@ -146,6 +146,39 @@ class AdminController extends Zend_Controller_Action
         $this->view->footerScript()->appendFile("/js/modules/admin/addNoticiaStepTwo.js");
     }
     
+    public function tramiteStepOneAction()
+    {
+        $form = new Application_Form_Tramite();
+        // cargar
+        if (!$this->_request->isPost() && null !== $this->_request->getParam('id', null)) {
+            $tramiteModel = new Tramite();
+            $data = $tramiteModel->findById($this->_request->getParam('id'));
+            $form->populate($data);
+        }
+        // guardar
+        if ($this->_request->isPost() && $form->isValid($this->_request->getPost())) {
+            if ($this->_request->getPost('id')) {
+                $tramite = Doctrine_Core::getTable('Tramite')->find($this->_request->getPost('id'));
+            } else {
+                $tramite = new Tramite();
+            }
+            $tramite->title = $form->getValue('title');
+            $tramite->body = $form->getValue('body');
+            $tramite->youtube = $form->getValue('youtube');
+            list($day, $month, $year) = explode('/', $form->date->getValue());
+            $tramite->creation_date = "{$year}-{$month}-{$day}";
+            $tramite->active = $form->getValue('active');
+            $tramite->save();
+            $this->_redirect('/admin/tramite-step-two/' . $tramite->id);
+        }
+        $this->_loadTinyMce();
+        $this->view->form = $form;
+        $this->view->active = self::TRAMITE;
+        $this->view->headScript()->appendFile("/js/modules/admin/cancelSubmitWithEnterKey.js");
+        $this->view->headScript()->appendFile("/js/modules/admin/tinyMCEConfig.js");
+        $this->view->headScript()->appendFile("/js/modules/admin/datepickerConfig.js");
+    }
+    
     public function init()
     {
         $this->view->layout()->setLayout('admin');
@@ -424,29 +457,6 @@ class AdminController extends Zend_Controller_Action
         $this->_loadDataTables();
         $poll = new Poll();
         $this->view->encuestas = $poll->fetchAll();
-    }
-    
-    public function agregarTramiteAction()
-    {
-        $request = $this->getRequest();
-        $this->view->active = self::TRAMITE;
-        $this->_loadTinyMce();
-        $form = new Application_Form_Tramite();
-        if ($request->isPost() && $form->isValid($request->getPost())) {
-            $tramite = new Tramite();
-            $tramite->title = $form->getValue('title');
-            $tramite->body = $form->getValue('body');
-            $tramite->youtube = $form->getValue('youtube');
-            list($day, $month, $year) = explode('/', $form->date->getValue());
-            $tramite->creation_date = "{$year}-{$month}-{$day}";
-            $tramite->active = $form->getValue('active');
-            $tramite->save();
-            $this->_forwardToGeoloc('tramite', $tramite->id);
-        }
-        $this->view->form = $form;
-        $this->view->headScript()->appendFile("/js/modules/admin/cancelSubmitWithEnterKey.js");
-        $this->view->headScript()->appendFile("/js/modules/admin/tinyMCEConfig.js");
-        $this->view->headScript()->appendFile("/js/modules/admin/datepickerConfig.js");
     }
     
     private function _forwardToGeoloc($type, $id)
