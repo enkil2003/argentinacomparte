@@ -2,5 +2,10 @@ INSTALL.txt
 LICENSE.txt
 README.txt
 demos/
-extras/documentation
-
+extras/
+.project
+.settings/
+src/data/logs/application.log
+src/public/dummy.php
+.buildpath
+src/library/Zend
