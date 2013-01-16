@@ -175,6 +175,22 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
                     'id' => null
                 )
             ),
+            'noticiaStepTwo' => new Zend_Controller_Router_Route(
+                'admin/noticia-step-two/:id',
+                array(
+                    'controller' => 'admin',
+                    'action' => 'noticia-step-two',
+                    'id' => null
+                )
+            ),
+            'noticiaStepThree' => new Zend_Controller_Router_Route(
+                'admin/noticia-step-three/:id',
+                array(
+                    'controller' => 'admin',
+                    'action' => 'geolocalizar',
+                    'type' => 'news'
+                )
+            ),
         );
         $router->addRoutes($routes);
         return $router;
