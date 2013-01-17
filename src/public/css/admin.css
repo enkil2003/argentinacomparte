@@ -90,7 +90,10 @@ form dt {
     background-color: #CCC;
 }
 form dd {
-	margin-left: 0;
+    margin-left: 0;
+}
+form select[list] {
+    height: 100px;
 }
 form label {
     font-size: 28px;
