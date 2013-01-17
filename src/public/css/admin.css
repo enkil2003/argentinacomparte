@@ -83,15 +83,15 @@ h2 {
     margin-bottom: 15px;
     padding: 10px;
 }
-dt {
+form dt {
     border: 1px solid #AAA;
     padding: 10px;
     background-color: #CCC;
 }
-dd {
+form dd {
 	margin-left: 0;
 }
-label {
+form label {
     font-size: 28px;
     text-shadow: 1px 1px 1px black;
     color: white;

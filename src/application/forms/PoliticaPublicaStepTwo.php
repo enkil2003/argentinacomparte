@@ -21,8 +21,16 @@ class Application_Form_PoliticaPublicaStepTwo extends Application_Form_AdminAbst
     public function setModify()
     {
         $this->getElement('publicPoliticsSubmit')->setLabel('Modificar galería');
-        $button = new Zend_Form_Element_Button('geoloc');
-        $button->setOptions(array('class' => 'btn-primary btn-large', 'label' => 'Ir a geolocalización'));
+        $button = new Zend_Form_Element_Submit('geoloc');
+        $button->setOptions(
+            array(
+                'class' => 'btn-primary btn-large',
+                'label' => 'Ir a geolocalización',
+                'decorators' => array(
+                    'videHelper' => 'viewHelper',
+                )
+            )
+        );
         $this->addElement($button);
     }
     
