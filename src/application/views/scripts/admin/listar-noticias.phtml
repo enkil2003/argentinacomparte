@@ -2,7 +2,7 @@
 <table id="formatotabla" class="display">
   <thead>
     <tr>
-      <th>&nbsp;</th>
+      <th>Acciones</th>
       <th>id</th>
       <th>titulo</th>
       <th>fecha</th>
@@ -19,3 +19,21 @@
   ?>
   </tbody>
 </table>
+<script>
+$('[title="predeterminar"]').bind(
+    'click',
+    function() {
+        var self = $(this);
+        $.post(
+            '/admin/predeterminar-portada',
+            {id: $(this).attr('data-id')},
+            function(response) {
+                console.dir(response);
+                $('[title="predeterminar"]').find('i').removeClass('icon-star').addClass('icon-star-white');
+                self.find('i').removeClass('icon-star-white').addClass('icon-star');
+            },
+            'json'
+        );
+    }
+);
+</script>

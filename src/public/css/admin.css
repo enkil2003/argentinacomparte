@@ -1,9 +1,8 @@
+body {
+    background-color: #E2E9F3;
+}
 #adminToolBar .container {
     width: 1000px;
-}
-textarea[name="copy"] {
-    height: 40px;
-    width: 922px;
 }
 .opacity {
     -ms-filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=50);
@@ -38,6 +37,9 @@ textarea[name="copy"] {
     border-radius: 5px;
     padding: 25px;
     box-shadow: 5px 5px 5px rgba(0, 0, 0, .5);
+    border-radius: 10px 0;
+    border: 1px solid #CCC;
+    background-color: white;
 }
 /* GEOLOC */
 #localizationControls #address {
@@ -58,4 +60,39 @@ textarea[name="copy"] {
 }
 .control-group.error .mceIframeContainer.mceFirst.mceLast {
     border: 1px solid #953B39;
+}
+.control-group input[type="text"] {
+    font-size: 16px;
+    height: 40px;
+    width: 930px;
+    margin-top: -1px;
+}
+.control-group select {
+    width: 100%;
+    font-size: 16px;
+}
+.control-group textarea {
+    height: 40px;
+    width: 930px;
+}
+h2 {
+    background-color: #36F;
+    border-radius: 10px 0;
+    box-shadow: 3px 4px 7px #000;
+    color: #FFF;
+    margin-bottom: 15px;
+    padding: 10px;
+}
+dt {
+    border: 1px solid #AAA;
+    padding: 10px;
+    background-color: #CCC;
+}
+dd {
+	margin-left: 0;
+}
+label {
+    font-size: 28px;
+    text-shadow: 1px 1px 1px black;
+    color: white;
 }

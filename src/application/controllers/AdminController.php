@@ -506,14 +506,13 @@ class AdminController extends Zend_Controller_Action
     
     public function predeterminarPortadaAction()
     {
-        $request = $this->getRequest();
-        
         $this->view->active = self::PREDETERMINADO;
-        
         $form = new Application_Form_DestacadoPortada();
-        
-        if ($request->isPost() && $form->isValid($request->getPost())) {
+        if ($this->_request->isPost() && $form->isValid($this->_request->getPost())) {
             Predeterminar::publicarPortada($form->id->getValue());
+            header('content-type: application/json');
+            echo json_encode(array('result' => true));
+            die;
         } 
         
         $this->view->form = $form;

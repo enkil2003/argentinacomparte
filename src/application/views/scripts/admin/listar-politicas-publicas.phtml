@@ -20,6 +20,19 @@
   </tbody>
 </table>
 <script type="text/javascript" charset="utf-8">
+$('[title="predeterminar"]').bind(
+    'click',
+    function() {
+        $.post(
+            '/admin/predeterminar-portada',
+            {id: $('#id').attr('data-id')},
+            function(response) {
+                console.dir(response);
+            },
+            'json'
+        );
+    }
+);
 $('.to_modal').click(function(e) {
     e.preventDefault();
     var href = $(e.target).attr('href');
