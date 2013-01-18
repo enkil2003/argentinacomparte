@@ -62,6 +62,27 @@ class AdminController extends Zend_Controller_Action
         $this->view->footerScript()->appendFile("/js/modules/admin/addPoliticasPublicasStepTwo.js");
     }
     
+    private $_addedFlashMessages = array();
+    
+    private function _setMessage($title, $messages, $type)
+    {
+        if (in_array($messages, $this->_addedFlashMessages)) {
+            return;
+        }
+        $this->_addedFlashMessages[] = $messages;
+        $messagesArray = is_array($messages)
+            ? $messages
+            : array($messages)
+        ;
+        $this->_helper->flashMessenger->AddMessage(
+            array(
+                'title' => $title,
+                'messages' => $messagesArray,
+                'type' => $type
+            )
+        );
+    }
+    
     public function politicasPublicasStepOneAction()
     {
         $form = new Application_Form_PoliticaPublicaStepOne();
@@ -193,7 +214,6 @@ class AdminController extends Zend_Controller_Action
         $this->view->headLink()->appendStylesheet('/css/admin.css');
         $this->view->headScript()->appendFile('/js/lib/bootstrap/bootstrap-dropdown.js');
         $this->view->headScript()->appendFile('/js/modules/admin/default.js');
-        $this->view->headScript()->appendFile('/js/jquery/plugin/jquery.plugin.scrollTo.min.js');
         
         $this->_bannerDir = APPLICATION_TMP_DIR . '/../banners/';
         if (!is_writable($this->_bannerDir)) {

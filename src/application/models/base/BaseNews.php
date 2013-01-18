@@ -18,7 +18,7 @@
  * @property integer $active
  * @property integer $news_id
  * @property integer $user
- * @property string $slug
+ * @property integer $draft
  * @property Category $Category
  * @property Doctrine_Collection $News
  * @property User $User
@@ -154,14 +154,15 @@ abstract class BaseNews extends Doctrine_Record
              'autoincrement' => false,
              'length' => '4',
              ));
-        $this->hasColumn('slug', 'string', 100, array(
-             'type' => 'string',
+        $this->hasColumn('draft', 'integer', 1, array(
+             'type' => 'integer',
              'fixed' => 0,
-             'unsigned' => false,
+             'unsigned' => true,
              'primary' => false,
-             'notnull' => false,
+             'default' => '0',
+             'notnull' => true,
              'autoincrement' => false,
-             'length' => '100',
+             'length' => '1',
              ));
     }
 

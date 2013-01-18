@@ -12,9 +12,8 @@
  * @property integer $active
  * @property integer $tramite
  * @property integer $news
- * @property string $address
- * @property News $News
  * @property Tramite $Tramite
+ * @property News $News
  * 
  * @package    ##PACKAGE##
  * @subpackage ##SUBPACKAGE##
@@ -88,26 +87,17 @@ abstract class BaseGeolocalization extends Doctrine_Record
              'autoincrement' => false,
              'length' => '4',
              ));
-        $this->hasColumn('address', 'string', 45, array(
-             'type' => 'string',
-             'fixed' => 0,
-             'unsigned' => false,
-             'primary' => false,
-             'notnull' => false,
-             'autoincrement' => false,
-             'length' => '45',
-             ));
     }
 
     public function setUp()
     {
         parent::setUp();
-        $this->hasOne('News', array(
-             'local' => 'news',
-             'foreign' => 'id'));
-
         $this->hasOne('Tramite', array(
              'local' => 'tramite',
+             'foreign' => 'id'));
+
+        $this->hasOne('News', array(
+             'local' => 'news',
              'foreign' => 'id'));
     }
 }

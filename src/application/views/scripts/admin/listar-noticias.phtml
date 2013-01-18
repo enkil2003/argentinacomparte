@@ -28,9 +28,8 @@ $('[title="predeterminar"]').bind(
             '/admin/predeterminar-portada',
             {id: $(this).attr('data-id')},
             function(response) {
-                console.dir(response);
-                $('[title="predeterminar"]').find('i').removeClass('icon-star').addClass('icon-star-white');
-                self.find('i').removeClass('icon-star-white').addClass('icon-star');
+                $('[title="predeterminar"] i').removeClass('icon-star').addClass('icon-star-empty');
+                self.find('i').removeClass('icon-star-empty').addClass('icon-star');
             },
             'json'
         );
