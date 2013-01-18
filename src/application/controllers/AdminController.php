@@ -18,6 +18,27 @@ class AdminController extends Zend_Controller_Action
     
     private $_bannerDir = null;
     
+    private function _predeterminar($type, $id)
+    {
+        $form = new Application_Form_DestacadoPortada();
+        if ($form->isValid(array('id' => $id))) {
+            return Predeterminar::publicarPortada($form->id->getValue());
+        }
+    }
+    
+    public function predeterminarAction() {
+        $id = $this->_request->getParam('id');
+        
+        $this->_predeterminar($type, $id)
+        $this->view->form = $form;
+        
+        $portada = Predeterminar::findPortada();
+        $destacar = News::findById($portada['value']) ;
+        $this->view->actualDestaque = $destacar['title'];
+        
+        $this->view->headScript()->appendFile('/js/lib/bootstrap/bootstrap-alert.js');
+    }
+    
     public function noticiaStepOneAction()
     {
         $form = new Application_Form_NewsStepOne();

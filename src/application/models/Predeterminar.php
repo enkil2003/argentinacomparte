@@ -29,7 +29,7 @@ class Predeterminar extends BasePredeterminar
     
     public static function publicarPortada($id)
     {
-        $q = Doctrine_Query::create()
+        return Doctrine_Query::create()
         ->update('Predeterminar')
         ->set('value', $id)
         ->where('element = "portada"')

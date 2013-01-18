@@ -25,7 +25,7 @@ $('[title="predeterminar"]').bind(
     function() {
         var self = $(this);
         $.post(
-            '/admin/predeterminar-portada',
+            '/admin/predeterminar/',
             {id: $(this).attr('data-id')},
             function(response) {
                 $('[title="predeterminar"] i').removeClass('icon-star').addClass('icon-star-empty');

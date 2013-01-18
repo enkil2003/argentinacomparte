@@ -207,6 +207,13 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
                     'type' => 'tramite'
                 )
             ),
+            'predeterminar' => new Zend_Controller_Router_Route(
+                'admin/predeterminar/:id',
+                array(
+                    'controller' => 'admin',
+                    'action' => 'predeterminar',
+                )
+            ),
         );
         $router->addRoutes($routes);
         return $router;
