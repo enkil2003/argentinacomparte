@@ -406,12 +406,12 @@ NewsHasCategory:
       primary: true
       autoincrement: false
   relations:
-    Category:
-      local: category_id
-      foreign: id
-      type: one
     News:
       local: news_id
+      foreign: id
+      type: one
+    Category:
+      local: category_id
       foreign: id
       type: one
 Poll:

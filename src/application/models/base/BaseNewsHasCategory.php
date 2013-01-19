@@ -7,8 +7,8 @@
  * 
  * @property integer $news_id
  * @property integer $category_id
- * @property Category $Category
  * @property News $News
+ * @property Category $Category
  * 
  * @package    ##PACKAGE##
  * @subpackage ##SUBPACKAGE##
@@ -41,12 +41,12 @@ abstract class BaseNewsHasCategory extends Doctrine_Record
     public function setUp()
     {
         parent::setUp();
-        $this->hasOne('Category', array(
-             'local' => 'category_id',
-             'foreign' => 'id'));
-
         $this->hasOne('News', array(
              'local' => 'news_id',
+             'foreign' => 'id'));
+
+        $this->hasOne('Category', array(
+             'local' => 'category_id',
              'foreign' => 'id'));
     }
 }
