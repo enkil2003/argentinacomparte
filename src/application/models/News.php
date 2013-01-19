@@ -59,12 +59,12 @@ class News extends BaseNews
     {
         $result = Doctrine_Query::create()
             ->update('News')
-            ->set('highlight', '0')
+            ->set('default', '0')
             ->execute();
         
         $result = Doctrine_Query::create()
             ->update('News')
-            ->set('highlight', '1')
+            ->set('default', '1')
             ->where('id = ?', $id)
             ->execute();
         
@@ -73,7 +73,7 @@ class News extends BaseNews
     
     public function getHighlight()
     {
-        $q = Doctrine_Query::create()
+            $q = Doctrine_Query::create()
             ->select('
                 n.id,
                 n.title,
@@ -91,19 +91,20 @@ class News extends BaseNews
                 n.youtube,
                 n.body,
                 n.active,
+                n.default,
                 nhc.*,
                 n2.*,
                 i2.*,
                 i.*,
-                g.*
-           ')
+                g.*,
+            ')
             ->from('News n')
             ->leftJoin('n.Images i')
             ->leftJoin('n.News n2')
             ->leftJoin('n2.Images i2')
             ->leftJoin('n.NewsHasCategory nhc')
             ->leftJoin('n.Geolocalization g')
-            ->where('n.highlight = 1')
+            ->where('n.default = 1')
             ->limit(1);
         if ($result = $q->fetchOne()) {
             $return = $result->toArray();

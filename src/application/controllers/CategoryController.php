@@ -78,8 +78,7 @@ class CategoryController extends Zend_Controller_Action
     
     public function indexAction()
     {
-        $portada = Predeterminar::findPortada();
-        $destacar = News::findById($portada['value']) ;
+        $destacar = News::getHighlight();
         $this->view->codyt = $destacar['youtube'];
         
         if ($destacar['news_id'] != NULL) {  //despejo que es noticia 
