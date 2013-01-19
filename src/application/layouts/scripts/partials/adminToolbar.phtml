@@ -1,0 +1,74 @@
+<div id="adminToolBar" class="navbar navbar-fixed-top">
+  <div class="navbar-inner">
+    <div class="container">
+      <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </a>
+      <a class="brand" href="/admin">Escritorio</a>
+      <div class="nav-collapse">
+        <ul class="nav">
+          <li class="dropdown <?php echo $this->active === AdminController::POLITICA_PUBLICA? 'active':'';?>">
+            <a class="dropdown-toggle" href="#">Política Pública<b class="caret"></b></a>
+            <ul class="dropdown-menu">
+              <li><a href="/admin/politicas-publicas-step-one"><i class="icon-file"></i> Crear</a></li>
+              <li><a href="/admin/listar-politicas-publicas"><i class="icon-pencil"></i> Listar</a></li>
+            <!--  <li><a href="/admin/editar-politica-publica"><i class="icon-pencil"></i> Editar</a></li>  
+              <li><a href="/admin/eliminar-politica-publica">Eliminar</a></li>  -->
+            </ul>
+          </li>
+          <li class="dropdown <?php echo $this->active === AdminController::NOTICIA? 'active':'';?>">
+            <a class="dropdown-toggle" href="#">Noticia<b class="caret"></b></a>
+            <ul class="dropdown-menu">
+              <li><a href="/admin/noticia-step-one"><i class="icon-file"></i> Crear</a></li>
+              <li><a href="/admin/listar-noticias"><i class="icon-pencil"></i> Listar</a></li>
+            <!--  <li><a href="/admin/editar-noticia"><i class="icon-pencil"></i> Editar</a></li>
+              <li><a href="/admin/eliminar-noticia">Eliminar</a></li> --> 
+            </ul>
+          </li>
+          <!-- <li class="dropdown <?php echo $this->active === AdminController::TEMA? 'active':'';?>">
+            <a class="dropdown-toggle" href="#">Tema<b class="caret"></b></a>
+            <ul class="dropdown-menu">
+              <li><a href="#"><i class="icon-file"></i> Crear</a></li>
+              <li><a href="#"><i class="icon-pencil"></i> Editar</a></li>
+              <li><a href="#">Eliminar</a></li>
+            </ul>
+          </li>
+           -->
+          <li class="dropdown <?php echo $this->active === AdminController::TRAMITE? 'active':'';?>">
+            <a class="dropdown-toggle" href="#">Trámite<b class="caret"></b></a>
+            <ul class="dropdown-menu">
+              <li><a href="/admin/tramite-step-one"><i class="icon-file"></i> Crear</a></li>
+              <li><a href="/admin/listar-tramites"><i class="icon-pencil"></i> Listar</a></li>
+             <!--  <li><a href="/admin/eliminar-tramite">Eliminar</a></li> -->
+            </ul>
+          </li>
+          <li class="dropdown <?php echo $this->active === AdminController::ENCUESTAS? 'active':'';?>">
+            <a class="dropdown-toggle" href="#">Encuestas<b class="caret"></b></a>
+            <ul class="dropdown-menu">
+              <li><a href="/admin/agregar-encuesta"><i class="icon-file"></i> Crear</a></li>
+              <li><a href="/admin/listar-encuestas"><i class="icon-pencil"></i> Listar</a></li>
+             <!--  <li><a href="/admin/eliminar-tramite">Eliminar</a></li> -->
+            </ul>
+          </li>
+          <li class="dropdown <?php echo $this->active === AdminController::FAQ? 'active':'';?>">
+            <a class="dropdown-toggle" href="#">FAQ<b class="caret"></b></a>
+            <ul class="dropdown-menu">
+              <li><a href="/admin/agregar-faq"><i class="icon-file"></i> Crear</a></li>
+              <li><a href="/admin/listar-faq"><i class="icon-pencil"></i> Listar</a></li>
+            </ul>
+          </li>
+          <li class="dropdown <?php echo $this->active === AdminController::BANNER? 'active':'';?>">
+            <a class="dropdown-toggle" href="#">Banner<b class="caret"></b></a>
+            <ul class="dropdown-menu">
+              <li><a href="/admin/agregar-banner"><i class="icon-file"></i> Crear</a></li>
+              <li><a href="/admin/listar-banners"><i class="icon-pencil"></i> Listar</a></li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+      <a href="/" target="_blank" class="btn">ir al sitio</a>
+    </div>
+  </div>
+</div>
