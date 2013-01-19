@@ -17,6 +17,7 @@ class Predeterminar extends BasePredeterminar
             ->select('
                 p.*
            ')
+           ->join('')
             ->from('Predeterminar p')
             ->where('p.element = ?','portada')
             ->limit(1)

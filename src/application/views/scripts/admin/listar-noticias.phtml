@@ -19,20 +19,3 @@
   ?>
   </tbody>
 </table>
-<script>
-$('[title="predeterminar"]').bind(
-    'click',
-    function() {
-        var self = $(this);
-        $.post(
-            '/admin/predeterminar/',
-            {id: $(this).attr('data-id')},
-            function(response) {
-                $('[title="predeterminar"] i').removeClass('icon-star').addClass('icon-star-empty');
-                self.find('i').removeClass('icon-star-empty').addClass('icon-star');
-            },
-            'json'
-        );
-    }
-);
-</script>

@@ -1,0 +1,19 @@
+<?php
+$flashMessenger = Zend_Controller_Action_HelperBroker::getStaticHelper('FlashMessenger');
+$messages = $flashMessenger->getMessages();
+?>
+<div id="messageBoxHolder" <?php echo !$flashMessenger->hasMessages() ? 'style="display: none"' : '' ?>> 
+  <div id="messageBox" class="alert alert-<?php echo $this->type; ?>">
+    <button type="button" class="close">&times;</button>
+    <h4 class="alert-heading"><?php echo $this->title; ?></h4>
+    <ul>
+    <?php
+    if ($flashMessenger->hasMessages()) {
+        foreach($messages['messages'] as $message) :
+            echo "<li>{$message}</li>";
+        endforeach;
+    }
+    ?>
+    </ul>
+  </div>
+</div>

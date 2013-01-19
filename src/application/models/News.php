@@ -11,7 +11,7 @@
  */
 class News extends BaseNews
 {
-    public static function findById($id,$active = NULL)
+    public static function findById($id, $active = NULL)
     {
         $q = Doctrine_Query::create()
             ->select('
@@ -49,6 +49,62 @@ class News extends BaseNews
   //          }
             ;
             $q->limit(1);
+        if ($result = $q->fetchOne()) {
+            $return = $result->toArray();
+            return $return;
+        }
+    }
+    
+    public function setHighlight($id)
+    {
+        $result = Doctrine_Query::create()
+            ->update('News')
+            ->set('highlight', '0')
+            ->execute();
+        
+        $result = Doctrine_Query::create()
+            ->update('News')
+            ->set('highlight', '1')
+            ->where('id = ?', $id)
+            ->execute();
+        
+        return true;
+    }
+    
+    public function getHighlight()
+    {
+        $q = Doctrine_Query::create()
+            ->select('
+                n.id,
+                n.title,
+                IF(
+                    LENGTH(n.copy) > 200,
+                    CONCAT(LEFT(n.copy, 280), \'...</p>\'),
+                    n.copy
+                ) AS copy,
+                n.modified_by,
+                n.creation_date,
+                n.modification_date,
+                n.preferential_category,
+                n.news_id,
+                n.mintit,
+                n.youtube,
+                n.body,
+                n.active,
+                nhc.*,
+                n2.*,
+                i2.*,
+                i.*,
+                g.*
+           ')
+            ->from('News n')
+            ->leftJoin('n.Images i')
+            ->leftJoin('n.News n2')
+            ->leftJoin('n2.Images i2')
+            ->leftJoin('n.NewsHasCategory nhc')
+            ->leftJoin('n.Geolocalization g')
+            ->where('n.highlight = 1')
+            ->limit(1);
         if ($result = $q->fetchOne()) {
             $return = $result->toArray();
             return $return;

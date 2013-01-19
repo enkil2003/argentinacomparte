@@ -3,7 +3,7 @@
     <a class="btn btn-success" title="editar" href="/admin/noticia-step-one/<?php echo $this->id ?>"><i class="icon-pencil icon-white"></i></a>
     <a class="btn btn-success" title="galeria de imagenes" href="/admin/noticia-step-two/<?php echo $this->id ?>"><i class="icon-camera icon-white"></i></a>
     <a class="btn btn-success" title="geolocalizar" href="/admin/noticia-step-three/<?php echo $this->id ?>"><i class="icon-map-marker icon-white"></i></a>
-    <a class="btn btn-success" data-id="<?php echo $this->id ?>" title="predeterminar" href="javascript:;"><i class="icon-white icon-star-empty"></i></a>
+    <a class="btn btn-success" data-id="<?php echo $this->id ?>" title="predeterminar" href="javascript:;"><i class="icon-white icon-star<?php echo !$this->highlight ? '-empty': '';?>"></i></a>
     <a class="btn" target="_BLANK" title="ver" href="/ver-mas/id/<?php echo $this->id ?>/<?php echo My_Filter_Slug::filter($this->title);?>"><i class="icon-eye-open"></i></a>
   </td>
   <td>

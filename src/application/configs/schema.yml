@@ -352,6 +352,14 @@ News:
       default: '0'
       notnull: true
       autoincrement: false
+    highlight:
+      type: integer(1)
+      fixed: false
+      unsigned: false
+      primary: false
+      default: '0'
+      notnull: true
+      autoincrement: false
   relations:
     Category:
       local: preferential_category
@@ -509,23 +517,6 @@ Poll:
       local: category
       foreign: id
       type: one
-Predeterminar:
-  connection: 0
-  tableName: predeterminar
-  columns:
-    element:
-      type: string(50)
-      fixed: false
-      unsigned: false
-      primary: true
-      autoincrement: false
-    value:
-      type: integer(4)
-      fixed: false
-      unsigned: false
-      primary: false
-      notnull: true
-      autoincrement: false
 Tramite:
   connection: 0
   tableName: tramite

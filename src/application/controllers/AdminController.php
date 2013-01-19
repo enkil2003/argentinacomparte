@@ -18,25 +18,12 @@ class AdminController extends Zend_Controller_Action
     
     private $_bannerDir = null;
     
-    private function _predeterminar($type, $id)
-    {
-        $form = new Application_Form_DestacadoPortada();
-        if ($form->isValid(array('id' => $id))) {
-            return Predeterminar::publicarPortada($form->id->getValue());
-        }
-    }
-    
     public function predeterminarAction() {
         $id = $this->_request->getParam('id');
-        
-        $this->_predeterminar($type, $id)
-        $this->view->form = $form;
-        
-        $portada = Predeterminar::findPortada();
-        $destacar = News::findById($portada['value']) ;
-        $this->view->actualDestaque = $destacar['title'];
-        
-        $this->view->headScript()->appendFile('/js/lib/bootstrap/bootstrap-alert.js');
+        $result = News::setHighlight($id);
+        header('content-type: application/json');
+        echo json_encode(array('result' => $result));
+        die;
     }
     
     public function noticiaStepOneAction()
@@ -235,6 +222,7 @@ class AdminController extends Zend_Controller_Action
         $this->view->headLink()->appendStylesheet('/css/admin.css');
         $this->view->headScript()->appendFile('/js/lib/bootstrap/bootstrap-dropdown.js');
         $this->view->headScript()->appendFile('/js/modules/admin/default.js');
+        $this->view->headScript()->appendFile('/js/jquery/plugin/jquery.plugin.flashMessenger.js');
         
         $this->_bannerDir = APPLICATION_TMP_DIR . '/../banners/';
         if (!is_writable($this->_bannerDir)) {
@@ -364,6 +352,8 @@ class AdminController extends Zend_Controller_Action
     
     public function listarPoliticasPublicasAction() {
         $this->view->headScript()->appendFile("/js/data_tables/js/jquery.dataTables.custom.pp.js");
+        $this->view->headScript()->appendFile("/js/modules/admin/predeterminar.js");
+        
         $request = $this->getRequest();
         $this->view->active = self::POLITICA_PUBLICA;
         $this->_loadDataTables();
@@ -408,6 +398,7 @@ class AdminController extends Zend_Controller_Action
     public function listarNoticiasAction() {
 
         $this->view->headScript()->appendFile("/js/data_tables/js/jquery.dataTables.custom.news.js");
+        $this->view->headScript()->appendFile("/js/modules/admin/predeterminar.js");
         
         $request = $this->getRequest();
         $this->view->active = self::NOTICIA;

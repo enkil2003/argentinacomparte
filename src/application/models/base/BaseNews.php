@@ -19,6 +19,7 @@
  * @property integer $news_id
  * @property integer $user
  * @property integer $draft
+ * @property integer $highlight
  * @property Category $Category
  * @property Doctrine_Collection $News
  * @property User $User
@@ -158,6 +159,16 @@ abstract class BaseNews extends Doctrine_Record
              'type' => 'integer',
              'fixed' => 0,
              'unsigned' => true,
+             'primary' => false,
+             'default' => '0',
+             'notnull' => true,
+             'autoincrement' => false,
+             'length' => '1',
+             ));
+        $this->hasColumn('highlight', 'integer', 1, array(
+             'type' => 'integer',
+             'fixed' => 0,
+             'unsigned' => false,
              'primary' => false,
              'default' => '0',
              'notnull' => true,

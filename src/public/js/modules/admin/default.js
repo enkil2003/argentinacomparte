@@ -1,4 +1,5 @@
-$(function() {
+var AC = AC || {};
+AC.flashMessenger = $(function() {
     $('.dropdown a').bind(
         'click.closeOpenedDropdowns',
         function() {
@@ -6,4 +7,5 @@ $(function() {
         }
     );
     $('.dropdown-toggle').dropdown();
+    $('#messageBoxHolder').flashMessenger();
 });

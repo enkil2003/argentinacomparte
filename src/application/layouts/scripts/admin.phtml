@@ -96,7 +96,7 @@
   </div>
 </div>
 <div id="content" class="container admin">
-<?php echo $this->partial('partials/errorMessages.phtml'); ?>
+<?php echo $this->partial('partials/errorMessages.phtml', array('title' => '', 'type' => '')); ?>
 <?php echo $this->layout()->content; ?>
 </div>
 <?php echo $this->footerScript() . PHP_EOL; ?>
