@@ -57,7 +57,21 @@ $(function() {
                     {},
                     function (response) {
                         if (response.binded === true) {
-                            redirectToGeolocate();
+                            $.get(
+                                '/admin/set-flash-message',
+                                {type: 'success', message: 'Imagenes agregadas con éxito', title: 'Noticias'},
+                                function(response) {
+                                    _setFlashMessages(
+                                        'Noticias',
+                                        'Imagenes agregadas con éxito',
+                                        'success',
+                                        function() {
+                                            redirectToGeolocate();
+                                        }
+                                    );
+                                },
+                                'json'
+                            );
                         }
                     },
                     'json'
@@ -65,6 +79,14 @@ $(function() {
             }
         }
     });
+    var _setFlashMessages = function(title, message, type, callback) {
+        $.get(
+            '/admin/set-flash-message',
+            {type: type, message: message, title: title},
+            callback,
+            'json'
+        );
+    }
     var _deleteImages = function(images) {
         $('[data-imagestodelete="imagesToDelete"]').each(function() {
             var name = $(this).val();
@@ -138,7 +160,14 @@ $(function() {
     $('#geoloc').on(
         'click',
         function() {
-        	redirectToGeolocate();
+        	_setFlashMessages(
+                'Noticias',
+                'No se han realizado cambios en las imagenes',
+                'alert',
+                function() {
+                    redirectToGeolocate();
+                }
+            );
         }
     );
 });

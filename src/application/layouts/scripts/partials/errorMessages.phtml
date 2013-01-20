@@ -1,14 +1,14 @@
 <?php
 $flashMessenger = Zend_Controller_Action_HelperBroker::getStaticHelper('FlashMessenger');
-$messages = $flashMessenger->getMessages();
+$messages = array_pop($flashMessenger->getMessages());
 ?>
 <div id="messageBoxHolder" <?php echo !$flashMessenger->hasMessages() ? 'style="display: none"' : '' ?>> 
-  <div id="messageBox" class="alert alert-<?php echo $this->type; ?>">
+  <div id="messageBox" class="alert alert-<?php echo $messages['type']; ?>">
     <button type="button" class="close">&times;</button>
-    <h4 class="alert-heading"><?php echo $this->title; ?></h4>
+    <h4 class="alert-heading"><?php echo $messages['title']; ?></h4>
     <ul>
     <?php
-    if ($flashMessenger->hasMessages()) {
+    if (isset($messages)) {
         foreach($messages['messages'] as $message) :
             echo "<li>{$message}</li>";
         endforeach;
@@ -17,3 +17,15 @@ $messages = $flashMessenger->getMessages();
     </ul>
   </div>
 </div>
+<?php
+if (isset($messages['fadeOut'])) :
+    $wait = $messages['wait'] ? $messages['wait'] : 2000;
+?>
+<script>
+$(function() {
+    $('#messageBoxHolder').flashMessenger('fadeOut', {wait: <?php echo $wait; ?>});
+});
+</script>
+<?php
+endif;
+?>

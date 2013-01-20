@@ -41,12 +41,10 @@ class AdminController extends Zend_Controller_Action
             unset($errors['category'], $errors['preferentialCategory']);
             if (count($errors) == 0) {
                 $id = $this->_addOrEditNews($form);
+                $this->_setMessage('Noticia', 'Noticia agregada con éxito', 'success', true);
                 $this->_redirect('/admin/noticia-step-two/id/' . $id);
             }
         }
-//         $this->_request->setParam('id', $this->_addOrEditNews());
-//         $this->_forward('add-noticias-step-two');
-        
         // se esta agregando un news.js desde el ini del form
         $this->view->form = $form;
         $this->view->active = self::NOTICIA;
@@ -55,6 +53,20 @@ class AdminController extends Zend_Controller_Action
         $this->view->headScript()->appendFile("/js/modules/admin/tinyMCEConfig.js");
         $this->view->headScript()->appendFile("/js/modules/admin/datepickerConfig.js");
         $this->view->lateScript()->appendFile('/js/modules/admin/news.js');
+    }
+    
+    public function setFlashMessageAction()
+    {
+        $this->_setMessage(
+            htmlspecialchars(strip_tags($this->_request->getParam('title'))),
+            htmlspecialchars(strip_tags($this->_request->getParam('message'))),
+            htmlspecialchars(strip_tags($this->_request->getParam('type'))),
+            (bool) $this->_request->getParam('fadeOut'),
+            (int) $this->_request->getParam('wait', 2000)
+        );
+        header('content-type: application/Json');
+        echo json_encode(array('result' => true));
+        die;
     }
     
     public function noticiaStepTwoAction()
@@ -72,7 +84,15 @@ class AdminController extends Zend_Controller_Action
     
     private $_addedFlashMessages = array();
     
-    private function _setMessage($title, $messages, $type)
+    /**
+     * Set the flashMessenger error.
+     * @param string $title
+     * @param array/string $messages array('mesaje 1', 'message 2', ...)
+     * @param string $type error alert or success
+     * @param boolean $fadeOut 
+     * @param int $wait
+     */
+    private function _setMessage($title, $messages, $type, $fadeOut = false, $wait = null)
     {
         if (in_array($messages, $this->_addedFlashMessages)) {
             return;
@@ -82,11 +102,13 @@ class AdminController extends Zend_Controller_Action
             ? $messages
             : array($messages)
         ;
-        $this->_helper->flashMessenger->AddMessage(
+        $this->_helper->flashMessenger->addMessage(
             array(
                 'title' => $title,
                 'messages' => $messagesArray,
-                'type' => $type
+                'type' => $type,
+                'fadeOut' => ($fadeOut != false) ? true:false,
+                'wait' => ($wait != null) ? $wait : 2000,
             )
         );
     }
@@ -106,6 +128,7 @@ class AdminController extends Zend_Controller_Action
             unset($errors['category'], $errors['preferentialCategory']);
             if (count($errors) == 0) {
                 $id = $this->_addOrEditPublicPolitics($form);
+                $this->_setMessage('Politica publica', 'Politica publica agregada con éxito', 'success', true);
                 $this->_redirect('/admin/politicas-publicas-step-two/' . $id);
             }
         }
