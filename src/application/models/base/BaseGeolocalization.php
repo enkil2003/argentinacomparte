@@ -12,6 +12,7 @@
  * @property integer $active
  * @property integer $tramite
  * @property integer $news
+ * @property string $address
  * @property Tramite $Tramite
  * @property News $News
  * 
@@ -86,6 +87,15 @@ abstract class BaseGeolocalization extends Doctrine_Record
              'notnull' => false,
              'autoincrement' => false,
              'length' => '4',
+             ));
+        $this->hasColumn('address', 'string', 255, array(
+             'type' => 'string',
+             'fixed' => 0,
+             'unsigned' => false,
+             'primary' => false,
+             'notnull' => false,
+             'autoincrement' => false,
+             'length' => '255',
              ));
     }
 

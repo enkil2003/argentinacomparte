@@ -205,6 +205,13 @@ Geolocalization:
       primary: false
       notnull: false
       autoincrement: false
+    address:
+      type: string(255)
+      fixed: false
+      unsigned: false
+      primary: false
+      notnull: false
+      autoincrement: false
   relations:
     Tramite:
       local: tramite
