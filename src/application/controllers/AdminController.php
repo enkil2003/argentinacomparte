@@ -182,6 +182,8 @@ class AdminController extends Zend_Controller_Action
         if (!$this->_request->isPost() && null !== $this->_request->getParam('id', null)) {
             $tramiteModel = new Tramite();
             $data = $tramiteModel->findById($this->_request->getParam('id'));
+            list($year, $month, $day) = explode('-', $data['creation_date']);
+            $data['date'] = "{$day}/{$month}/{$year}";
             $form->populate($data);
         }
         // guardar
