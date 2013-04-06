@@ -960,9 +960,11 @@ class AdminController extends Zend_Controller_Action
             case 'publicPolitic':
             case 'news':
                 $geoloc->news = $id;
+                $redirectToAction = 'politicas-publicas-step-three';
                 break;
             case 'tramite':
                 $geoloc->tramite = $id;
+                $redirectToAction = 'tramite-step-two';
                 break;
             default:
                 throw new Exception("Valores invalidos");
@@ -970,7 +972,7 @@ class AdminController extends Zend_Controller_Action
         }
         $geoloc->save();
         if ($this->_request->getPost('addAnotherLocalization')) {
-            $this->_redirect("/admin/politicas-publicas-step-three/{$id}");
+            $this->_redirect("/admin/{$redirectToAction}/{$id}");
         }
     }
     
