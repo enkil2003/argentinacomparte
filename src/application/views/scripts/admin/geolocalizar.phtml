@@ -34,8 +34,8 @@ $(function() {
                     function(results, status) {
                         _enableLocalizationButton();
                         if (status == google.maps.GeocoderStatus.OK) {
-                            var lat = results[0].geometry.location.Ya;
-                            var lang = results[0].geometry.location.Za;
+                            var lat = results[0].geometry.location.lat();
+                            var lang = results[0].geometry.location.lng();
                             var latlng = new google.maps.LatLng(lat, lang);
                             var myOptions = {
                                 zoom: 15,
