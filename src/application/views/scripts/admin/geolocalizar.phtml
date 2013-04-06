@@ -12,6 +12,7 @@ $(function() {
             .attr('disabled', 'disabled')
             .text(localizationButtonElement.attr('data-loading-text'));
     }
+    
     var _enableLocalizationButton = function() {
         localizationButtonElement.removeAttr('disabled').text(localizationButtonElement.attr('data-text'));
     }
@@ -92,25 +93,24 @@ $(function() {
             }
         });
     };
-    
     _init();
-    
-});id="finalizar"
+});
 </script>
 <h2>Geolocalizar</h2>
+<div>
   <ul>
-<?php if (isset($this->geolocation) && count($this->geolocation)):?>
-  <?php
-  foreach($this->geolocations as $location):
-  ?>
+  <?php if (isset($this->geolocation) && count($this->geolocation)):?>
+    <?php
+    foreach($this->geolocations as $location):
+    ?>
     <li>
       <?php echo $location['address'];?>
       <a data-id="<?php echo $location['id']; ?>" class="btn btn-danger" title="eliminar" href="#"><i class="icon-trash icon-white"></i></a>
     </li>
-  <?php
-  endforeach;
-  ?>
-<?php endif; ?>
+    <?php
+    endforeach;
+    ?>
+  <?php endif; ?>
   </ul>
   <div id="localizationControls">
     <input id="address" type="text" placeholder="Ingrese una dirección">
@@ -120,18 +120,39 @@ $(function() {
       <label for="bsas">Buscar en Buenos Aires</label>
     </div>
   </div>
- <div id="map_canvas"></div>
+  <div id="map_canvas"></div>
   <div>
     <input type="button" value="Confirmar" style="margin-top: 10px; display: none" class="confirmar btn-large btn-primary" />
   </div>
   <form action="/admin/add-geo-loc" id="geoLocForm" method="post" style="display: none">
-      <p id="locationAddress"><b>Ubicación:</b> <span></span></p>
-      <input type="hidden" name="type" value="<?php echo $this->escape($this->type); ?>"/>
-      <input type="hidden" name="id" value="<?php echo (int)$this->id;?>"/>
-      <input type="hidden" name="address" />
-      <input type="hidden" name="lat" />
-      <input type="hidden" name="lang" />
-      descripción <textarea name="description"></textarea><br />
-      <input type="submit" name="submitLocalization" style="margin-top: 10px;" class="btn btn-large btn-primary" value="Finalizar" />
+    <p id="locationAddress"><b>Ubicación:</b> <span></span></p>
+    <input type="hidden" name="type" value="<?php echo $this->escape($this->type); ?>"/>
+    <input type="hidden" name="id" value="<?php echo (int)$this->id;?>"/>
+    <input type="hidden" name="address" />
+    <input type="hidden" name="lat" />
+    <input type="hidden" name="lang" />
+    descripción <textarea name="description"></textarea><br />
+    <input type="submit" name="submitLocalization" style="margin-top: 10px;" class="btn btn-large btn-primary" value="Finalizar" />
+    <input type="submit" name="addAnotherLocalization" style="margin-top: 10px;" class="btn btn-large btn-primary" value="Agregar otra" />
   </form>
-  <button id="finalizar" type="button" class="btn btn-large btn-danger">Finalizar sin geolocalizar</button>
+</div>
+<div>
+<?php
+if (isset($this->geolocs) && count($this->geolocs)):?>
+  <h4>Geolocalizaciones asignadas</h4>
+  <ul>
+  <?php
+  foreach($this->geolocs as $geoloc):?>
+    <li><?php echo $geoloc['address']; ?> <a data-delete="delete" class="btn btn-danger" title="eliminar" href="#" 
+            onclick="return MyDialogs.loadConfirmationModal('<?php echo $geoloc['id']; ?>', '/admin/delete-geoloc/id/<?php echo $geoloc['id']; ?>/belongs-to/<?php echo $this->id; ?>', 
+                'El siguiente geoloc será eliminado', 
+                '<?php echo $this->title ?>','');"><i class="icon-trash icon-white"></i></a></li>
+  <?php
+  endforeach;
+  ?>
+  </ul>
+  <?php
+endif;
+?>
+</div>
+<button id="finalizar" type="button" class="btn btn-large btn-danger">Finalizar sin geolocalizar</button>

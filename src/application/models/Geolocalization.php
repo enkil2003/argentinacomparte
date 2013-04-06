@@ -12,5 +12,10 @@
  */
 class Geolocalization extends BaseGeolocalization
 {
-
+    public static function deleteByNewsId($id) {
+        $q = new Doctrine_Query();
+        $q->delete('Geolocalization g')
+            ->where('g.id = '.$id);
+        return $q->execute();
+    }
 }

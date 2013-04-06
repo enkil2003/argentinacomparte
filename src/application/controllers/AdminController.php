@@ -918,16 +918,6 @@ class AdminController extends Zend_Controller_Action
         $this->view->form = $form;
     }
     
-    public function deleteGeolocAction()
-    {
-        $q = new Doctrine_Query();
-        $q->delete('Geolocalization g')
-            ->where('g.id = '.$this->_request->getPost('id'));
-        $q->execute();
-        echo Zend_Json::encode(array('result' => true));
-        die;
-    }
-    
     public function geolocalizarAction()
     {
         if ($this->_request->isXmlHttpRequest()) {
@@ -943,7 +933,13 @@ class AdminController extends Zend_Controller_Action
             case 'tramite':
                 
                 break;
-       }
+        }
+        $news = News::findById($this->_request->getParam('id'));
+        if (count($news)) {
+            $this->view->geolocs = $news['Geolocalization'];
+        }
+        $this->view->headScript()->appendFile('/js/modules/admin/confirm-deletion.js');
+        $this->view->headScript()->appendFile('/js/lib/bootstrap/bootstrap-modal.js');
         $this->view->id = (int)$this->_request->getParam('id');
         $this->view->type = $this->_request->getParam('type');
         $this->view->headMeta();
@@ -959,7 +955,7 @@ class AdminController extends Zend_Controller_Action
         $geoloc->lang = $this->_request->getPost('lang');
         $geoloc->active = 1;
         $geoloc->address = $this->_request->getPost('address');
-        $id = (int)$this->_request->getPost('id');
+        $id = (int) $this->_request->getPost('id');
         switch($this->_request->getPost('type')) {
             case 'publicPolitic':
             case 'news':
@@ -973,5 +969,18 @@ class AdminController extends Zend_Controller_Action
                 die;
         }
         $geoloc->save();
+        if ($this->_request->getPost('addAnotherLocalization')) {
+            $this->_redirect("/admin/politicas-publicas-step-three/{$id}");
+        }
+    }
+    
+
+    public function deleteGeolocAction()
+    {
+        if (Geolocalization::deleteByNewsId($this->_request->getParam('id'))) {
+            $response = array('response' => array('success' => true));
+        }
+        $belongsTo = $this->_request->getParam('belongs-to');
+        $this->_redirect("/admin/politicas-publicas-step-three/{$belongsTo}");
     }
 }
