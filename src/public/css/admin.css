@@ -103,3 +103,6 @@ form label {
 form [name="category[]"] {
     height: 100px;
 }
+#addressFounded li {
+    cursor: pointer;
+}

@@ -4,7 +4,10 @@ AC.Admin = AC.Admin || {};
 AC.Admin.GeoLoc = AC.Admin.GeoLoc || {};
 AC.Admin.GeoLoc.Callback = AC.Admin.GeoLoc.Callback || {};
 AC.Admin.GeoLoc.Callback.AddGeoLoc = AC.Admin.GeoLoc.Callback.AddGeoLoc || {};
+AC.Admin.GeoLoc.LastLat = null;
+AC.Admin.GeoLoc.LastLang = null;
 $(function() {
+    var addressFoundedElement = $('#addressFounded');
     var localizationButtonElement = $('#geoloc');
     
     var _disableLocalizationButton = function() {
@@ -16,52 +19,85 @@ $(function() {
     var _enableLocalizationButton = function() {
         localizationButtonElement.removeAttr('disabled').text(localizationButtonElement.attr('data-text'));
     }
+    var showInMap = function(lat, lang) {
+        var myOptions = {
+            zoom: 15,
+            center: new google.maps.LatLng(lat, lang),
+            mapTypeId: google.maps.MapTypeId.ROADMAP
+        };
+        map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
+        var marker = new google.maps.Marker({
+            map: map,
+            position: map.getCenter()
+        });
+        AC.Admin.GeoLoc.LastLat = lat;
+        AC.Admin.GeoLoc.LastLang = lang;
+    }
+    
+    $('.confirmar').bind(
+        'click.confirmar',
+        function() {
+            var form = $('#geoLocForm');
+            $('[name="lat"]', form).val(AC.Admin.GeoLoc.LastLat);
+            $('[name="lang"]', form).val(AC.Admin.GeoLoc.LastLang);
+            $('#map_canvas').slideUp(function() {
+                $('#locationAddress span').text($('#address').val());
+                form.slideDown();
+            });
+            $(this).hide();
+            $('#localizationControls').slideUp();
+        }
+    );
     
     var _init = function() {
         var geocoder;
-        var map;
+        // var map;
         localizationButtonElement.bind(
             'click.geoloc',
             function() {
+                $('.confirmar').hide();
+                addressFoundedElement.hide();
+                localizationButtonElement.empty();
                 _disableLocalizationButton();
                 geocoder = new google.maps.Geocoder();
                 var address = $("#address").val();
                 if ($('[name="bsas"]').attr('checked') == 'checked') {
-                    address += ", Buenos Aires, Argentina";
+                    address += ", Buenos Aires";
+                }
+                if (address.toLowerCase().indexOf('argentina') === -1) {
+                    address += ', Argentina';
                 }
                 geocoder.geocode(
                     {'address': address},
                     function(results, status) {
                         _enableLocalizationButton();
                         if (status == google.maps.GeocoderStatus.OK) {
-                            var lat = results[0].geometry.location.lat();
-                            var lang = results[0].geometry.location.lng();
-                            var latlng = new google.maps.LatLng(lat, lang);
-                            var myOptions = {
-                                zoom: 15,
-                                center: latlng,
-                                mapTypeId: google.maps.MapTypeId.ROADMAP
-                            };
-                            map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
-                            map.setCenter(results[0].geometry.location);
-                            var marker = new google.maps.Marker({
-                                map: map,
-                                position: results[0].geometry.location
-                            });
-                            $('.confirmar').show().bind(
-                                'click.confirmar',
-                                function() {
-                                    var form = $('#geoLocForm');
-                                    $('[name="lat"]', form).val(lat);
-                                    $('[name="lang"]', form).val(lang);
-                                    $('#map_canvas').slideUp(function() {
-                                        $('#locationAddress span').text($('#address').val());
-                                        form.slideDown();
-                                    });
-                                    $(this).hide();
-                                    $('#localizationControls').slideUp();
+                            for (var i in results) {
+                                if (!results.hasOwnProperty(i)) {
+                                    continue;
                                 }
-                            );
+                                var lat = results[i].geometry.location.lat();
+                                var lang = results[i].geometry.location.lng();
+                                if (results.length > 1) {
+                                    addressFoundedElement.show();
+                                    var liElement = $('<li />').attr({
+                                        'data-lat': lat,
+                                        'data-lang': lang
+                                    }).text(results[i].formatted_address);
+                                    liElement.on({
+                                        click: function() {
+                                            showInMap($(this).attr('data-lat'), $(this).attr('data-lang'));
+                                            $('.confirmar').show();
+                                        }
+                                    });
+                                } else {
+                                    AC.Admin.GeoLoc.LastLat = lat;
+                                    AC.Admin.GeoLoc.LastLang = lang;
+                                    showInMap(lat, lang);
+                                    $('.confirmar').show();
+                                }
+                                addressFoundedElement.find('ul').append(liElement);
+                            }
                         } else {
                             alert("Geocode was not successful for the following reason: " + status);
                         }
@@ -120,8 +156,12 @@ $(function() {
       <label for="bsas">Buscar en Buenos Aires</label>
     </div>
   </div>
-  <div id="map_canvas"></div>
-  <div>
+  <div id="map_canvas" style="float: left"></div>
+  <div id="addressFounded" style="float: right; display: none;">
+    <h4>Se han encontrado multiples resultados, por favor indique el correcto</h4>
+    <ul></ul>
+  </div>
+  <div style="clear: both">
     <input type="button" value="Confirmar" style="margin-top: 10px; display: none" class="confirmar btn-large btn-primary" />
   </div>
   <form action="/admin/add-geo-loc" id="geoLocForm" method="post" style="display: none">
