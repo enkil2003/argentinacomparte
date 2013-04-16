@@ -64,6 +64,7 @@ class AdminController extends Zend_Controller_Action
         $this->_loadPlupload();
         $form = new Application_Form_NewsStepTwo();
         $publicPolitic = $this->_preparePopulate($this->_request->getParam('id'));
+        $this->view->id = $this->_request->getParam('id');
         $this->view->images = $publicPolitic['Images'];
         $this->view->form = $form;
         $this->view->footerScript()->appendFile("/js/modules/admin/cancelSubmitWithEnterKey.js");
@@ -147,6 +148,7 @@ class AdminController extends Zend_Controller_Action
         if (count($publicPolitic['Images'])) {
             $form->setModify();
         }
+        $this->view->id = $this->_request->getParam('id');
         $this->view->images = $publicPolitic['Images'];
         $this->view->form = $form;
         $this->view->footerScript()->appendFile("/js/modules/admin/cancelSubmitWithEnterKey.js");

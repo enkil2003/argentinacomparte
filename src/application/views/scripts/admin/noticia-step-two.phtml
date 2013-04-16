@@ -3,8 +3,12 @@
   <div class="imagesToDelete">
   <?php
   foreach($this->images as $image):
+      $baseImageFolder = file_exists(PUBLIC_PATH . '/uploads/images/' . $image['name'])
+          ? '/uploads/images/' . $image['name']
+          : '/uploads/tmp/' . $this->id . '/' . $image['name']
+      ;
   ?><div style="position: relative; display: inline-block;">
-    <img style="width: 200px; height: auto" src="/uploads/images/<?php echo $image['name']; ?>" />
+    <img style="width: 200px; height: auto" src="<?php echo $baseImageFolder; ?>" />
     <a style="cursor: pointer; position: absolute; top: 10px; left: 160px;" class="btn btn-danger" title="eliminar" href="javascript:;" data-news-id="<?php echo $this->folder; ?>" data-name="<?php echo $image['name']; ?>" >
       <i class="icon-trash icon-white"></i>
     </a>
