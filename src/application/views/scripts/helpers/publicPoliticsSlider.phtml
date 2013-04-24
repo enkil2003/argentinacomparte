@@ -2,7 +2,11 @@
   <div class="window">
     <div class="publicPoliticsFrame">
       <div class="frameContainer">
-        <?php foreach($this->data as $pp):?>
+        <?php foreach($this->data as $pp):
+                  if (!isset($pp['Images'])) {
+                      continue;
+                  }
+        ?>
             <?php
             $file = file_exists(PUBLIC_PATH . '/uploads/images/' . $pp['Images'][0]['name'])
                 ? '/uploads/images/' . $pp['Images'][0]['name']

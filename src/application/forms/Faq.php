@@ -13,19 +13,17 @@ class Application_Form_Faq extends Application_Form_AdminAbstract
             'faq'
         );
         $this->setConfig($config->faq);
-
         $this->_populateSelectWithPublicPolitics();
-        
     }
     
     private function _populateSelectWithPublicPolitics()
     {
         $publicPoliticsRecords = News::getPublicPolitics();
-        $publicPoliticsElement = ($this->getElement('pp'));
+        $publicPoliticsElement = $this->getElement('pp');
         foreach($publicPoliticsRecords as $publicPolitic) {
             $publicPoliticsElement->addMultiOption(
-                    $publicPolitic['id'],
-                    $publicPolitic['title']
+                $publicPolitic['id'],
+                $publicPolitic['title']
             );
         }
     }

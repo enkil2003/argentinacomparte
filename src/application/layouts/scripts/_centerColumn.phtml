@@ -4,7 +4,7 @@
         <label for="politicaspublicas">selector de políticas públicas</label>
         <select id="politicaspublicas" class="chzn-select1" tabindex="1">
               <option class="dholder" value="" data-placeholder="true">Becas/Programas/Estímulos...</option>
-              <?php foreach(News::getPublicPolitics() as $pp):?>
+              <?php foreach($this->publicPoliticsCategories as $pp):?>
               <option value="<?php echo $_SERVER['SERVER_NAME']?>/ver-mas/id/<?php echo $pp['id']?>"><?php echo $pp['title']?></option>
             <?php endforeach;?>
         </select>

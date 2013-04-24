@@ -11,6 +11,7 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
     
     protected function _initViewCommons()
     {
+        $this->bootstrap('doctrine');
         $view = $this->bootstrap('view')->getResource('view');
         $this->view->headLink(
             array(
@@ -21,6 +22,8 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
         );
         $this->view->headTitle()->setSeparator(' - ');
         $view->headTitle('Argentina Comparte');
+        $publicPoliticsCategories = News::getPublicPolitics();
+        $view->publicPoliticsCategories = count($publicPoliticsCategories) ? $publicPoliticsCategories : array();
     }
     
     protected function _initGooglemaps()
